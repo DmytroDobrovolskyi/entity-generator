@@ -4,6 +4,7 @@ import com.softserve.entity.generator.config.EntityManagerConfigurator;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 public class Main
 {
@@ -13,6 +14,8 @@ public class Main
     public static void main(String[] args)
     {
         logger.info("Configured.");
+        Query query = entityManager.createNativeQuery("SELECT name FROM Test");
+        logger.info(query.getResultList());
         EntityManagerConfigurator.closeSession();
     }
 }
