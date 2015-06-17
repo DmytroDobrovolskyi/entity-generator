@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="entity-generator" default="run">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="entity-generator" default="run">
 
     <property file="build.properties"/>
 
@@ -28,6 +28,10 @@
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${compile.dir}"/>
+    </target>
+
+    <target name="resolve">
+        <ivy:retrieve/>
     </target>
 
     <target name="clean">
