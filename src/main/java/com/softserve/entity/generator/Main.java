@@ -1,36 +1,18 @@
 package com.softserve.entity.generator;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import com.softserve.entity.generator.config.EntityManagerConfigurator;
+import org.apache.log4j.Logger;
+
+import javax.persistence.EntityManager;
 
 public class Main
 {
-    private int x;
+    private static final Logger logger = Logger.getLogger(Main.class);
+    private static final EntityManager entityManager = EntityManagerConfigurator.getEntityManager();
 
     public static void main(String[] args)
     {
-        System.out.println("Hello");
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) { return true; }
-
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        Main main = (Main) o;
-
-        return new EqualsBuilder()
-                .append(x, main.x)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return new HashCodeBuilder(17, 37)
-                .append(x)
-                .toHashCode();
+        logger.info("Configured.");
+        EntityManagerConfigurator.closeSession();
     }
 }

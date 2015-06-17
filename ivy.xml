@@ -1,7 +1,10 @@
 <ivy-module version="2.0">
-    <info organisation="softserve" module="ут"/>
+    <info organisation="softserve" module="entity-generator"/>
     <dependencies>
-        <dependency org="commons-lang" name="commons-lang" rev="2.0"/>
-        <dependency org="commons-cli" name="commons-cli" rev="1.0"/>
+        <dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.1-api" rev="1.0.0.Final"/>
+        <dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.3.10.Final"/>
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.12"/>
+        <dependency org="org.apache.commons" name="commons-lang3" rev="3.4"/>
+        <dependency org="org.apache.velocity" name="velocity" rev="1.7"/>
     </dependencies>
 </ivy-module>

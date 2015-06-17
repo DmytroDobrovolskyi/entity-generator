@@ -9,25 +9,37 @@
                 <fileset dir="${build.dir}">
                     <include name="/*.jar"/>
                 </fileset>
+
+                <fileset dir="${lib.dir}">
+                    <include name="/*.jar"/>
+                </fileset>
             </classpath>
         </java>
     </target>
 
     <target name="pack" depends="compile">
-        <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${compile.dir}">
+        <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="com.softserve.entity.generator.Main"/>
             </manifest>
+            <fileset dir="${resources.dir}"/>
         </jar>
     </target>
 
-    <target name="compile" depends="init">
-        <javac srcdir="${src.dir}" destdir="${compile.dir}"/>
+    <target name="compile" depends="init, resolve">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
     </target>
 
     <target name="init">
         <mkdir dir="${build.dir}"/>
-        <mkdir dir="${compile.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${lib.dir}"/>
     </target>
 
     <target name="resolve">
