@@ -82,7 +82,7 @@ public class Main
     {
         Entity entity = new Entity();
         entity.setId("PrcN");
-        entity.setTableName("Table_Nam");
+        entity.setTableName("FIELD");
 
         Field firstField = new Field();
         firstField.setColumnName("First_Column");

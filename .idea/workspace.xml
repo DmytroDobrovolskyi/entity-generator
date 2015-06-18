@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="189e4846-51c6-4a73-b077-831f25827145" name="Default" comment="">
+    <list default="true" id="189e4846-51c6-4a73-b077-831f25827145" name="Default" comment="add template">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java" afterPath="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -74,11 +74,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Entity.vm" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Entity.vm" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/Entity.vm">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.09042553">
-              <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+            <state vertical-scroll-proportion="-28.923077">
+              <caret line="52" column="5" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -94,11 +94,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="persistence.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="persistence.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.9259257">
-              <caret line="11" column="67" selection-start-line="11" selection-start-column="67" selection-end-line="11" selection-end-column="67" />
+            <state vertical-scroll-proportion="0.21494253">
+              <caret line="11" column="70" selection-start-line="11" selection-start-column="70" selection-end-line="11" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -118,17 +118,17 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="54" column="31" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
+              <caret line="75" column="63" selection-start-line="75" selection-start-column="63" selection-end-line="75" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#741#742#0" expanded="true" />
                 <element signature="e#792#793#0" expanded="true" />
                 <element signature="e#897#905#0" expanded="true" />
                 <element signature="e#1168#1176#0" expanded="true" />
-                <element signature="e#1727#1743#0" expanded="true" />
-                <element signature="e#3363#3370#0" expanded="true" />
-                <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-                <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+                <element signature="e#1774#1790#0" expanded="true" />
+                <element signature="e#3509#3516#0" expanded="true" />
+                <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+                <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
               </folding>
             </state>
           </provider>
@@ -176,9 +176,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/A.java" />
         <option value="$PROJECT_DIR$/ivy.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/TableCreator.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java" />
         <option value="$PROJECT_DIR$/src/main/resources/Entity.vm" />
+        <option value="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
       </list>
     </option>
   </component>
@@ -284,6 +284,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="entity-generator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="entity-generator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="META-INF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -872,7 +898,7 @@
       <workItem from="1434537254128" duration="38000" />
       <workItem from="1434537326677" duration="5233000" />
       <workItem from="1434546565342" duration="4822000" />
-      <workItem from="1434610412009" duration="20361000" />
+      <workItem from="1434610412009" duration="22435000" />
     </task>
     <task id="LOCAL-00001" summary="Resolve dependencies.">
       <created>1434545996268</created>
@@ -952,15 +978,27 @@
       <option name="project" value="LOCAL" />
       <updated>1434633171358</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add template">
+      <created>1434639086015</created>
+      <option name="number" value="00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1434639086015</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add template">
+      <created>1434640887186</created>
+      <option name="number" value="00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1434640887186</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45558000" />
+    <option name="totallyTimeSpent" value="47632000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -971,7 +1009,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.53513515" sideWeight="0.4978678" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.53513515" sideWeight="0.4978678" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1988273" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1125,10 +1163,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1159,10 +1197,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1201,10 +1239,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1243,10 +1281,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1285,10 +1323,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1327,10 +1365,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1369,10 +1407,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1411,10 +1449,10 @@
             <element signature="e#792#793#0" expanded="true" />
             <element signature="e#897#905#0" expanded="true" />
             <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1520,37 +1558,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.9259257">
-          <caret line="11" column="67" selection-start-line="11" selection-start-column="67" selection-end-line="11" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/EntityManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.047937">
           <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="31" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#741#742#0" expanded="true" />
-            <element signature="e#792#793#0" expanded="true" />
-            <element signature="e#897#905#0" expanded="true" />
-            <element signature="e#1168#1176#0" expanded="true" />
-            <element signature="e#1727#1743#0" expanded="true" />
-            <element signature="e#3363#3370#0" expanded="true" />
-            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
-            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1564,8 +1576,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/Entity.vm">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09042553">
-          <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+        <state vertical-scroll-proportion="-28.923077">
+          <caret line="52" column="5" selection-start-line="52" selection-start-column="5" selection-end-line="52" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="75" column="63" selection-start-line="75" selection-start-column="63" selection-end-line="75" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1774#1790#0" expanded="true" />
+            <element signature="e#3509#3516#0" expanded="true" />
+            <marker date="1434641075325" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434641075325" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21494253">
+          <caret line="11" column="70" selection-start-line="11" selection-start-column="70" selection-end-line="11" selection-end-column="70" />
           <folding />
         </state>
       </provider>
