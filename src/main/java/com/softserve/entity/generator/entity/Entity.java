@@ -8,12 +8,17 @@ import java.util.Set;
 @Table(name = "ENTITY")
 public class Entity {
     @Id
+    @Column(name = "Id")
     private String id;
+
+    @Column(name = "Name")
     private String name;
+
+    @Column(name = "Table_Name")
     private String tableName;
 
     @OneToMany(cascade = {CascadeType.MERGE}, orphanRemoval = true)
-    @JoinColumn(name = "entity_id")
+    @JoinColumn(name = "Entity_Id")
     private Set<Field> fields;
 
     public String getId() {

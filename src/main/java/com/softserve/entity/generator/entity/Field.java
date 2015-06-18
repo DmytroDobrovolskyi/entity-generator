@@ -7,8 +7,13 @@ import javax.persistence.*;
 public class Field {
 
     @Id
+    @Column(name = "Name")
     private String name;
+
+    @Column(name="Column_Name")
     private String columnName;
+
+    @Column(name = "Type")
     private String type;
 
     public String getName() {

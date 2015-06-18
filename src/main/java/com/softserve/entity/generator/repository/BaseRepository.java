@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.repository;
 
-public interface BaseRepositore<T> {
+public interface BaseRepository<T> {
     void save(T entity);
     void delete(T entity);
     void deleteById(String id);
