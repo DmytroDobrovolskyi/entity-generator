@@ -9,7 +9,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.io.StringWriter;
 import java.util.*;
 
@@ -20,7 +19,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        createTable(generateEntity());
+            createTable(generateEntity());
     }
 
     private static void createTable(Entity entity)
@@ -64,7 +63,7 @@ public class Main
     private static Entity generateEntity()
     {
         Entity entity = new Entity();
-        entity.setId("ProcName");
+        entity.setId("ProcN");
         entity.setTableName("Table_Name");
 
         Field firstField = new Field();
