@@ -17,6 +17,20 @@
         </java>
     </target>
 
+    <target name="init-db" depends="pack">
+        <java classname="com.softserve.entity.generator.TableCreator">
+            <classpath>
+                <fileset dir="${build.dir}">
+                    <include name="/*.jar"/>
+                </fileset>
+
+                <fileset dir="${lib.dir}">
+                    <include name="/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
     <target name="pack" depends="compile">
         <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
@@ -27,7 +41,7 @@
     </target>
 
     <target name="compile" depends="init, resolve">
-        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
             <classpath>
                 <fileset dir="${lib.dir}">
                     <include name="/*.jar"/>

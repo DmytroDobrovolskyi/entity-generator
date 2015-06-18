@@ -14,7 +14,7 @@ public class Main
     public static void main(String[] args)
     {
         logger.info("Configured.");
-        Query query = entityManager.createNativeQuery("SELECT name FROM Test");
+        Query query = entityManager.createNativeQuery("SELECT name FROM Entity");
         logger.info(query.getResultList());
         EntityManagerConfigurator.closeSession();
     }

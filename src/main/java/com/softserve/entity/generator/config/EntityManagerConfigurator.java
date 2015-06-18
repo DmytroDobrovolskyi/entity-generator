@@ -23,6 +23,11 @@ public class EntityManagerConfigurator
         }
     }
 
+    public static EntityManagerFactory getEntityManagerFactory()
+    {
+        return entityManagerFactory;
+    }
+
     public static EntityManager getEntityManager()
     {
         return entityManager;
