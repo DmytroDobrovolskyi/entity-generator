@@ -9,6 +9,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.io.StringWriter;
 import java.util.*;
 
@@ -19,14 +20,26 @@ public class Main
 
     public static void main(String[] args)
     {
-            createTable(generateEntity());
+              createTable(generateEntity());
     }
 
     private static void createTable(Entity entity)
     {
+        List<String>tableName = new ArrayList<String>();
+        Query tableQuery = entityManager.createNativeQuery("SELECT cast(name as varchar) FROM sys.tables");
+        for(Object table:tableQuery.getResultList()){
+            tableName.add((String)table);
+        }
+
+        List<String>procName = new ArrayList<String>();
+        Query procQuery = entityManager.createNativeQuery(" SELECT cast(name as varchar) FROM EntityGenerator.sys.procedures");
+        for(Object procedure:procQuery.getResultList()){
+            procName.add((String)procedure);
+        }
+        Boolean contain = false;
+
         VelocityEngine velocityEngine = getVelocityEngine();
         velocityEngine.init();
-
         Template templateCreate = velocityEngine.getTemplate("Entity.vm");
         VelocityContext context = new VelocityContext();
         Map<String, String> columns = new HashMap<String, String>();
@@ -39,6 +52,8 @@ public class Main
             columns.put(field.getColumnName(),field.getType());
         }
         context.put("columns", columns);
+        context.put("procedures",procName);
+        context.put("contain",contain);
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);

@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="189e4846-51c6-4a73-b077-831f25827145" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java" afterPath="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="entity-generator.iws" />
@@ -63,11 +64,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Entity.vm" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Field.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/entity/Field.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Entity.vm" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/Entity.vm">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.2692308">
-              <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.09042553">
+              <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -86,8 +97,8 @@
       <file leaf-file-name="persistence.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.481482">
-              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.9259257">
+              <caret line="11" column="67" selection-start-line="11" selection-start-column="67" selection-end-line="11" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -103,26 +114,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="velocity.log" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/velocity.log">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18952063">
-              <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="54" column="31" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
               <folding>
-                <element signature="e#709#710#0" expanded="true" />
-                <element signature="e#758#759#0" expanded="true" />
-                <element signature="e#1092#1108#0" expanded="true" />
-                <element signature="e#2644#2651#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#741#742#0" expanded="true" />
+                <element signature="e#792#793#0" expanded="true" />
+                <element signature="e#897#905#0" expanded="true" />
+                <element signature="e#1168#1176#0" expanded="true" />
+                <element signature="e#1727#1743#0" expanded="true" />
+                <element signature="e#3363#3370#0" expanded="true" />
+                <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+                <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
               </folding>
             </state>
           </provider>
@@ -171,8 +177,8 @@
         <option value="$PROJECT_DIR$/ivy.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/TableCreator.java" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
-        <option value="$PROJECT_DIR$/src/main/resources/Entity.vm" />
         <option value="$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/Entity.vm" />
       </list>
     </option>
   </component>
@@ -299,32 +305,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="META-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="entity-generator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="entity-generator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -360,36 +340,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="entity" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="entity-generator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="entity-generator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="generator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -922,7 +872,7 @@
       <workItem from="1434537254128" duration="38000" />
       <workItem from="1434537326677" duration="5233000" />
       <workItem from="1434546565342" duration="4822000" />
-      <workItem from="1434610412009" duration="14450000" />
+      <workItem from="1434610412009" duration="20361000" />
     </task>
     <task id="LOCAL-00001" summary="Resolve dependencies.">
       <created>1434545996268</created>
@@ -996,15 +946,21 @@
       <option name="project" value="LOCAL" />
       <updated>1434630251441</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add template">
+      <created>1434633171358</created>
+      <option name="number" value="00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1434633171358</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39647000" />
+    <option name="totallyTimeSpent" value="45558000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1015,7 +971,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.53513515" sideWeight="0.4978678" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.53513515" sideWeight="0.4978678" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1988273" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1104,19 +1060,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-          <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/entity/Field.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1177,10 +1120,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="49" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1206,10 +1154,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1243,10 +1196,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1280,10 +1238,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1317,10 +1280,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1354,10 +1322,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1391,10 +1364,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1428,10 +1406,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="6" column="33" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
         </state>
       </provider>
@@ -1470,14 +1453,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/entity/Field.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1547,30 +1522,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.481482">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state vertical-scroll-proportion="-6.9259257">
+          <caret line="11" column="67" selection-start-line="11" selection-start-column="67" selection-end-line="11" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/Entity.vm">
+    <entry file="jar://$PROJECT_DIR$/lib/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar!/javax/persistence/EntityManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.2692308">
-          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+        <state vertical-scroll-proportion="-9.047937">
+          <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18952063">
-          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="31" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
           <folding>
-            <element signature="e#709#710#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#1092#1108#0" expanded="true" />
-            <element signature="e#2644#2651#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#792#793#0" expanded="true" />
+            <element signature="e#897#905#0" expanded="true" />
+            <element signature="e#1168#1176#0" expanded="true" />
+            <element signature="e#1727#1743#0" expanded="true" />
+            <element signature="e#3363#3370#0" expanded="true" />
+            <marker date="1434638815988" expanded="true" signature="969:1013" placeholder="SELECT cast(..tables..." />
+            <marker date="1434638815988" expanded="true" signature="1240:1304" placeholder="SELECT cast(..procedures..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/softserve/entity/generator/entity/Field.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/Entity.vm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09042553">
+          <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
