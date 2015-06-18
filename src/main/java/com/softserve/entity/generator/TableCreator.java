@@ -3,7 +3,8 @@ package com.softserve.entity.generator;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class TableCreator
+public class
+        TableCreator
 {
     public static void main(String[] args)
     {
