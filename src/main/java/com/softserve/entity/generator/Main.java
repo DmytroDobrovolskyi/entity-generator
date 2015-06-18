@@ -36,7 +36,8 @@ public class Main
         for(Object procedure:procQuery.getResultList()){
             procName.add((String)procedure);
         }
-        Boolean contain = false;
+        Boolean containProcedure = false;
+        Boolean containTable = false;
 
         VelocityEngine velocityEngine = getVelocityEngine();
         velocityEngine.init();
@@ -53,7 +54,9 @@ public class Main
         }
         context.put("columns", columns);
         context.put("procedures",procName);
-        context.put("contain",contain);
+        context.put("containProcedure",containProcedure);
+        context.put("containTable",containTable);
+        context.put("tables",tableName);
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
@@ -78,8 +81,8 @@ public class Main
     private static Entity generateEntity()
     {
         Entity entity = new Entity();
-        entity.setId("ProcN");
-        entity.setTableName("Table_Name");
+        entity.setId("PrcN");
+        entity.setTableName("Table_Nam");
 
         Field firstField = new Field();
         firstField.setColumnName("First_Column");
@@ -87,7 +90,7 @@ public class Main
 
         Field secondField = new Field();
         secondField.setColumnName("Second_Column");
-        secondField.setType("varchar");
+        secondField.setType("int");
 
         Set<Field>fields = new HashSet<Field>();
         fields.add(firstField);
