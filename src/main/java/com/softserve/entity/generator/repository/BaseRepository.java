@@ -6,5 +6,4 @@ public interface BaseRepository<T> {
     void deleteById(String id);
     void upsert(T entity);
     T findById(String id);
-
 }

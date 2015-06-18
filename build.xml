@@ -53,7 +53,6 @@
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${classes.dir}"/>
-        <mkdir dir="${lib.dir}"/>
     </target>
 
     <target name="resolve">
@@ -62,6 +61,7 @@
 
     <target name="clean">
         <delete dir="${build.dir}"/>
+        <delete dir="${lib.dir}"/>
     </target>
 
 </project>
