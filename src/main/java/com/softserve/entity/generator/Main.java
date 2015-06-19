@@ -128,7 +128,6 @@ public class Main
         fields.add(firstField);
         fields.add(secondField);
         fields.add(thirdField);
-
         entity.setFields(fields);
 
         return entity;
