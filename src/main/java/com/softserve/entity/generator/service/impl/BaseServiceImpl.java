@@ -1,0 +1,41 @@
+package com.softserve.entity.generator.service.impl;
+
+import com.softserve.entity.generator.repository.BaseRepository;
+import com.softserve.entity.generator.service.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+@Service
+public class BaseServiceImpl<T> implements BaseService<T>
+{
+    @Autowired
+    private BaseRepository<T> baseRepository;
+
+
+    @Override
+    @Transactional
+    public void save(T entity)
+    {
+        baseRepository.save(entity);
+    }
+
+    @Override
+    public void delete(T entity)
+    {
+        baseRepository.delete(entity);
+    }
+
+    @Override
+    public T merge(T entity)
+    {
+        return baseRepository.merge(entity);
+    }
+
+    @Override
+    public T findById(String id)
+    {
+        return baseRepository.findById(id);
+    }
+}

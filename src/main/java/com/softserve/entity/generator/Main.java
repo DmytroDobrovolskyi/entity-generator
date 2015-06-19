@@ -2,10 +2,12 @@ package com.softserve.entity.generator;
 
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
+import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,9 @@ public class Main
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private EntityService entityService;
 
     public static void main(String[] args)
     {
