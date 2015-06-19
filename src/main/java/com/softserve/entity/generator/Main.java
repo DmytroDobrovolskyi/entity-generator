@@ -1,7 +1,6 @@
 package com.softserve.entity.generator;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
@@ -16,8 +15,7 @@ public class Main
 {
     private static final Logger logger = Logger.getLogger(Main.class);
 
-    @PersistenceContext(unitName = "main")
-    @Qualifier(value = "mainEntityManagerFactory")
+    @PersistenceContext
     private EntityManager entityManager;
 
     public static void main(String[] args)

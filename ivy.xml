@@ -25,8 +25,6 @@
                     conf="compile->default"/>
         <dependency org="org.springframework" name="spring-context" rev="4.1.6.RELEASE"
                     conf="compile->default"/>
-        <dependency org="mysql" name="mysql-connector-java" rev="5.1.6"
-                    conf="compile->default"/>
     </dependencies>
 
 </ivy-module>
