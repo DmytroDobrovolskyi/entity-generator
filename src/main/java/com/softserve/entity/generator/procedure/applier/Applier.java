@@ -37,15 +37,13 @@ public class Applier
 
         for (Field field : entity.getFields())
         {
-            columns.put(field.getColumnName(),  field.getType());
+            columns.put(field.getColumnName(),field.getType());
         }
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
-
         String sqlQuery = writer.toString();
-        System.out.println(writer.toString());
-
+        logger.info(sqlQuery);
         entityManager.createNativeQuery(sqlQuery).executeUpdate();
         entityManager.close();
     }
