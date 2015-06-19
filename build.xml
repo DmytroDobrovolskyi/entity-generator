@@ -3,7 +3,7 @@
 
     <property file="build.properties"/>
 
-    <target name="run" depends="pack">
+    <target name="run" depends="install">
         <java classname="com.softserve.entity.generator.Main">
             <classpath>
                 <fileset dir="${build.dir}">
@@ -17,7 +17,7 @@
         </java>
     </target>
 
-    <target name="pack" depends="compile">
+    <target name="install" depends="compile">
         <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="com.softserve.entity.generator.Main"/>
