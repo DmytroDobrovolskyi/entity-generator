@@ -3,7 +3,7 @@
 
     <property file="build.properties"/>
 
-    <target name="run">
+    <target name="run" depends="pack">
         <java classname="com.softserve.entity.generator.Main">
             <classpath>
                 <fileset dir="${build.dir}">

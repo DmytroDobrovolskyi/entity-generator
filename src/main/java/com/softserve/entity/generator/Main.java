@@ -30,53 +30,51 @@ public class Main
         ApplicationContext context = new ClassPathXmlApplicationContext
                 ("spring/ApplicationContext.xml");
         Main main = context.getBean(Main.class);
-        main.test();
+        main.createTable(main.generateEntity());
     }
 
-
     @Transactional
-    public void test()
-    {
-        createTable(generateEntity());
-        entityManager.close();
-}
-
-    @Transactional
-    private void createTable(Entity entity)
+    public void createTable(Entity entity)
     {
         List<String> tableName = new ArrayList<String>();
         logger.info(entityManager);
-        Query tableQuery = entityManager.createNativeQuery("SELECT cast(name as varchar) FROM sys.tables");
+        Query tableQuery = entityManager.createNativeQuery(
+                "SELECT cast(name as varchar) FROM sys.tables"
+        );
+
         for (Object table : tableQuery.getResultList())
         {
             tableName.add((String) table);
         }
 
-        List<String> procName = new ArrayList<String>();
-        Query procQuery = entityManager.createNativeQuery(" SELECT cast(name as varchar) FROM EntityGenerator.sys.procedures");
+        List<String> proceduresName = new ArrayList<String>();
+        Query procQuery = entityManager.createNativeQuery(
+                "SELECT cast(name as varchar) FROM EntityGenerator.sys.procedures"
+        );
+
         for (Object procedure : procQuery.getResultList())
         {
-            procName.add((String) procedure);
+            proceduresName.add((String) procedure);
         }
 
         VelocityEngine velocityEngine = getVelocityEngine();
         velocityEngine.init();
-        Template templateCreate = velocityEngine.getTemplate("entity.vm");
+        Template templateCreate = velocityEngine.getTemplate("ProcedureCreator.vm");
         VelocityContext context = new VelocityContext();
-        Map<String, String> columns = new HashMap<String, String>();
+        Map<String, String> columns = new TreeMap<String, String>();
 
         context.put("procedureName", entity.getId());
         context.put("tableName", entity.getTableName());
+        context.put("columns", columns);
+        context.put("procedures", proceduresName);
+        context.put("containProcedure", false);
+        context.put("containTable", false);
+        context.put("tables", tableName);
 
         for (Field field : entity.getFields())
         {
             columns.put(field.getColumnName(), field.getType());
         }
-        context.put("columns", columns);
-        context.put("procedures", procName);
-        context.put("containProcedure", false);
-        context.put("containTable", false);
-        context.put("tables", tableName);
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
@@ -100,7 +98,7 @@ public class Main
     private Entity generateEntity()
     {
         Entity entity = new Entity();
-        entity.setId("PrcN");
+        entity.setId("ProcedureNa");
         entity.setTableName("FIELD");
 
         Field firstField = new Field();
@@ -111,9 +109,14 @@ public class Main
         secondField.setColumnName("Second_Column");
         secondField.setType("int");
 
+        Field thirdField = new Field();
+        thirdField.setColumnName("Third_Column");
+        thirdField.setType("int");
+
         Set<Field> fields = new HashSet<Field>();
         fields.add(firstField);
         fields.add(secondField);
+        fields.add(thirdField);
 
         entity.setFields(fields);
 
