@@ -3,7 +3,7 @@
 
     <property file="build.properties"/>
 
-    <target name="run" depends="pack">
+    <target name="run">
         <java classname="com.softserve.entity.generator.Main">
             <classpath>
                 <fileset dir="${build.dir}">
@@ -18,7 +18,7 @@
     </target>
 
     <target name="init-db" depends="pack">
-        <java classname="com.softserve.entity.generator.TableCreator">
+        <java classname="com.softserve.entity.generator.DatabaseInitializer">
             <classpath>
                 <fileset dir="${build.dir}">
                     <include name="/*.jar"/>
@@ -61,7 +61,6 @@
 
     <target name="clean">
         <delete dir="${build.dir}"/>
-        <delete dir="${lib.dir}"/>
     </target>
 
 </project>

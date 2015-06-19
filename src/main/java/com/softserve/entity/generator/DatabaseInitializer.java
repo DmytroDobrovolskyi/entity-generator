@@ -5,34 +5,30 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 @Component
-public class Main
+public class DatabaseInitializer
 {
     private static final Logger logger = Logger.getLogger(Main.class);
 
-    @PersistenceContext(unitName = "main")
-    @Qualifier(value = "mainEntityManagerFactory")
+    @PersistenceContext(unitName = "init-db")
+    @Qualifier(value = "databaseInitializerEntityManagerFactory")
     private EntityManager entityManager;
 
     public static void main(String[] args)
     {
         ApplicationContext context = new ClassPathXmlApplicationContext
                 ("spring/ApplicationContext.xml");
-        Main main = context.getBean(Main.class);
-        main.test();
+        DatabaseInitializer initializer = context.getBean(DatabaseInitializer.class);
+        logger.info("Initialized database");
+        initializer.closeConnection();
     }
 
-    @Transactional
-    public void test()
+    public void closeConnection()
     {
-        Query query = entityManager.createNativeQuery("SELECT name FROM ENTITY");
-        logger.info(query.getResultList());
         entityManager.close();
     }
 }
