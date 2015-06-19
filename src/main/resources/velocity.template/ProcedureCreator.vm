@@ -1,29 +1,3 @@
-#foreach($procedure in $procedures)
-    #if($procedure!= $procedureName)
-    #else #set( $containProcedure = true)
-    #end
-#end
-
-#foreach($table in $tables)
-    #if($table!= $tableName)
-    #else #set( $containTable = true)
-    #end
-#end
-
-#if(!$containProcedure && !$containTable )
-CREATE PROCEDURE $procedureName
-AS
-CREATE TABLE [core_schema].$tableName(
-    #foreach($column in $columns.entrySet())
-        #if($foreach.index != $columns.size() - 1)
-            $column.key $column.value.concat(',')
-        #else
-            $column.key $column.value
-        #end
-    #end
-);
-
-#elseif($containProcedure && !$containTable)
 ALTER PROCEDURE $procedureName
 AS
 CREATE TABLE [core_schema].$tableName(
@@ -35,34 +9,3 @@ CREATE TABLE [core_schema].$tableName(
         #end
     #end
 );
-
-#elseif(!$containProcedure && $containTable)
-CREATE PROCEDURE $procedureName
-AS
-Drop Table [core_schema].$tableName;
-CREATE TABLE [core_schema].$tableName(
-#foreach($column in $columns.entrySet())
-    #if($foreach.index != $columns.size() - 1)
-        $column.key $column.value.concat(',')
-    #else
-        $column.key $column.value
-    #end
-#end
-);
-#else
-ALTER PROCEDURE $procedureName
-AS
-Drop Table [core_schema].$tableName;
-CREATE TABLE [core_schema].$tableName(
-    #foreach($column in $columns.entrySet())
-        #if($foreach.index != $columns.size() - 1)
-            $column.key $column.value.concat(',')
-        #else
-            $column.key $column.value
-        #end
-    #end
-);
-
-#end
-
-

@@ -6,13 +6,9 @@ import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.procedure.applier.Applier;
 import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -24,9 +20,6 @@ public class Main
 
     @Autowired
     private Applier applier;
-
-    @Autowired
-    private EntityService entityService;
 
     public static void main(String[] args)
     {
