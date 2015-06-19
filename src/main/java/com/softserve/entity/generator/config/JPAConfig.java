@@ -1,10 +1,7 @@
 package com.softserve.entity.generator.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -22,13 +19,15 @@ import java.util.Map;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.softserve.entity.generator")
 @PropertySource(value = "/WEB-INF/database.properties")
-public class JPAConfig {
+public class JPAConfig
+{
 
     @Autowired
     private Environment env;
 
     @Bean
-    public DriverManagerDataSource dataSource() {
+    public DriverManagerDataSource dataSource()
+    {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url"));
@@ -38,34 +37,34 @@ public class JPAConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean mainEntityManagerFactory(DriverManagerDataSource dataSource)
+    {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setPackagesToScan(env.getProperty("em.packagesToScan"));
         entityManagerFactoryBean.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setJpaPropertyMap(jpaProperties());
+        entityManagerFactoryBean.setJpaPropertyMap(mainJpaProperties());
         return entityManagerFactoryBean;
     }
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory,
-                                                         DriverManagerDataSource dataSource) {
+                                                         DriverManagerDataSource dataSource)
+    {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         transactionManager.setDataSource(dataSource);
         return transactionManager;
     }
 
-    private Map<String, String> jpaProperties() {
+    private Map<String, String> mainJpaProperties()
+    {
         Map<String, String> jpaProperties = new HashMap<String, String>();
         jpaProperties.put("hibernate.dialect", env.getProperty("hb.dialect"));
         jpaProperties.put("hibernate.connection.useUnicode", env.getProperty("hb.conn.useUnicode"));
         jpaProperties.put("hibernate.connection.characterEncoding", env.getProperty("hb.conn.characterEncoding"));
         jpaProperties.put("hibernate.show_sql", env.getProperty("hb.showSql"));
-
-        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hb.hbm2ddl.auto"));
-
         jpaProperties.put("hibernate.format_sql", env.getProperty("hb.formatSql"));
         jpaProperties.put("hibernate.use_sql_comments", env.getProperty("hb.sqlComment"));
         jpaProperties.put("hibernate.enable_lazy_load_no_trans", env.getProperty("hb.enableLazyLoadNoTrans"));

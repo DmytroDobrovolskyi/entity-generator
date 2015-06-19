@@ -23,12 +23,14 @@ public class BaseServiceImpl<T> implements BaseService<T>
     }
 
     @Override
+    @Transactional
     public void delete(T entity)
     {
         baseRepository.delete(entity);
     }
 
     @Override
+    @Transactional
     public T merge(T entity)
     {
         return baseRepository.merge(entity);
