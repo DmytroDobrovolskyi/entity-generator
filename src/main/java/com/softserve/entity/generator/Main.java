@@ -1,62 +1,82 @@
 package com.softserve.entity.generator;
 
-import com.softserve.entity.generator.config.EntityManagerConfigurator;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.StringWriter;
 import java.util.*;
 
+@Component
 public class Main
 {
     private static final Logger logger = Logger.getLogger(Main.class);
-    private static final EntityManager entityManager = EntityManagerConfigurator.getEntityManager();
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public static void main(String[] args)
     {
-              createTable(generateEntity());
+        ApplicationContext context = new ClassPathXmlApplicationContext
+                ("spring/ApplicationContext.xml");
+        Main main = context.getBean(Main.class);
+        main.test();
     }
 
-    private static void createTable(Entity entity)
+
+    @Transactional
+    public void test()
     {
-        List<String>tableName = new ArrayList<String>();
+        createTable(generateEntity());
+        entityManager.close();
+}
+
+    @Transactional
+    private void createTable(Entity entity)
+    {
+        List<String> tableName = new ArrayList<String>();
+        logger.info(entityManager);
         Query tableQuery = entityManager.createNativeQuery("SELECT cast(name as varchar) FROM sys.tables");
-        for(Object table:tableQuery.getResultList()){
-            tableName.add((String)table);
+        for (Object table : tableQuery.getResultList())
+        {
+            tableName.add((String) table);
         }
 
-        List<String>procName = new ArrayList<String>();
+        List<String> procName = new ArrayList<String>();
         Query procQuery = entityManager.createNativeQuery(" SELECT cast(name as varchar) FROM EntityGenerator.sys.procedures");
-        for(Object procedure:procQuery.getResultList()){
-            procName.add((String)procedure);
+        for (Object procedure : procQuery.getResultList())
+        {
+            procName.add((String) procedure);
         }
-        Boolean containProcedure = false;
-        Boolean containTable = false;
 
         VelocityEngine velocityEngine = getVelocityEngine();
         velocityEngine.init();
-        Template templateCreate = velocityEngine.getTemplate("Entity.vm");
+        Template templateCreate = velocityEngine.getTemplate("entity.vm");
         VelocityContext context = new VelocityContext();
         Map<String, String> columns = new HashMap<String, String>();
 
         context.put("procedureName", entity.getId());
         context.put("tableName", entity.getTableName());
 
-        for(Field field:entity.getFields())
+        for (Field field : entity.getFields())
         {
-            columns.put(field.getColumnName(),field.getType());
+            columns.put(field.getColumnName(), field.getType());
         }
         context.put("columns", columns);
-        context.put("procedures",procName);
-        context.put("containProcedure",containProcedure);
-        context.put("containTable",containTable);
-        context.put("tables",tableName);
+        context.put("procedures", procName);
+        context.put("containProcedure", false);
+        context.put("containTable", false);
+        context.put("tables", tableName);
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
@@ -64,13 +84,11 @@ public class Main
         String sqlQuery = writer.toString();
         System.out.println(writer.toString());
 
-        entityManager.getTransaction().begin();
         entityManager.createNativeQuery(sqlQuery).executeUpdate();
-        entityManager.getTransaction().commit();
-        EntityManagerConfigurator.closeSession();
+        entityManager.close();
     }
 
-    private static VelocityEngine getVelocityEngine()
+    private VelocityEngine getVelocityEngine()
     {
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.setProperty("resource.loader", "class");
@@ -78,7 +96,8 @@ public class Main
                 "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         return velocityEngine;
     }
-    private static Entity generateEntity()
+
+    private Entity generateEntity()
     {
         Entity entity = new Entity();
         entity.setId("PrcN");
@@ -92,7 +111,7 @@ public class Main
         secondField.setColumnName("Second_Column");
         secondField.setType("int");
 
-        Set<Field>fields = new HashSet<Field>();
+        Set<Field> fields = new HashSet<Field>();
         fields.add(firstField);
         fields.add(secondField);
 

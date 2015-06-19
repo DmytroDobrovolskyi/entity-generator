@@ -3,22 +3,8 @@
 
     <property file="build.properties"/>
 
-    <target name="run" depends="pack">
+    <target name="run">
         <java classname="com.softserve.entity.generator.Main">
-            <classpath>
-                <fileset dir="${build.dir}">
-                    <include name="/*.jar"/>
-                </fileset>
-
-                <fileset dir="${lib.dir}">
-                    <include name="/*.jar"/>
-                </fileset>
-            </classpath>
-        </java>
-    </target>
-
-    <target name="init-db" depends="pack">
-        <java classname="com.softserve.entity.generator.TableCreator">
             <classpath>
                 <fileset dir="${build.dir}">
                     <include name="/*.jar"/>
@@ -53,7 +39,6 @@
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${classes.dir}"/>
-        <mkdir dir="${lib.dir}"/>
     </target>
 
     <target name="resolve">
