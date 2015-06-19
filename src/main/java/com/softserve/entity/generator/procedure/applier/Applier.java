@@ -50,7 +50,7 @@ public class Applier
 
         VelocityEngine velocityEngine = getVelocityEngine();
         velocityEngine.init();
-        Template templateCreate = velocityEngine.getTemplate("ProcedureCreator.vm");
+        Template templateCreate = velocityEngine.getTemplate("velocity.template/ProcedureCreator.vm");
         VelocityContext context = new VelocityContext();
         Map<String, String> columns = new TreeMap<String, String>();
 
