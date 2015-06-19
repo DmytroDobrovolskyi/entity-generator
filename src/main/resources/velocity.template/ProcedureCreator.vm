@@ -1,6 +1,6 @@
 ALTER PROCEDURE $procedureName
 AS
-CREATE TABLE [core_schema].$tableName(
+CREATE TABLE [core_schema].$entity.getTableName()(
     #foreach($column in $columns.entrySet())
         #if($foreach.index != $columns.size() - 1)
             $column.key $column.value.concat(',')

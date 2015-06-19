@@ -30,15 +30,14 @@ public class Applier
         Template templateCreate = velocityEngine.getTemplate("velocity.template/ProcedureCreator.vm");
         VelocityContext context = new VelocityContext();
         Map<String, String> columns = new TreeMap<String, String>();
-
-        context.put("procedureName", "myProcedure");
-        context.put("tableName", entity.getTableName());
-        context.put("columns", columns);
-
         for (Field field : entity.getFields())
         {
             columns.put(field.getColumnName(),field.getType());
         }
+
+        context.put("procedureName", "myProcedure");
+        context.put("entity",entity);
+        context.put("columns", columns);
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
