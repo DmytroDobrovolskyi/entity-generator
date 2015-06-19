@@ -9,3 +9,4 @@ CREATE TABLE [core_schema].$entity.getTableName()(
         #end
     #end
 );
+
