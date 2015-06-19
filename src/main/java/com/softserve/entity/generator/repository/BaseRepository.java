@@ -1,10 +1,15 @@
 package com.softserve.entity.generator.repository;
 
-public interface BaseRepository<T> {
-    void save(T entity);
-    void delete(T entity);
-    void deleteById(String id);
-    void upsert(T entity);
-    T findById(String id);
+import org.springframework.stereotype.Repository;
 
+@Repository
+public interface BaseRepository<T>
+{
+    void save(T entity);
+
+    void delete(T entity);
+
+    T merge(T entity);
+
+    T findById(String id);
 }
