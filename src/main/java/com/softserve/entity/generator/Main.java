@@ -35,7 +35,13 @@ public class Main
         ApplicationContext context = new ClassPathXmlApplicationContext
                 ("spring/ApplicationContext.xml");
         Main main = context.getBean(Main.class);
-        main.createTable(main.generateEntity());
+        main.test();
+    }
+
+    public void test()
+    {
+        Entity entity = entityService.findById("1");
+        logger.info(entity.getName());
     }
 
     @Transactional

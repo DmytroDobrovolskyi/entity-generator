@@ -9,12 +9,14 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class BaseRepositoryImpl<T> implements BaseRepository<T>
 {
-    private final Class<T> entityClass;
+    private Class<T> entityClass;
 
     public BaseRepositoryImpl(Class<T> entityClass)
     {
         this.entityClass = entityClass;
     }
+
+    protected BaseRepositoryImpl() {}
 
     @PersistenceContext
     private EntityManager entityManager;
