@@ -29,22 +29,15 @@ public class Applier
         velocityEngine.init();
         Template templateCreate = velocityEngine.getTemplate("velocity.template/ProcedureCreator.vm");
         VelocityContext context = new VelocityContext();
-        Map<String, String> columns = new TreeMap<String, String>();
-        for (Field field : entity.getFields())
-        {
-            columns.put(field.getColumnName(),field.getType());
-        }
 
         context.put("procedureName", "myProcedure");
-        context.put("entity",entity);
-        context.put("columns", columns);
+        context.put("entity", entity);
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
         String sqlQuery = writer.toString();
         logger.info(sqlQuery);
         entityManager.createNativeQuery(sqlQuery).executeUpdate();
-        entityManager.close();
     }
 
     private VelocityEngine getVelocityEngine()
@@ -55,6 +48,4 @@ public class Applier
                 "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         return velocityEngine;
     }
-
-
 }

@@ -1,12 +1,11 @@
 ALTER PROCEDURE $procedureName
 AS
 CREATE TABLE [core_schema].$entity.getTableName()(
-    #foreach($column in $columns.entrySet())
-        #if($foreach.index != $columns.size() - 1)
-            $column.key $column.value.concat(',')
-        #else
-            $column.key $column.value
-        #end
+#foreach($field in $entity.getFields())
+    #if($foreach.index != $entity.getFields().size() - 1)
+        $field.getColumnName() $field.getType().concat(',')
+    #else
+        $field.getColumnName() $field.getType()
     #end
+#end
 );
-
