@@ -78,7 +78,6 @@
         <delete dir="${build.dir}"/>
         <delete>
             <fileset dir=".">
-                <include name="*.txt"/>
                 <include name="*.log"/>
             </fileset>
         </delete>

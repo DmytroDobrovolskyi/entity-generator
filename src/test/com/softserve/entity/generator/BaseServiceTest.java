@@ -75,6 +75,7 @@ public class BaseServiceTest
 
         assertThat(baseRepository.findById(id), equalTo(entity));
 
+        verify(baseRepository).findById(id);
     }
 
     @Test
@@ -85,5 +86,7 @@ public class BaseServiceTest
                 .thenReturn(resultList);
 
         assertThat(baseRepository.findAll(), equalTo(resultList));
+
+        verify(baseRepository).findAll();
     }
 }
