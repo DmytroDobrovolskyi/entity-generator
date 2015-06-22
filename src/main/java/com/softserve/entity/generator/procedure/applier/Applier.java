@@ -29,10 +29,8 @@ public class Applier
         velocityEngine.init();
         Template templateCreate = velocityEngine.getTemplate("velocity.template/ProcedureCreator.vm");
         VelocityContext context = new VelocityContext();
-
-        context.put("procedureName", "myProcedure");
+        context.put("procedureName", "myProced");
         context.put("entity", entity);
-
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
         String sqlQuery = writer.toString();

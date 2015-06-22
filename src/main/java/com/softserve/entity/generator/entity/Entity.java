@@ -7,7 +7,6 @@ import java.util.Set;
 @Table(name = "ENTITY")
 public class Entity
 {
-
     @Id
     @Column(name = "Table_Name")
     private String tableName;
