@@ -34,7 +34,7 @@ public class Main
 
     public void testConfig()
     {
-        entityService.save(new Entity("2", "Any"));
+        entityService.save(new Entity("9", "Any"));
     }
 
     public void testApplier()

@@ -1,10 +1,8 @@
 package com.softserve.entity.generator.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional
 public interface BaseRepository<T>
 {
     void save(T entity);
