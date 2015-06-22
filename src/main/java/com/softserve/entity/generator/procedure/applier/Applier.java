@@ -1,7 +1,6 @@
 package com.softserve.entity.generator.procedure.applier;
 
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.entity.Field;
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.StringWriter;
-import java.util.*;
 
 @Service
 public class Applier

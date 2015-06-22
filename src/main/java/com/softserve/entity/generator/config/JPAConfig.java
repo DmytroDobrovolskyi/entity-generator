@@ -59,13 +59,15 @@ public class JPAConfig
         return transactionManager;
     }
 
-    public  Map<String, String> jpaProperties()
+    public Map<String, String> jpaProperties()
     {
         Map<String, String> jpaProperties = new HashMap<String, String>();
         jpaProperties.put("hibernate.dialect", env.getProperty("hb.dialect"));
         jpaProperties.put("hibernate.show_sql", env.getProperty("hb.showSql"));
         jpaProperties.put("hibernate.format_sql", env.getProperty("hb.formatSql"));
         jpaProperties.put("hibernate.use_sql_comments", env.getProperty("hb.sqlComment"));
+        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hb.hbm2ddl.auto"));
+        jpaProperties.put("hibernate.default_schema", env.getProperty("hb.defaultSchema"));
 
         return jpaProperties;
     }

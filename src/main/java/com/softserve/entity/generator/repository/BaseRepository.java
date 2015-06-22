@@ -1,10 +1,10 @@
 package com.softserve.entity.generator.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
-@Transactional
 public interface BaseRepository<T>
 {
     void save(T entity);
@@ -14,4 +14,6 @@ public interface BaseRepository<T>
     T merge(T entity);
 
     T findById(String id);
+
+    List<T> findAll();
 }

@@ -3,21 +3,20 @@
 
     <property file="build.properties"/>
 
-    <target name="run">
+    <target name="run" depends="install">
         <java classname="com.softserve.entity.generator.Main">
-            <classpath>
-                <fileset dir="${build.dir}">
-                    <include name="/*.jar"/>
-                </fileset>
 
-                <fileset dir="${lib.dir}">
-                    <include name="/*.jar"/>
-                </fileset>
+            <classpath refid="runtime.path"/>
+
+            <classpath>
+                <pathelement location="${main.classes.dir}"/>
+                <pathelement location="${resources.dir}"/>
+                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
             </classpath>
         </java>
     </target>
 
-    <target name="install" depends="compile">
+    <target name="install" depends="test">
         <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="com.softserve.entity.generator.Main"/>
@@ -26,25 +25,63 @@
         </jar>
     </target>
 
+    <target name="test" depends="compile">
+
+        <junit printsummary="yes" haltonfailure="true">
+
+            <classpath refid="test.path"/>
+
+            <classpath>
+                <pathelement location="${test.classes.dir}"/>
+                <pathelement location="${main.classes.dir}"/>
+                <pathelement location="${resources.dir}"/>
+                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
+            </classpath>
+
+            <formatter type="plain" usefile="false"/>
+
+            <batchtest fork="yes">
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+
+        </junit>
+    </target>
+
     <target name="compile" depends="init, resolve">
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" classpathref="compile.path"/>
+        <javac srcdir="${main.src.dir}" destdir="${main.classes.dir}" includeantruntime="false">
+            <classpath refid="compile.path"/>
+        </javac>
+
+        <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" includeantruntime="false">
+            <classpath refid="test.path"/>
+            <classpath path="${main.classes.dir}"/>
+        </javac>
     </target>
 
     <target name="init">
         <mkdir dir="${build.dir}"/>
-        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${main.classes.dir}"/>
+        <mkdir dir="${test.classes.dir}"/>
     </target>
 
     <target name="resolve">
-        <ivy:retrieve/>
+        <ivy:retrieve pattern="lib/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
 
         <ivy:cachepath pathid="compile.path" conf="compile"/>
         <ivy:cachepath pathid="runtime.path" conf="runtime"/>
-        <ivy:cachepath pathid="test.path"    conf="test"/>
+        <ivy:cachepath pathid="test.path" conf="test"/>
     </target>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
+        <delete>
+            <fileset dir=".">
+                <include name="*.txt"/>
+                <include name="*.log"/>
+            </fileset>
+        </delete>
     </target>
 
 </project>

@@ -35,7 +35,7 @@ public class Main
 
     public void testConfig()
     {
-        entityService.save(new Entity("2", "Any"));
+        entityService.merge(new Entity("11", "Any"));
     }
 
     public void testApplier()
