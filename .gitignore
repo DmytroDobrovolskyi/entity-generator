@@ -4,5 +4,8 @@
 *.iml
 .settings/
 target/
+out/
 *.jar
+out/
 !sqljdbc4-4.0.jar
+*.log

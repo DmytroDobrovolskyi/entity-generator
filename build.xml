@@ -17,7 +17,7 @@
         </java>
     </target>
 
-    <target name="pack" depends="compile">
+    <target name="install" depends="compile">
         <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="com.softserve.entity.generator.Main"/>
@@ -27,13 +27,7 @@
     </target>
 
     <target name="compile" depends="init, resolve">
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
-            <classpath>
-                <fileset dir="${lib.dir}">
-                    <include name="/*.jar"/>
-                </fileset>
-            </classpath>
-        </javac>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" classpathref="compile.path"/>
     </target>
 
     <target name="init">
@@ -43,6 +37,10 @@
 
     <target name="resolve">
         <ivy:retrieve/>
+
+        <ivy:cachepath pathid="compile.path" conf="compile"/>
+        <ivy:cachepath pathid="runtime.path" conf="runtime"/>
+        <ivy:cachepath pathid="test.path"    conf="test"/>
     </target>
 
     <target name="clean">
