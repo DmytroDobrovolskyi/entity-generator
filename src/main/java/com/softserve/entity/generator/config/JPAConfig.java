@@ -67,6 +67,7 @@ public class JPAConfig
         jpaProperties.put("hibernate.format_sql", env.getProperty("hb.formatSql"));
         jpaProperties.put("hibernate.use_sql_comments", env.getProperty("hb.sqlComment"));
         jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hb.hbm2ddl.auto"));
+        jpaProperties.put("hibernate.default_schema", env.getProperty("hb.default_schema"));
 
         return jpaProperties;
     }
