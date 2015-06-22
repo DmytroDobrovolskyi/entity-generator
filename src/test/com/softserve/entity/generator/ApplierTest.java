@@ -4,8 +4,6 @@ import com.softserve.entity.generator.config.JPAConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.procedure.applier.Applier;
-import org.apache.velocity.Template;
-import org.apache.velocity.app.VelocityEngine;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +11,6 @@ import org.mockito.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +23,7 @@ public class ApplierTest {
     @Mock
     private Applier applier;
 
-    private Entity entity = new Entity("XXX", "XXX");
+    private Entity entity = new Entity("","");
 
     @Before
     public void setUp() {
