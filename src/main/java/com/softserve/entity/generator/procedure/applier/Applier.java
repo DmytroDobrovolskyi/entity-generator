@@ -27,14 +27,15 @@ public class Applier
         velocityEngine.init();
         Template templateCreate = velocityEngine.getTemplate("velocity.template/ProcedureCreator.vm");
         VelocityContext context = new VelocityContext();
-        context.put("procedureName", "myProced");
+        String procedureName = "myProcedure";
+        context.put("procedureName", procedureName);
         context.put("entity", entity);
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
         String sqlQuery = writer.toString();
         logger.info(sqlQuery);
         entityManager.createNativeQuery(sqlQuery).executeUpdate();
-        entityManager.createNativeQuery("EXEC myProced").executeUpdate();
+        entityManager.createNativeQuery("EXEC "+procedureName).executeUpdate();
     }
 
     private VelocityEngine getVelocityEngine()

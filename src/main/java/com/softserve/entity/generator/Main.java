@@ -46,7 +46,7 @@ public class Main
     private Entity generateEntity()
     {
         Entity entity = new Entity("XXX", "XXX");
-        entity.setTableName("DIMASCALA");
+        entity.setTableName("NEWTABLE");
 
         Field firstField = new Field();
         firstField.setColumnName("First_Column");
