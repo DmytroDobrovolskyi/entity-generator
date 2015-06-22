@@ -36,7 +36,7 @@ public class BaseServiceTest
     public void test()
     {
         Entity entity = new Entity("1", "Any");
-        baseService.save(entity);
-        Mockito.verify(baseRepository).save(entity);
+        baseService.merge(entity);
+        Mockito.verify(baseRepository).merge(entity);
     }
 }
