@@ -15,7 +15,7 @@ public class Entity
     @Column(name = "Name")
     private String name;
 
-    @OneToMany(cascade = {CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "Entity_Id")
     private Set<Field> fields;
 

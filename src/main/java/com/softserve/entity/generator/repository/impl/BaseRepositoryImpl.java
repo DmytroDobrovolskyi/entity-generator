@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public class BaseRepositoryImpl<T> implements BaseRepository<T>
@@ -47,5 +48,13 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T>
     public T findById(String id)
     {
         return entityManager.find(entityClass, id);
+    }
+
+    @Override
+    public List<T> findAll()
+    {
+        return entityManager
+                .createQuery("SELECT FROM " + entityClass.getSimpleName(), entityClass)
+                .getResultList();
     }
 }

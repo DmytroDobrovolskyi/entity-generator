@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BaseServiceImpl<T> implements BaseService<T>
 {
@@ -35,5 +37,11 @@ public class BaseServiceImpl<T> implements BaseService<T>
     public T findById(String id)
     {
         return baseRepository.findById(id);
+    }
+
+    @Override
+    public List<T> findAll()
+    {
+        return baseRepository.findAll();
     }
 }

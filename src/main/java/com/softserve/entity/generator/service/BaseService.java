@@ -2,6 +2,8 @@ package com.softserve.entity.generator.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface BaseService<T>
 {
@@ -12,4 +14,6 @@ public interface BaseService<T>
     T merge(T entity);
 
     T findById(String id);
+
+    List<T> findAll();
 }
