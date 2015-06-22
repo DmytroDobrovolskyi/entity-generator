@@ -43,11 +43,6 @@
         <dependency org="junit" name="junit" rev="4.12"
                     conf="test->default;sources;javadoc"/>
 
-        <dependency org="org.springframework" name="spring-aspects" rev="4.1.6.RELEASE"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="org.aspectj" name="aspectjweaver" rev="1.8.6"
-                    conf="compile->default;sources;javadoc"/>
     </dependencies>
 
 </ivy-module>
