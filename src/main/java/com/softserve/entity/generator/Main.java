@@ -29,7 +29,6 @@ public class Main
     {
         ApplicationContext context = new AnnotationConfigApplicationContext(JPAConfig.class);
         Main main = context.getBean(Main.class);
-        main.testApplier();
         main.testConfig();
     }
 
