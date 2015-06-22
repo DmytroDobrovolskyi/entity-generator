@@ -5,49 +5,49 @@
         <conf name="compile" description="Compile classpath"/>
         <conf name="runtime" description="Runtime classpath" extends="compile"/>
         <conf name="test" description="Test classpath" extends="runtime"/>
-        <conf name="sources"/>
-        <conf name="javadoc"/>
+        <conf name="sources" description="Source code"/>
+        <conf name="javadoc" description="Javadocs"/>
     </configurations>
 
     <dependencies>
         <dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.1-api" rev="1.0.0.Final"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.3.10.Final"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.12"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.apache.commons" name="commons-lang3" rev="3.4"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.apache.velocity" name="velocity" rev="1.7"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.springframework" name="spring-core" rev="4.1.6.RELEASE"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.springframework" name="spring-orm" rev="4.1.6.RELEASE"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.springframework" name="spring-context" rev="4.1.6.RELEASE"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.mockito" name="mockito-core" rev="1.10.19"
-                    conf="javadoc -> javadoc; sources -> sources; test-> default"/>
+                    conf="test->default;sources;javadoc"/>
 
         <dependency org="org.springframework" name="spring-test" rev="4.1.6.RELEASE"
-                    conf="javadoc -> javadoc; sources -> sources; test-> default"/>
+                    conf="test->default;sources;javadoc"/>
 
         <dependency org="junit" name="junit" rev="4.12"
-                    conf="javadoc -> javadoc; sources -> sources; test-> default"/>
+                    conf="test->default;sources;javadoc"/>
 
         <dependency org="org.springframework" name="spring-aspects" rev="4.1.6.RELEASE"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.aspectj" name="aspectjweaver" rev="1.8.6"
-                    conf="javadoc -> javadoc; sources -> sources; compile-> default"/>
+                    conf="compile->default;sources;javadoc"/>
     </dependencies>
 
 </ivy-module>

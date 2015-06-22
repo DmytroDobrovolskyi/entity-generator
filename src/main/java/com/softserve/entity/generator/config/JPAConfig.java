@@ -1,7 +1,10 @@
 package com.softserve.entity.generator.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -10,14 +13,12 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableAspectJAutoProxy(proxyTargetClass = true)
-@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+@EnableTransactionManagement
 @ComponentScan(basePackages = "com.softserve.entity.generator")
 @PropertySource(value = "/WEB-INF/database.properties")
 public class JPAConfig
@@ -58,14 +59,6 @@ public class JPAConfig
         return transactionManager;
     }
 
-    @Bean
-    public AnnotationTransactionAspect transactionAspect()
-    {
-        AnnotationTransactionAspect transactionAspect = new AnnotationTransactionAspect();
-        transactionAspect.setTransactionManager(transactionManager());
-        return transactionAspect;
-    }
-
     public Map<String, String> jpaProperties()
     {
         Map<String, String> jpaProperties = new HashMap<String, String>();
@@ -73,6 +66,7 @@ public class JPAConfig
         jpaProperties.put("hibernate.show_sql", env.getProperty("hb.showSql"));
         jpaProperties.put("hibernate.format_sql", env.getProperty("hb.formatSql"));
         jpaProperties.put("hibernate.use_sql_comments", env.getProperty("hb.sqlComment"));
+        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hb.hbm2ddl.auto"));
 
         return jpaProperties;
     }

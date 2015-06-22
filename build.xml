@@ -36,7 +36,7 @@
     </target>
 
     <target name="resolve">
-        <ivy:retrieve/>
+        <ivy:retrieve pattern="lib/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
 
         <ivy:cachepath pathid="compile.path" conf="compile"/>
         <ivy:cachepath pathid="runtime.path" conf="runtime"/>
