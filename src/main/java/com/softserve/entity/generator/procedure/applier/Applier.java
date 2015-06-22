@@ -34,6 +34,7 @@ public class Applier
         String sqlQuery = writer.toString();
         logger.info(sqlQuery);
         entityManager.createNativeQuery(sqlQuery).executeUpdate();
+        entityManager.createNativeQuery("EXEC myProced").executeUpdate();
     }
 
     private VelocityEngine getVelocityEngine()
