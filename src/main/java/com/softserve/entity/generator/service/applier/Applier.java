@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.procedure.applier;
+package com.softserve.entity.generator.service.applier;
 
 import com.softserve.entity.generator.entity.Entity;
 import org.apache.log4j.Logger;

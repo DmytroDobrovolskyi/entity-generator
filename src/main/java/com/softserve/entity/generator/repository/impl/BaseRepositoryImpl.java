@@ -12,15 +12,15 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T>
 {
     private Class<T> entityClass;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public BaseRepositoryImpl(Class<T> entityClass)
     {
         this.entityClass = entityClass;
     }
 
     protected BaseRepositoryImpl() {}
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     public void save(T entity)

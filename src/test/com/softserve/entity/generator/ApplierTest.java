@@ -1,13 +1,15 @@
 package com.softserve.entity.generator;
 
-import com.softserve.entity.generator.config.JPAConfig;
+import com.softserve.entity.generator.config.MockConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
-import com.softserve.entity.generator.procedure.applier.Applier;
+import com.softserve.entity.generator.service.applier.Applier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -17,9 +19,10 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
-@ContextConfiguration(classes = JPAConfig.class)
+@ContextConfiguration(classes = MockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ApplierTest {
+
     @Mock
     private Applier applier;
 

@@ -21,14 +21,10 @@ import java.util.Map;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.softserve.entity.generator")
 @PropertySource(value = "/WEB-INF/database.properties")
-public class JPAConfig
+public class JpaConfig
 {
-
     @Autowired
     private Environment env;
-
-
-
 
     @Bean
     public DriverManagerDataSource dataSource()

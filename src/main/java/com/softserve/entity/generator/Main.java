@@ -1,9 +1,9 @@
 package com.softserve.entity.generator;
 
-import com.softserve.entity.generator.config.JPAConfig;
+import com.softserve.entity.generator.config.JpaConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
-import com.softserve.entity.generator.procedure.applier.Applier;
+import com.softserve.entity.generator.service.applier.Applier;
 import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        ApplicationContext context = new AnnotationConfigApplicationContext(JPAConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
         Main main = context.getBean(Main.class);
         main.testConfig();
     }

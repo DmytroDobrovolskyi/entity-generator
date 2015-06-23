@@ -14,38 +14,40 @@ public class BaseServiceImpl<T> implements BaseService<T>
 {
     @Autowired
     @Qualifier(value = "baseRepositoryImpl")
-    private BaseRepository<T> baseRepository;
+    private BaseRepository<T> repository;
+
+    protected BaseServiceImpl(){}
 
     @Override
     @Transactional
     public void save(T entity)
     {
-        baseRepository.save(entity);
+        repository.save(entity);
     }
 
     @Override
     @Transactional
     public void delete(T entity)
     {
-        baseRepository.delete(entity);
+        repository.delete(entity);
     }
 
     @Override
     @Transactional
     public T merge(T entity)
     {
-        return baseRepository.merge(entity);
+        return repository.merge(entity);
     }
 
     @Override
     public T findById(String id)
     {
-        return baseRepository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
     public List<T> findAll()
     {
-        return baseRepository.findAll();
+        return repository.findAll();
     }
 }
