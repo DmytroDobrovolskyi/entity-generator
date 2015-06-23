@@ -2,8 +2,9 @@ package com.softserve.entity.generator;
 
 import com.softserve.entity.generator.config.JPAConfig;
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.repository.BaseRepository;
+import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.BaseService;
+import com.softserve.entity.generator.service.EntityService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -26,14 +28,14 @@ import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = JPAConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class BaseServiceTest
+public class EntityServiceTest
 {
     @Mock
-    private BaseRepository<Entity> baseRepository;
+    private EntityRepository repository;
 
     @Autowired
     @InjectMocks
-    private BaseService<Entity> baseService;
+    private EntityService service;
 
     @Before
     public void setUp()
@@ -45,24 +47,24 @@ public class BaseServiceTest
     public void testSave()
     {
         Entity entity = new Entity(randomUUID().toString(), "Any");
-        baseService.save(entity);
-        verify(baseRepository).save(entity);
+        repository.save(entity);
+        verify(repository).save(entity);
     }
 
     @Test
     public void testMerge()
     {
         Entity entity = new Entity(randomUUID().toString(), "Any");
-        baseService.merge(entity);
-        verify(baseRepository).merge(entity);
+        repository.merge(entity);
+        verify(repository).merge(entity);
     }
 
     @Test
     public void testDelete()
     {
         Entity entity = new Entity(randomUUID().toString(), "Any");
-        baseService.delete(entity);
-        verify(baseRepository).delete(entity);
+        repository.delete(entity);
+        verify(repository).delete(entity);
     }
 
     @Test
@@ -70,23 +72,23 @@ public class BaseServiceTest
     {
         String id = randomUUID().toString();
         Entity entity = new Entity(id, "Any");
-        when(baseRepository.findById(id))
+        when(repository.findById(id))
                 .thenReturn(entity);
 
-        assertThat(baseRepository.findById(id), equalTo(entity));
+        assertThat(repository.findById(id), equalTo(entity));
 
-        verify(baseRepository).findById(id);
+        verify(repository).findById(id);
     }
 
     @Test
     public void testFindAll()
     {
         List<Entity> resultList = new ArrayList<Entity>();
-        when(baseRepository.findAll())
+        when(repository.findAll())
                 .thenReturn(resultList);
 
-        assertThat(baseRepository.findAll(), equalTo(resultList));
+        assertThat(repository.findAll(), equalTo(resultList));
 
-        verify(baseRepository).findAll();
+        verify(repository).findAll();
     }
 }
