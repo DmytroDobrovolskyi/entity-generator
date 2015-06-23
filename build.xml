@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" name="entity-generator" default="run">
 
-    <property file="properties/build.properties"/>
-    <property file="properties/salesforce.credentials.properties"/>
+    <property file="build.properties"/>
+    <property file="salesforce.credentials.properties"/>
     <property file="properties/salesforce.receive.credentials.properties"/>
 
     <target name="run" depends="install">
