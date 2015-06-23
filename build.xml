@@ -3,7 +3,6 @@
 
     <property file="build.properties"/>
     <property file="salesforce.credentials.properties"/>
-    <property file="properties/salesforce.receive.credentials.properties"/>
 
     <target name="run" depends="install">
         <java classname="com.softserve.entity.generator.Main">

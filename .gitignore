@@ -9,3 +9,4 @@ out/
 out/
 !lib/test/sqljdbc4-4.0.jar
 *.log
+salesforce.credentials.properties

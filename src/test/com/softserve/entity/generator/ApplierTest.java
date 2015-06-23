@@ -6,9 +6,9 @@ import com.softserve.entity.generator.service.applier.Applier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ApplierTest {
 
-    @Mock
+    @Autowired
     private Applier<Entity> applier;
 
     private final Entity entity = generateEntity();
@@ -36,6 +36,7 @@ public class ApplierTest {
         verify(applier).apply(entity);
     }
 
+    //TODO ???
     @Test
     public void testMethodOnException() {
         Mockito.doThrow(new RuntimeException())
