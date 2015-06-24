@@ -47,7 +47,11 @@ public class EntityApplier implements Applier<Entity>
         String sqlQuery = writer.toString();
         Query query = entityManager.createNativeQuery("SELECT cast(name as varchar) FROM sys.objects " +
                 "WHERE name ='" + PROCEDURE_NAME + "'");
-        entityManager.createNativeQuery("DROP PROCEDURE" + query.getResultList()).executeUpdate();
+        if (query.getResultList().size() != 0)
+        {
+            entityManager.createNativeQuery("DROP PROCEDURE" + query.getResultList()).executeUpdate();
+        }
+
         logger.info(sqlQuery);
         entityManager.createNativeQuery(sqlQuery).executeUpdate();
     }
