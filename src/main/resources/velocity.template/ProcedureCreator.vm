@@ -1,4 +1,4 @@
-ALTER PROCEDURE $procedureName
+CREATE PROCEDURE $procedureName
 AS
 CREATE TABLE [core_schema].$entity.getTableName()(
 #foreach($field in $entity.getFields())

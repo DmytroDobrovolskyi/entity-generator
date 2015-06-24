@@ -36,7 +36,6 @@ public class ApplierTest {
         verify(applier).apply(entity);
     }
 
-    //TODO ???
     @Test
     public void testMethodOnException() {
         Mockito.doThrow(new RuntimeException())

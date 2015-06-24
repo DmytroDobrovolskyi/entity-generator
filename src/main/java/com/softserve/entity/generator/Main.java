@@ -29,6 +29,7 @@ public class Main
         ApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
         Main main = context.getBean(Main.class);
         main.testConfig();
+        main.testApplier();
     }
 
     public void testConfig()
