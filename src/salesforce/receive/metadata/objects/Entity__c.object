@@ -52,13 +52,14 @@
     <enableReports>true</enableReports>
     <fields>
         <fullName>TableName__c</fullName>
+        <caseSensitive>true</caseSensitive>
         <externalId>true</externalId>
         <label>TableName</label>
         <length>25</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>false</unique>
+        <unique>true</unique>
     </fields>
     <label>Entity</label>
     <listViews>

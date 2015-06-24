@@ -31,6 +31,7 @@ public class BaseServiceTest
     @InjectMocks
     private BaseService<Entity> service;
 
+    @Qualifier("baseRepositoryMock")
     @Autowired
     private BaseRepository<Entity> repository;
 

@@ -11,7 +11,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 
 import static com.softserve.entity.generator.entity.util.EntityGenerator.generateEntity;
-import static java.util.UUID.randomUUID;
 
 @Component
 public class Main
@@ -34,7 +33,7 @@ public class Main
 
     public void testConfig()
     {
-        entityService.merge(new Entity(randomUUID().toString(), "Any"));
+        entityService.merge(new Entity("Any", "Any"));
     }
 
     public void testApplier()

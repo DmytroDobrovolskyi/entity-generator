@@ -1,10 +1,5 @@
 trigger InsertTableName on Entity__c(before insert)
 {
-    for(Entity__c e : Trigger.new)
-    {
-            e.TableName__c = e.Name.replaceAll('\\s','_')
-                    .replaceAll('\\W','')
-                    .replaceAll('\\d', '')
-                    .toUpperCase();
-    }
+    List<Entity__c>entities = Trigger.new;
+    EntityUtil.generateEntityTable(entities);
 }
