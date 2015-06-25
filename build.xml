@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" name="entity-generator" default="run">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" >
 
     <property file="build.properties"/>
-    <property file="salesforce.credentials.properties"/>
+    <property file="src/salesforce/resources/salesforce.credentials.properties"/>
+
+    <import file="src/salesforce/resources/salesforce.build.xml"/>
 
     <target name="run" depends="install">
         <java classname="com.softserve.entity.generator.Main">
@@ -111,7 +113,7 @@
     </target>
 
 
-    <target name="sf-receive">
+    <target name="sf-retrieve">
         <mkdir dir="${sf.metadata.dir}"/>
         <sf:retrieve username="${sf.src.username}"
                      password="${sf.src.password}"
@@ -122,6 +124,8 @@
     </target>
 
     <target name="sf-deploy">
+        <delete dir="${sf.metadata.dir}/layouts/FeedItem-Feed Item Layout.layout"/>
+        <delete dir="${sf.metadata.dir}layouts/SocialPost-Social Post Layout.layout"/>
         <sf:deploy username="${sf.dest.username}"
                    password="${sf.dest.password}"
                    serverurl="${sf.dest.serverurl}"

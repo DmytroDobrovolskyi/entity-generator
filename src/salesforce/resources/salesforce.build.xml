@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" name="entity-generator" default="run">
+    <target name="sf-purge" description="Purges an organization of most customizations and components">
+
+        <property file="salesforce.credentials.properties"/>
+
+        <delete dir="purge"/>
+        <mkdir dir="purge"/>
+
+        <echo file="purge/package.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+        <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+            <types><members>*</members><name>AccountCriteriaBasedSharingRule</name></types>
+            <types><members>*</members><name>AccountOwnerSharingRule</name></types>
+            <types><members>*</members><name>AccountSharingRules</name></types>
+            <types><members>*</members><name>AnalyticSnapshot</name></types>
+            <types><members>*</members><name>ApexClass</name></types>
+            <types><members>*</members><name>ApexComponent</name></types>
+            <types><members>*</members><name>ApexPage</name></types>
+            <types><members>*</members><name>ApexTrigger</name></types>
+            <types><members>*</members><name>ApexTriggerCoupling</name></types>
+            <types><members>*</members><name>AuthProvider</name></types>
+            <types><members>*</members><name>BusinessProcess</name></types>
+            <types><members>*</members><name>CallCenter</name></types>
+            <types><members>*</members><name>CampaignCriteriaBasedSharingRule</name></types>
+            <types><members>*</members><name>CampaignOwnerSharingRule</name></types>
+            <types><members>*</members><name>CampaignSharingRules</name></types>
+            <types><members>*</members><name>CaseCriteriaBasedSharingRule</name></types>
+            <types><members>*</members><name>CaseOwnerSharingRule</name></types>
+            <types><members>*</members><name>CaseSharingRules</name></types>
+            <types><members>*</members><name>CompactLayout</name></types>
+            <types><members>*</members><name>ConnectedApp</name></types>
+            <types><members>*</members><name>ContactCriteriaBasedSharingRule</name></types>
+            <types><members>*</members><name>ContactOwnerSharingRule</name></types>
+            <types><members>*</members><name>ContactSharingRules</name></types>
+            <types><members>*</members><name>CustomApplication</name></types>
+            <types><members>*</members><name>CustomApplicationComponent</name></types>
+            <types><members>*</members><name>CustomField</name></types>
+            <types><members>*</members><name>CustomLabel</name></types>
+            <types><members>*</members><name>CustomLabels</name></types>
+            <types><members>*</members><name>CustomObject</name></types>
+            <types><members>*</members><name>CustomObjectCriteriaBasedSharingRule</name></types>
+            <types><members>*</members><name>CustomObjectOwnerSharingRule</name></types>
+            <types><members>*</members><name>CustomObjectSharingRules</name></types>
+            <types><members>*</members><name>CustomObjectTranslation</name></types>
+            <types><members>*</members><name>CustomPageWebLink</name></types>
+            <types><members>*</members><name>CustomTab</name></types>
+            <types><members>*</members><name>Dashboard</name></types>
+            <types><members>*</members><name>DataCategoryGroup</name></types>
+            <types><members>*</members><name>Document</name></types>
+            <types><members>*</members><name>EmailTemplate</name></types>
+            <types><members>*</members><name>FieldSet</name></types>
+            <types><members>*</members><name>FlexiPage</name></types>
+            <types><members>*</members><name>Group</name></types>
+            <types><members>*</members><name>LeadCriteriaBasedSharingRule</name></types>
+            <types><members>*</members><name>LeadOwnerSharingRule</name></types>
+            <types><members>*</members><name>LeadSharingRules</name></types>
+            <types><members>*</members><name>Letterhead</name></types>
+            <types><members>*</members><name>ListView</name></types>
+            <types><members>*</members><name>NamedFilter</name></types>
+            <types><members>*</members><name>OpportunityCriteriaBasedSharingRule</name></types>
+            <types><members>*</members><name>OpportunityOwnerSharingRule</name></types>
+            <types><members>*</members><name>OpportunitySharingRules</name></types>
+            <types><members>*</members><name>RecordType</name></types>
+            <types><members>*</members><name>RemoteSiteSetting</name></types>
+            <types><members>*</members><name>Report</name></types>
+            <types><members>*</members><name>ReportType</name></types>
+            <types><members>*</members><name>SamlSsoConfig</name></types>
+            <types><members>*</members><name>Scontrol</name></types>
+            <types><members>*</members><name>SharingReason</name></types>
+            <types><members>*</members><name>StaticResource</name></types>
+            <types><members>*</members><name>ValidationRule</name></types>
+            <types><members>*</members><name>WebLink</name></types>
+            <types><members>*</members><name>Workflow</name></types>
+            <types><members>*</members><name>WorkflowAlert</name></types>
+            <types><members>*</members><name>WorkflowApex</name></types>
+            <types><members>*</members><name>WorkflowChatterPost</name></types>
+            <types><members>*</members><name>WorkflowFieldUpdate</name></types>
+            <types><members>*</members><name>WorkflowKnowledgePublish</name></types>
+            <types><members>*</members><name>WorkflowOutboundMessage</name></types>
+            <types><members>*</members><name>WorkflowQuickCreate</name></types>
+            <types><members>*</members><name>WorkflowRule</name></types>
+            <types><members>*</members><name>WorkflowSend</name></types>
+            <types><members>*</members><name>WorkflowTask</name></types>
+            <version>29.0</version>
+        </Package>
+    ]]></echo>
+
+        <sf:retrieve
+                username="${sf.dest.username}"
+                password="${sf.dest.password}"
+                serverurl="https://login.salesforce.com"
+                retrieveTarget="purge"
+                unpackaged="purge/package.xml"
+                pollWaitMillis="1000"/>
+
+        <delete file="purge/workflows/Question.workflow"/>
+        <delete file="purge/workflows/Reply.workflow"/>
+        <delete file="purge/workflows/SocialPersona.workflow"/>
+        <delete file="purge/workflows/SocialPost.workflow"/>
+
+        <replace file="purge/package.xml">
+            <replacetoken><![CDATA[</version>]]></replacetoken>
+            <replacevalue><![CDATA[</version><fullName>Purge</fullName>]]></replacevalue>
+        </replace>
+
+        <sf:deploy
+                username="${sf.dest.username}"
+                password="${sf.dest.password}"
+                serverurl="https://login.salesforce.com"
+                deployRoot="purge"
+                purgeOnDelete="true"
+                pollWaitMillis="1000"/>
+
+        <sf:retrieve
+                username="${sf.dest.username}"
+                password="${sf.dest.password}"
+                serverurl="https://login.salesforce.com"
+                retrieveTarget="purge"
+                packageNames="Purge"
+                pollWaitMillis="1000"/>
+
+        <delete includeEmptyDirs="true" dir="purge" includes="**/*" excludes="*.xml"/>
+        <copy file="purge/package.xml" tofile="purge/destructiveChanges.xml"/>
+        <echo file="purge/package.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+        <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+            <version>29.0</version>
+        </Package>
+    ]]></echo>
+
+        <sf:deploy
+                username="${sf.dest.username}"
+                password="${sf.dest.password}"
+                serverurl="https://login.salesforce.com"
+                deployRoot="purge"
+                purgeOnDelete="true"
+                pollWaitMillis="1000"/>
+
+        <delete dir="purge"/>
+    </target>
+</project>
