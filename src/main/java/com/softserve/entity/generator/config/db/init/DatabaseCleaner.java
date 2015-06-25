@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.softserve.entity.generator.config.db.init.DatabaseInitConfig.DATABASE_NAME;
+import static com.softserve.entity.generator.config.db.init.DatabaseInitializationConfig.DATABASE_NAME;
 
 @Component
 public class DatabaseCleaner
@@ -22,7 +22,7 @@ public class DatabaseCleaner
 
     public static void main(String[] args)
     {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseInitConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseInitializationConfig.class);
         DatabaseCleaner dbCleaner = context.getBean(DatabaseCleaner.class);
         dbCleaner.cleanDatabase();
     }

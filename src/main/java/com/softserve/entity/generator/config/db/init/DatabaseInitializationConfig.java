@@ -15,9 +15,9 @@ import java.sql.SQLException;
 @Configuration
 @PropertySource(value = "/WEB-INF/database.properties")
 @ComponentScan(basePackages = "com.softserve.entity.generator.config.db.init")
-public class DatabaseInitConfig
+public class DatabaseInitializationConfig
 {
-    private static final Logger logger = Logger.getLogger(DatabaseInitConfig.class);
+    private static final Logger logger = Logger.getLogger(DatabaseInitializationConfig.class);
 
     public static final String DATABASE_NAME = "EntityGenerator";
     public static final String SCHEMA_NAME = "core_schema";

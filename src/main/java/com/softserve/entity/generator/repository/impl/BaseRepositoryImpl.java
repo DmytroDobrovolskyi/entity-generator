@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.repository.impl;
 
 import com.softserve.entity.generator.repository.BaseRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Primary
 public class BaseRepositoryImpl<T> implements BaseRepository<T>
 {
     private Class<T> entityClass;

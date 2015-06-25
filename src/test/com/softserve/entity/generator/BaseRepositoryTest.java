@@ -9,20 +9,23 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
-import static org.mockito.Mockito.verify;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.any;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = MockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseRepositoryTest
 {
     @Autowired
-    @Qualifier("baseRepositoryImpl")
     @InjectMocks
     private BaseRepository<Entity> repository;
 
@@ -44,4 +47,45 @@ public class BaseRepositoryTest
         verify(entityManager).persist(entity);
     }
 
+    @Test
+    public void testMerge()
+    {
+        Entity entity = new Entity("testId", "testName");
+        repository.merge(entity);
+
+        verify(entityManager).merge(entity);
+    }
+
+    @Test
+    public void testDelete()
+    {
+        Entity entity = new Entity("testId", "testName");
+        repository.delete(entity);
+
+        verify(entityManager).remove(entity);
+    }
+
+    @Test
+    public void testFindById()
+    {
+        String id = "testId";
+        repository.findById(id);
+
+        verify(entityManager).find(Entity.class, id);
+    }
+
+    @Test
+    public void testFindAll()
+    {
+        Class<Entity> entityClass = Entity.class;
+        String query = "SELECT FROM " + entityClass.getSimpleName();
+
+        doReturn(mock(TypedQuery.class))
+                .when(entityManager)
+                .createQuery(query, entityClass);
+
+        assertThat(repository.findAll(), is(any(List.class)));
+
+        verify(entityManager).createQuery(query, entityClass);
+    }
 }

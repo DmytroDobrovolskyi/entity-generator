@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.softserve.entity.generator.config.db.init.DatabaseInitConfig.DATABASE_NAME;
+import static com.softserve.entity.generator.config.db.init.DatabaseInitializationConfig.DATABASE_NAME;
 
 @Component
 public class DatabaseInitializer
@@ -22,7 +22,7 @@ public class DatabaseInitializer
 
     public static void main(String[] args)
     {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseInitConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseInitializationConfig.class);
         DatabaseInitializer dbInitializer = context.getBean(DatabaseInitializer.class);
         dbInitializer.initDatabase();
     }

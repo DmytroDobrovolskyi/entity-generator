@@ -14,25 +14,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.any;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = MockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseServiceTest
 {
     @Autowired
-    @Qualifier("baseServiceImpl")
     @InjectMocks
     private BaseService<Entity> service;
 
-    @Qualifier("baseRepositoryMock")
     @Autowired
+    @Qualifier(value = "baseRepositoryMock")
     private BaseRepository<Entity> repository;
 
     @Before
@@ -57,7 +55,6 @@ public class BaseServiceTest
         service.merge(entity);
 
         verify(repository).merge(entity);
-
     }
 
     @Test
@@ -73,11 +70,7 @@ public class BaseServiceTest
     public void testFindById()
     {
         String id = "testId";
-        Entity entity = new Entity(id, "testName");
-        when(service.findById(id))
-                .thenReturn(entity);
-
-        assertThat(service.findById(id), equalTo(entity));
+        service.findById(id);
 
         verify(repository).findById(id);
     }
@@ -85,11 +78,7 @@ public class BaseServiceTest
     @Test
     public void testFindAll()
     {
-        List<Entity> resultList = new ArrayList<Entity>();
-        when(service.findAll())
-                .thenReturn(resultList);
-
-        assertThat(service.findAll(), equalTo(resultList));
+        assertThat(repository.findAll(), is(any(List.class)));
 
         verify(repository).findAll();
     }
