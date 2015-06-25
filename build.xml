@@ -124,8 +124,9 @@
     </target>
 
     <target name="sf-deploy">
-        <delete dir="${sf.metadata.dir}/layouts/FeedItem-Feed Item Layout.layout"/>
-        <delete dir="${sf.metadata.dir}layouts/SocialPost-Social Post Layout.layout"/>
+        <delete file="${sf.metadata.dir}/layouts/FeedItem-Feed Item Layout.layout"/>
+        <delete file="${sf.metadata.dir}/layouts/SocialPost-Social Post Layout.layout"/>
+
         <sf:deploy username="${sf.dest.username}"
                    password="${sf.dest.password}"
                    serverurl="${sf.dest.serverurl}"
