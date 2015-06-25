@@ -51,7 +51,8 @@
     <types>
         <members>*</members>
         <name>StaticResource</name>
-    </types>
+    </types>public static void main(String[] args
+{
     <types>
         <members>*</members>
         <name>ValidationRule</name>

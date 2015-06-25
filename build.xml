@@ -85,7 +85,7 @@
     </target>
 
     <target name="db-init" depends="compile">
-        <java classname="com.softserve.entity.generator.config.db.init.DatabaseInitializer">
+        <java classname="com.softserve.entity.generator.config.database.init.DatabaseInitializer">
 
             <classpath refid="runtime.path"/>
 
@@ -98,7 +98,7 @@
     </target>
 
     <target name="db-clean" depends="compile">
-        <java classname="com.softserve.entity.generator.config.db.init.DatabaseCleaner">
+        <java classname="com.softserve.entity.generator.config.database.init.DatabaseCleaner">
 
             <classpath refid="runtime.path"/>
 
