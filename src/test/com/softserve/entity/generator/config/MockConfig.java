@@ -16,6 +16,7 @@ import static org.mockito.Mockito.mock;
 
 @Configuration
 @ComponentScan(basePackages = {"com.softserve.entity.generator.service", "com.softserve.entity.generator.repository"})
+//TODO DISTINCT CLASS
 public class MockConfig
 {
     private static final EntityManagerFactory entityManagerFactoryMock = mock(EntityManagerFactory.class);
@@ -54,3 +55,4 @@ public class MockConfig
         return mock(EntityManager.class);
     }
 }
+

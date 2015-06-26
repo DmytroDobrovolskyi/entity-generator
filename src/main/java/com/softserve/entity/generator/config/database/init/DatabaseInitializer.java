@@ -16,6 +16,7 @@ import static com.softserve.entity.generator.config.DatabaseInitializationConfig
 import static com.softserve.entity.generator.config.database.init.util.DatabaseUtil.isExistDatabase;
 
 @Component
+//TODO SINGLE TARGET
 public class DatabaseInitializer
 {
     private static final Logger logger = Logger.getLogger(DatabaseInitializer.class);

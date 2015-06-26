@@ -39,6 +39,7 @@ public class ApplierTest
     }
 
     @Test
+    //TODO: REWRITE TEST according to new Applier
     public void testApply()
     {
         String selectProcedureQuery =
@@ -72,6 +73,7 @@ public class ApplierTest
         verify(entityManager).createNativeQuery(createProcedureQuery);
         verify(createProcedureQueryMock).executeUpdate();
 
+        //TODO: procedure generator assert
         verify(entityManager).createNativeQuery(executeProcedureQuery);
         verify(executeProcedureQueryMock).executeUpdate();
     }
