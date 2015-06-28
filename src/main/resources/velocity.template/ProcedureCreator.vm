@@ -1,3 +1,10 @@
+IF  EXISTS (SELECT *
+            FROM sys.procedures
+            WHERE name ='$procedureName'
+            )
+DROP PROCEDURE $procedureName
+BEGIN
+EXEC ('
 CREATE PROCEDURE $procedureName
 AS
 CREATE TABLE [core_schema].$entity.getTableName()(
@@ -9,3 +16,8 @@ CREATE TABLE [core_schema].$entity.getTableName()(
     #end
 #end
 );
+')
+END
+BEGIN
+EXEC ('$procedureName')
+END
