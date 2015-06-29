@@ -51,11 +51,11 @@ public class ApplierTest
         String createProcedureQuery = ProcedureGenerator.generateProcedure(entity);
         assertEquals(this.generateProcedure(),createProcedureQuery.replaceAll("\\s",""));
 
-        String procedureQuery = createProcedureQuery;
-        Query procedureQueryMock = mockQuery(procedureQuery);
+        Query procedureQueryMock = mockQuery(createProcedureQuery);
 
         applier.apply(entity);
-        verify(procedureQueryMock, Mockito.times(1)).executeUpdate();
+        verify(entityManager).createNativeQuery(createProcedureQuery);
+        verify(procedureQueryMock).executeUpdate();
     }
 
     private Query mockQuery(String query)
@@ -71,23 +71,31 @@ public class ApplierTest
 
     private String generateProcedure()
     {
-        String procedureQuery ="IF  EXISTS (SELECT *\n" +
-                "            FROM sys.procedures\n" +
-                "            WHERE name ='myProcedure'\n" +
-                "            )\n" +
-                "DROP PROCEDURE myProcedure\n" +
-                "BEGIN\n" +
-                "EXEC ('\n" +
-                "CREATE PROCEDURE myProcedure\n" +
-                "AS\n" +
-                "CREATE TABLE [core_schema].NEW_TABLE(\n" +
-                "            First_Column1 int,Second_Column1 int,Third_Column1 int\n" +
-                "    );\n" +
-                "')\n" +
-                "END\n" +
-                "BEGIN\n" +
-                "EXEC ('myProcedure')\n" +
-                "END\n";
-    return  procedureQuery.replaceAll("\\s","");
+        String procedureQuery =
+                "IF  EXISTS " +
+                        "(" +
+                        "SELECT * " +
+                        "FROM sys.procedures" +
+                "        WHERE name ='myProcedure'" +
+                "            )" +
+                "DROP PROCEDURE myProcedure" +
+                "BEGIN" +
+                "EXEC " +
+                        "('" +
+                "CREATE PROCEDURE myProcedure" +
+                "AS" +
+                "CREATE TABLE [core_schema].NEW_TABLE" +
+                        "(" +
+                "            First_Column1 int, Second_Column1 int, Third_Column1 int" +
+                "    );" +
+                "')" +
+                "END" +
+                "BEGIN" +
+                "EXEC " +
+                        "(" +
+                        "'myProcedure'" +
+                        ")" +
+                "END";
+     return  procedureQuery.replaceAll("\\s","");
     }
 }
