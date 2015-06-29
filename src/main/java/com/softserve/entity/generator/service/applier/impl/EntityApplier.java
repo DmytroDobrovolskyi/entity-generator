@@ -24,6 +24,7 @@ public class EntityApplier implements Applier<Entity>
         String createProcedureQueryString = ProcedureGenerator.generateProcedure(entity);
 
         logger(this).info(createProcedureQueryString);
+        System.out.println(createProcedureQueryString);
         entityManager.createNativeQuery(createProcedureQueryString).executeUpdate();
     }
 }

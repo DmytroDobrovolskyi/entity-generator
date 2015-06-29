@@ -3,10 +3,7 @@ package com.softserve.entity.generator.entity.util;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class EntityGenerator
 {
@@ -26,7 +23,7 @@ public class EntityGenerator
         thirdField.setColumnName("Third_Column1");
         thirdField.setType("int");
 
-        Set<Field> fields = new HashSet<Field>();
+        Set<Field> fields = new TreeSet<Field>();
         fields.add(firstField);
         fields.add(secondField);
         fields.add(thirdField);

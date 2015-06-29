@@ -10,8 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.softserve.entity.generator.entity.util.EntityGenerator.generateEntity;
 
