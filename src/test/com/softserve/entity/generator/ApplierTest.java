@@ -40,17 +40,21 @@ public class ApplierTest
         MockitoAnnotations.initMocks(this);
     }
 
+    private static String createProcedureQuery;
+
     @Test
-    public void testApply()
+    public void testProcedureForEquality()
     {
+        Entity entity = generateEntity();
+        createProcedureQuery = ProcedureGenerator.generateProcedure(entity).replaceAll("\\s","");
+        assertEquals(generateProcedure(),createProcedureQuery);
     }
 
     @Test
-    public void testProcedureForEqulity()
+    public void testApply()
     {
-        Entity entity = generateEntity();
-        String createProcedureQuery = ProcedureGenerator.generateProcedure(entity).replaceAll("\\s","");
-        assertEquals(generateProcedure(),createProcedureQuery);
+        /*entityManager.createNamedQuery(createProcedureQuery).executeUpdate();
+        verify(entityManager).createNamedQuery(createProcedureQuery).executeUpdate();*/
     }
 
     private Query mockQuery(String query)
