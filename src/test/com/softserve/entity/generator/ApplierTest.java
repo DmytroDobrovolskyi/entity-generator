@@ -7,7 +7,9 @@ import com.softserve.entity.generator.service.applier.util.ProcedureGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
 
 import static com.softserve.entity.generator.entity.util.EntityGenerator.generateEntity;
 import static com.softserve.entity.generator.service.applier.util.ProcedureGenerator.*;
@@ -40,21 +43,19 @@ public class ApplierTest
         MockitoAnnotations.initMocks(this);
     }
 
-    private static String createProcedureQuery;
-
-    @Test
-    public void testProcedureForEquality()
-    {
-        Entity entity = generateEntity();
-        createProcedureQuery = ProcedureGenerator.generateProcedure(entity).replaceAll("\\s","");
-        assertEquals(generateProcedure(),createProcedureQuery);
-    }
-
     @Test
     public void testApply()
     {
-        /*entityManager.createNamedQuery(createProcedureQuery).executeUpdate();
-        verify(entityManager).createNamedQuery(createProcedureQuery).executeUpdate();*/
+        Entity entity = generateEntity();
+
+        String createProcedureQuery = ProcedureGenerator.generateProcedure(entity);
+        assertEquals(this.generateProcedure(),createProcedureQuery.replaceAll("\\s",""));
+
+        String procedureQuery = createProcedureQuery;
+        Query procedureQueryMock = mockQuery(procedureQuery);
+
+        applier.apply(entity);
+        verify(procedureQueryMock, Mockito.times(1)).executeUpdate();
     }
 
     private Query mockQuery(String query)
@@ -68,7 +69,8 @@ public class ApplierTest
         return queryMock;
     }
 
-    private String generateProcedure(){
+    private String generateProcedure()
+    {
         String procedureQuery ="IF  EXISTS (SELECT *\n" +
                 "            FROM sys.procedures\n" +
                 "            WHERE name ='myProcedure'\n" +
