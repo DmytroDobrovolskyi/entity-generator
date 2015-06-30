@@ -1,0 +1,158 @@
+<apex:page standardStylesheets="false" showHeader="true" sidebar="false" standardController="Entity__c" extensions="EditEntityController">
+
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'bootstrap/css/bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'font-awesome/css/font-awesome.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'styles/css/styles.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/jquery-1.11.3.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/js/bootstrap.min.js')}"/>
+
+    <script>
+        $(function ()
+        {
+            $('[data-toggle="popover"]').popover();
+        });
+
+
+        function setWereChanges()
+        {
+            EditEntityController.setWereChanges();
+        }
+
+        function generateColoumnName(context)
+        {
+            var name = null;
+
+            $(context)
+                    .parent()
+                    .parent()
+                    .prev()
+                    .children()
+                    .children('input')
+                    .each(function (index, element)
+                    {
+                        name = element.value;
+                    });
+
+            context.value = name
+                    .replace(/ /g, '_')
+                    .replace(/\d+/g, '')
+                    .replace(/\W/g, '')
+                    .toUpperCase();
+        }
+
+        function fillForReset()
+        {
+            var inputs = $('.requiredInput')
+                    .children('input')
+                    .filter(function (index, element)
+                    {
+                        return !element.value;
+                    }).each(function (index, element)
+                    {
+                        element.value = 'reset value';
+                    });
+        }
+    </script>
+
+    <style scoped="scoped">
+        .header {
+            font-size: 20pt;
+        }
+
+        .fa-reply-all {
+            font-size: 5em;
+            color: #46b8da;
+        }
+
+        .input {
+            border: none;
+            width: 350px;
+        }
+    </style>
+
+    <div class="container">
+
+        <div class="col-md-2">
+            <apex:form >
+                <apex:commandLink action="{!URLFOR($Action.Entity__c.Tab, $ObjectType.Entity__c)}">
+                    <i class="fa fa-reply-all" data-toggle="popover" data-placement="top" data-trigger="hover"
+                       data-content="Return to entity list"></i>
+                </apex:commandLink>
+            </apex:form>
+        </div>
+
+        <div class="col-md-4 col-md-offset-2">
+
+            <table class="table table-bordered table-condensed">
+
+                <thead>
+                <tr>
+                    <th colspan="2" class="text-center text-info">Entity</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th class="text-center text-muted">{!entity.name}</th>
+                </tr>
+
+                <tr>
+                    <th>Table name</th>
+                    <th class="text-center text-muted">{!entity.TableName__c}</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+
+            <apex:form styleClass="form-group">
+
+                <apex:outputPanel id="table-panel">
+                    <apex:dataTable value="{!fields}" var="field" styleClass="table table-bordered table-condensed"
+                                    columnClasses="text-center" captionClass="text-center text-info header">
+
+                        <apex:facet name="caption">
+                            Fields
+                        </apex:facet>
+
+                        <apex:column headerValue="Name">
+                            <apex:inputField value="{!field.name}" styleClass="input text-center" onchange="setWereChanges()" required="true"/>
+                        </apex:column>
+
+                        <apex:column headerValue="Column name">
+                            <apex:inputField value="{!field.ColumnName__c}" styleClass="input text-center" onchange="setWereChanges()"
+                                             onclick="generateColoumnName(this)" required="true"/>
+                        </apex:column>
+
+                        <apex:column headerValue="Actions" styleClass="text-center">
+                            <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteField}"
+                                              rendered="{!field.Id != null}" reRender="table-panel">
+                                <i class="fa fa-times" data-toggle="popover" data-placement="left" data-trigger="hover"
+                                   data-content="Delete"></i>
+                                <apex:param name="fieldId" value="{!field.Id}" assignTo="{!fieldId}"/>
+                            </apex:commandLink>
+                        </apex:column>
+
+                    </apex:dataTable>
+
+                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
+
+                    <apex:outputPanel id="apply-block">
+                        <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
+                                            onclick="fillForReset()"/>
+                        <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
+                                            styleClass="btn btn-info pull-right"/>
+                    </apex:outputPanel>
+
+                    <apex:commandLink action="{!addRow}" reRender="table-panel">
+                        <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
+                           data-content="Add new field"></i>
+                    </apex:commandLink>
+
+                </apex:outputPanel>
+            </apex:form>
+        </div>
+    </div>
+</apex:page>
