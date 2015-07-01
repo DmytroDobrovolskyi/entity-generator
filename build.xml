@@ -2,7 +2,11 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" name="entity-generator">
 
     <property file="build.properties"/>
+    <property file="soap.properties"/>
     <property file="${sf.resources}/sf.credentials.properties"/>
+    <property name="soapOutputJar" value="${lib.dir}/compile/output.jar"/>
+    <property name="soapWSC" value="${lib.dir}/compile/wsc-22.jar"/>
+    <property name="sqljdbc" value="${lib.dir}/sqljdbc4-4.0.jar"/>
 
     <import file="${sf.resources}/sf.build.xml"/>
     <import file="${resources.dir}/WEB-INF/database.build.xml"/>
@@ -16,9 +20,9 @@
             <classpath>
                 <pathelement location="${main.classes.dir}"/>
                 <pathelement location="${resources.dir}"/>
-                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
-                <pathelement location="${lib.dir}/compile/output.jar"/>
-                <pathelement location="${lib.dir}/compile/wsc-22.jar"/>
+                <pathelement location="${sqljdbc}"/>
+                <pathelement location="${soapOutputJar}"/>
+                <pathelement location="${soapWSC}"/>
             </classpath>
         </java>
     </target>
@@ -42,7 +46,7 @@
                 <pathelement location="${test.classes.dir}"/>
                 <pathelement location="${main.classes.dir}"/>
                 <pathelement location="${resources.dir}"/>
-                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
+                <pathelement location="${sqljdbc}"/>
             </classpath>
 
             <formatter type="plain" usefile="false"/>
@@ -59,9 +63,10 @@
     <target name="compile" depends="init, resolve">
         <javac srcdir="${main.src.dir}" destdir="${main.classes.dir}" includeantruntime="false">
             <classpath refid="compile.path"/>
+            <classpath path="${main.classes.dir}"/>
             <classpath>
-                <pathelement location="${lib.dir}/compile/output.jar"/>
-                <pathelement location="${lib.dir}/compile/wsc-22.jar"/>
+                <pathelement location="${soapOutputJar}"/>
+                <pathelement location="${soapWSC}"/>
             </classpath>
         </javac>
 
