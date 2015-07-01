@@ -1,19 +1,18 @@
-.fa-times {
-    font-size: 1.5em;
-    color: red;
+.container {
+    padding-top: 50px;
 }
 
 .fa-pencil-square-o {
     font-size: 1.5em;
-    color: black;
+    color: green;
 }
 
 .fa-plus-square-o {
     font-size: 5em;
 }
 
-.container {
-    padding-top: 50px;
+.header {
+    font-size: 20pt;
 }
 
 .input {
@@ -21,6 +20,63 @@
     width: 350px;
 }
 
-.header {
-    font-size: 20pt;
+.fa-times {
+    font-size: 1.5em;
+    color: red;
+}
+
+.fa-plus-square-o {
+    font-size: 5em;
+}
+
+.message {
+    position: relative !important;
+    min-height: 1px !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+    width: 50% !important;
+    margin-right: -15px !important;
+    margin-left: -15px !important;
+    display: block !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+.messageText {
+    text-align: center !important;
+}
+
+.btn {
+    display: inline-block !important;
+    padding: 6px 12px !important;
+    margin-bottom: 0;
+!important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+    line-height: 1.42857143 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    -ms-touch-action: manipulation !important;
+    touch-action: manipulation !important;
+    cursor: pointer !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    border-radius: 4px !important;
+}
+
+.btn-info {
+    color: #fff !important;
+    background-color: #5bc0de !important;
+    border-color: #46b8da !important;
+}
+
+.btn-warning {
+    color: #fff !important;
+    background-color: #f0ad4e !important;
+    border-color: #eea236 !important;
 }

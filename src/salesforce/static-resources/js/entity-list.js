@@ -27,6 +27,8 @@ function generateTableName(context)
         .each(function (index, element)
         {
             name = element.value;
+
+
         });
 
     context.value = name

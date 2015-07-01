@@ -1,8 +1,18 @@
 public class EntityListController
 {
-    public String entityId { get; set; }
+    public String tableName
 
-    public Boolean wereChanges { get; set; }
+    {
+        get;
+        set;
+    }
+
+    public Boolean wereChanges
+
+    {
+        get;
+        set;
+    }
 
     private Map<String, Entity__c> entityMap;
 
@@ -10,11 +20,16 @@ public class EntityListController
 
     public EntityListController()
     {
-        this.entityMap = new Map<String, Entity__c>
-        ([
-            SELECT Id, Name, TableName__c
-            FROM Entity__c
-        ]);
+        this.entityMap = new Map<String, Entity__c>();
+
+        for (Entity__c entity :
+        [
+        SELECT Id, Name, TableName__c
+        FROM Entity__c
+        ])
+        {
+            entityMap.put(entity.TableName__c, entity);
+        }
     }
 
     public List<Entity__c> getEntities()
@@ -24,8 +39,8 @@ public class EntityListController
 
     public void deleteEntity()
     {
-        Database.delete(entityId);
-        entityMap.remove(entityId);
+        Database.delete(entityMap.get(tableName));
+        entityMap.remove(tableName);
     }
 
     public void addRow()
@@ -39,16 +54,24 @@ public class EntityListController
     {
         if (newEntity != null)
         {
-            Database.insert(newEntity);
-            entityMap.remove(null);
-            entityMap.put(newEntity.Id, newEntity);
-            newEntity = null;
+            if (entityMap.containsKey(newEntity.TableName__c))
+            {
+                ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique');
+                ApexPages.addMessage(error);
+            } else
+            {
+                entityMap.remove(null);
+                entityMap.put(newEntity.TableName__c, newEntity );
+
+                Database.insert(newEntity);
+                newEntity = null;
+            }
         }
         Database.update(entityMap.values(), false);
         wereChanges = false;
     }
 
-    public PageReference discardChanges() 
+    public PageReference discardChanges()
     {
         return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
