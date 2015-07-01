@@ -12,14 +12,17 @@ public class EntityGenerator
         Entity entity = new Entity("NEW_TABLE", "New table");
 
         Field firstField = new Field();
+        firstField.setName("first");
         firstField.setColumnName("First_Column");
         firstField.setType("int");
 
         Field secondField = new Field();
+        secondField.setName("Second");
         secondField.setColumnName("Second_Column");
         secondField.setType("int");
 
         Field thirdField = new Field();
+        thirdField.setName("Third");
         thirdField.setColumnName("Third_Column");
         thirdField.setType("int");
 
