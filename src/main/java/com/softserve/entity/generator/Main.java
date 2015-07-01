@@ -34,7 +34,7 @@ public class Main
         main.testConfig();
         main.testApplier();
         EntityRequester entityRequester = new EntityRequester();
-        entityRequester.getfullEntityInfo();
+        entityRequester.getFullEntityInfo();
     }
 
     public void testConfig()

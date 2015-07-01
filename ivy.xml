@@ -44,10 +44,10 @@
                     conf="test->default;sources;javadoc"/>
 
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5"
-                    conf="test->default;sources;javadoc"/>
+                    conf="compile->default;sources;javadoc"/>
 
         <dependency org="org.json" name="json" rev="20090211"
-                    conf="test->default;sources;javadoc"/>
+                    conf="compile->default;sources;javadoc"/>
 
     </dependencies>
 
