@@ -30,7 +30,8 @@ public class FieldUtil
 													.replaceAll('\\W','')
 													.replaceAll('\\d', '')
 													.toUpperCase();
-            
+
+
 			field.FieldId__c = entity.TableName__c
 													.replaceAll('\\s','')
 													.replaceAll('\\W','')
