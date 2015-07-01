@@ -72,11 +72,13 @@
                                               rendered="{!field.Id != null}" reRender="table-panel">
                                 <i class="fa fa-times" data-toggle="popover" data-placement="left" data-trigger="hover"
                                    data-content="Delete"></i>
-                                <apex:param name="fieldId" value="{!field.Id}" assignTo="{!fieldId}"/>
+                                <apex:param name="columnName" value="{!field.ColumnName__c}" assignTo="{!columnName}"/>
                             </apex:commandLink>
                         </apex:column>
 
                     </apex:dataTable>
+
+                    <apex:pageMessages/>
 
                     <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 

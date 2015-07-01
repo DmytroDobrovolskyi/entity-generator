@@ -1,18 +1,8 @@
 public class EntityListController
 {
-    public String tableName
+    public String tableName { get; set; }
 
-    {
-        get;
-        set;
-    }
-
-    public Boolean wereChanges
-
-    {
-        get;
-        set;
-    }
+    public Boolean wereChanges { get; set; }
 
     private Map<String, Entity__c> entityMap;
 
@@ -24,8 +14,8 @@ public class EntityListController
 
         for (Entity__c entity :
         [
-        SELECT Id, Name, TableName__c
-        FROM Entity__c
+            SELECT Id, Name, TableName__c
+            FROM Entity__c
         ])
         {
             entityMap.put(entity.TableName__c, entity);

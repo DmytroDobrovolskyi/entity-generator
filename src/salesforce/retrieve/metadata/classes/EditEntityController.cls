@@ -2,7 +2,7 @@ public class EditEntityController
 {
     public Entity__c entity { get; set; }
 
-    public String fieldId { get; set; }
+    public String columnName { get; set; }
 
     public Boolean wereChanges { get; set; }
 
@@ -13,12 +13,17 @@ public class EditEntityController
     public EditEntityController(ApexPages.StandardController controller)
     {
         this.entity = (Entity__c) controller.getRecord();
-        this.fieldMap = new Map<String, Field__c>
-        ([
+        this.fieldMap = new Map<String, Field__c>();
+
+        for (Field__c filed :
+        [
             SELECT Id, Name, ColumnName__c
             FROM Field__c
             WHERE Entity__c = :entity.Id
-        ]);
+        ])
+        {
+            fieldMap.put(filed.ColumnName__c, filed);
+        }
         
         this.entity = 
         [
@@ -36,8 +41,8 @@ public class EditEntityController
 
     public void deleteField()
     {
-        Database.delete(fieldId);
-        fieldMap.remove(fieldId);
+        Database.delete(fieldMap.get(columnName));
+        fieldMap.remove(columnName);
     }
 
     public void addRow()
@@ -52,10 +57,18 @@ public class EditEntityController
     {
         if(newField != null)
         {
-            Database.insert(newField);
-            fieldMap.remove(null);
-            fieldMap.put(newField.Id, newField);
-            newField = null;
+            if (fieldMap.containsKey(newField.ColumnName__c))
+            {
+                ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique');
+                ApexPages.addMessage(error);
+            } else
+            {
+                fieldMap.remove(null);
+                fieldMap.put(newField.ColumnName__c, newField);
+
+                Database.insert(newField);
+                newField = null;
+            }
         }
         Database.update(fieldMap.values(), false);
         wereChanges = false;
