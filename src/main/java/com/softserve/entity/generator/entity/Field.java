@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @javax.persistence.Entity
 @Table(name = "FIELD")
-public class Field implements Comparable {
+public class Field {
 
     @Id
     @Column(name = "Name")
@@ -40,8 +40,4 @@ public class Field implements Comparable {
         this.type = type;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return 1;
-    }
 }
