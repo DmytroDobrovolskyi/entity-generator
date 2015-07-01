@@ -13,7 +13,8 @@ public class Authentication
     private ConnectorConfig config;
     private LoginResult loginResult;
 
-    public void login(){
+    public void login()
+    {
         config = new ConnectorConfig();
         config.setUsername(Config.getConfig().getUserName());
         config.setPassword(Config.getConfig().getPassword());
