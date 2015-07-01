@@ -6,6 +6,8 @@ public class EditEntityController
 
     public Boolean wereChanges { get; set; }
 
+    public String selectedType { get; set; }
+
     private Map<String, Field__c> fieldMap;
 
     private Field__c newField;
@@ -17,7 +19,7 @@ public class EditEntityController
 
         for (Field__c filed :
         [
-            SELECT Id, Name, ColumnName__c
+            SELECT Id, Name, ColumnName__c, Type__c
             FROM Field__c
             WHERE Entity__c = :entity.Id
         ])
@@ -38,6 +40,14 @@ public class EditEntityController
         return fieldMap.values();
     }
 
+    public List<SelectOption> getTypes()
+    {
+        List<SelectOption> options = new List<SelectOption>();
+        options.add(new SelectOption('varchar','varchar'));
+        options.add(new SelectOption('int','int'));
+        options.add(new SelectOption('date','date'));
+        return options;
+    }
 
     public void deleteField()
     {
@@ -55,12 +65,15 @@ public class EditEntityController
 
     public void applyChanges()
     {
+        Database.update(fieldMap.values(), false);
+        wereChanges = false;
         if(newField != null)
         {
             if (fieldMap.containsKey(newField.ColumnName__c))
             {
                 ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique');
                 ApexPages.addMessage(error);
+                wereChanges = true;
             } else
             {
                 fieldMap.remove(null);
@@ -70,8 +83,6 @@ public class EditEntityController
                 newField = null;
             }
         }
-        Database.update(fieldMap.values(), false);
-        wereChanges = false;
     }
     
     public PageReference discardChanges() 

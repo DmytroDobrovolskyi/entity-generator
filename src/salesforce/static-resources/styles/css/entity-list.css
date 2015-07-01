@@ -34,7 +34,7 @@
     min-height: 1px !important;
     padding-right: 15px !important;
     padding-left: 15px !important;
-    width: 50% !important;
+    width: 33.33333333% !important;
     margin-right: -15px !important;
     margin-left: -15px !important;
     display: block !important;
@@ -42,10 +42,17 @@
     margin-left: auto !important;
 }
 
-.messageText {
+.message .messageText {
+    margin-left: 0;
+}
+
+.messageCell {
     text-align: center !important;
 }
 
+.messageTable {
+    margin: 0 auto !important;
+}
 .btn {
     display: inline-block !important;
     padding: 6px 12px !important;
@@ -79,4 +86,8 @@
     color: #fff !important;
     background-color: #f0ad4e !important;
     border-color: #eea236 !important;
+}
+
+.noSidebarCell {
+    padding-bottom: 390px;
 }

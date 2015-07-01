@@ -42,12 +42,15 @@ public class EntityListController
 
     public void applyChanges()
     {
+        Database.update(entityMap.values(), false);
+        wereChanges = false;
         if (newEntity != null)
         {
             if (entityMap.containsKey(newEntity.TableName__c))
             {
                 ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique');
                 ApexPages.addMessage(error);
+                wereChanges = true;
             } else
             {
                 entityMap.remove(null);
@@ -57,8 +60,6 @@ public class EntityListController
                 newEntity = null;
             }
         }
-        Database.update(entityMap.values(), false);
-        wereChanges = false;
     }
 
     public PageReference discardChanges()
