@@ -36,6 +36,7 @@
         <members>*</members>
         <name>HomePageLayout</name>
     </types>
+
     <types>
         <members>*</members>
         <name>StaticResource</name>

@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.config;
 
 import com.softserve.entity.generator.repository.impl.BaseRepositoryImpl;
+import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,7 @@ public class MockConfig
     @Bean
     public BaseRepositoryImpl baseRepositoryMock()
     {
-        return mock(BaseRepositoryImpl.class);
+        return Mockito.mock(BaseRepositoryImpl.class);
     }
 
     @Bean
@@ -55,4 +56,3 @@ public class MockConfig
         return mock(EntityManager.class);
     }
 }
-

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce">
+
+    <property file="build.properties"/>
+
+    <target name="db-init" depends="compile">
+        <java classname="com.softserve.entity.generator.config.database.init.DatabaseInitializer">
+
+            <classpath refid="runtime.path"/>
+
+            <classpath>
+                <pathelement location="${main.classes.dir}"/>
+                <pathelement location="${resources.dir}"/>
+                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="db-clean" depends="compile">
+        <java classname="com.softserve.entity.generator.config.database.init.DatabaseCleaner">
+
+            <classpath refid="runtime.path"/>
+
+            <classpath>
+                <pathelement location="${main.classes.dir}"/>
+                <pathelement location="${resources.dir}"/>
+                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
+            </classpath>
+        </java>
+    </target>
+</project>
