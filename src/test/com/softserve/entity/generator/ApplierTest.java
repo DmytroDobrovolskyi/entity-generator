@@ -101,6 +101,5 @@ public class ApplierTest
                 "END";
 
      return  procedureQuery.replaceAll(emptySpaceRegex,"");
-
     }
 }
