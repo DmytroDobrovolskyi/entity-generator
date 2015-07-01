@@ -1,4 +1,4 @@
-public class FieldUtil 
+public class FieldUtil
 {
 	public static void generateColumnNameAndExternalId(List<Field__c>fields)
     {
@@ -10,7 +10,7 @@ public class FieldUtil
         
 		Map<Id, Entity__c> entityByName = new Map<Id, Entity__c>(
 		[
-			SELECT Id, Name 
+			SELECT Id, TableName__c
 			FROM Entity__c
 			WHERE Id IN :entityIds
 		]);
