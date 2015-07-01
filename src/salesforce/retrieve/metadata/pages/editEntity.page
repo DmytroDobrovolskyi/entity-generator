@@ -14,7 +14,7 @@
     <div class="container">
 
         <div class="col-md-2">
-            <apex:form >
+            <apex:form>
                 <apex:commandLink action="{!URLFOR($Action.Entity__c.Tab, $ObjectType.Entity__c)}">
                     <i class="fa fa-reply-all" data-toggle="popover" data-placement="top" data-trigger="hover"
                        data-content="Return to entity list"></i>
@@ -65,6 +65,12 @@
                         <apex:column headerValue="Column name">
                             <apex:inputField value="{!field.ColumnName__c}" styleClass="input text-center" onchange="setWereChanges()"
                                              onclick="generateColumnName(this)" required="true"/>
+                        </apex:column>
+
+                        <apex:column headerValue="Type" styleClass="text-center">
+                            <apex:selectList value="{!field.Type__c}" size="1" onchange="setWereChanges()">
+                                <apex:selectOptions value="{!types}"/>
+                            </apex:selectList>
                         </apex:column>
 
                         <apex:column headerValue="Actions" styleClass="text-center">

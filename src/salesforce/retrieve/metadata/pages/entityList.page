@@ -30,15 +30,15 @@
                         </apex:column>
 
                         <apex:column headerValue="Actions" styleClass="text-center">
-                            <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteEntity}" rendered="{!entity.Id != null}"
-                                              reRender="table-panel" styleClass="js-killer">
-                                <i class="fa fa-times" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="Delete"></i>
-                                <apex:param name="tableName" value="{!entity.TableName__c}" assignTo="{!tableName}"/>
+                            <apex:commandLink action="{!URLFOR($Action.Entity__c.Edit, entity.Id)}" rendered="{!entity.Id != null}">
+                                <i class="fa fa-pencil-square-o" data-toggle="popover" data-placement="left" data-trigger="hover"
+                                   data-content="Edit"></i>
                             </apex:commandLink>
 
-                            <apex:commandLink action="{!URLFOR($Action.Entity__c.Edit, entity.Id)}" rendered="{!entity.Id != null}">
-                                <i class="fa fa-pencil-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
-                                   data-content="Edit"></i>
+                            <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteEntity}" rendered="{!entity.Id != null}"
+                                              reRender="table-panel" styleClass="js-killer">
+                                <i class="fa fa-times" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Delete"></i>
+                                <apex:param name="tableName" value="{!entity.TableName__c}" assignTo="{!tableName}"/>
                             </apex:commandLink>
                         </apex:column>
                     </apex:dataTable>

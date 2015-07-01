@@ -47,6 +47,6 @@ function fillForReset()
             return !element.value;
         }).each(function (index, element)
         {
-            element.value = 'reset value';
+            element.value = 'resetting...';
         });
 }
