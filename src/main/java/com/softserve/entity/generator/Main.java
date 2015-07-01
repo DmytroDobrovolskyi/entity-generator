@@ -1,5 +1,6 @@
 package com.softserve.entity.generator;
 
+
 import com.sforce.soap.enterprise.Connector;
 import com.sforce.soap.enterprise.EnterpriseConnection;
 import com.sforce.soap.enterprise.LoginResult;

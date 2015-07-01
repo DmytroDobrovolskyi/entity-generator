@@ -68,6 +68,8 @@
         <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" includeantruntime="false">
             <classpath refid="test.path"/>
             <classpath path="${main.classes.dir}"/>
+
+
         </javac>
     </target>
 
