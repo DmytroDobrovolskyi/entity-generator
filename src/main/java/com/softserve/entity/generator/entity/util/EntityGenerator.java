@@ -12,18 +12,21 @@ public class EntityGenerator
         Entity entity = new Entity("NEW_TABLE", "New table");
 
         Field firstField = new Field();
-        firstField.setColumnName("First_Column1");
+        firstField.setName("first");
+        firstField.setColumnName("First_Column");
         firstField.setType("int");
 
         Field secondField = new Field();
-        secondField.setColumnName("Second_Column1");
+        secondField.setName("Second");
+        secondField.setColumnName("Second_Column");
         secondField.setType("int");
 
         Field thirdField = new Field();
-        thirdField.setColumnName("Third_Column1");
+        thirdField.setName("Third");
+        thirdField.setColumnName("Third_Column");
         thirdField.setType("int");
 
-        Set<Field> fields = new TreeSet<Field>();
+        Set<Field> fields = new HashSet<Field>();
         fields.add(firstField);
         fields.add(secondField);
         fields.add(thirdField);

@@ -7,30 +7,24 @@ import com.softserve.entity.generator.service.applier.util.ProcedureGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.Collections;
-import java.util.List;
-import java.util.Timer;
 
 import static com.softserve.entity.generator.entity.util.EntityGenerator.generateEntity;
-import static com.softserve.entity.generator.service.applier.util.ProcedureGenerator.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = MockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ApplierTest
 {
-
+    private static final int columnQuantity =3;
+    private static final String emptySpaceRegex = "\\s";
     @Autowired
     private Applier<Entity> applier;
 
@@ -49,7 +43,17 @@ public class ApplierTest
         Entity entity = generateEntity();
 
         String createProcedureQuery = ProcedureGenerator.generateProcedure(entity);
-        assertEquals(this.generateProcedure(),createProcedureQuery.replaceAll("\\s",""));
+
+        assertEquals(
+                        this.generateProcedure(),createProcedureQuery
+                                                                    .replaceAll("First_Column int", "")
+                                                                    .replaceAll("Second_Column int", "")
+                                                                    .replaceAll("Third_Column int", "")
+                                                                    .replaceAll(",", "")
+                                                                    .replaceAll(emptySpaceRegex, "")
+                     );
+
+        assertEquals(columnQuantity, entity.getFields().size());
 
         Query procedureQueryMock = mockQuery(createProcedureQuery);
 
@@ -86,7 +90,6 @@ public class ApplierTest
                 "AS" +
                 "CREATE TABLE [core_schema].NEW_TABLE" +
                         "(" +
-                "            First_Column1 int, Second_Column1 int, Third_Column1 int" +
                 "    );" +
                 "')" +
                 "END" +
@@ -96,6 +99,7 @@ public class ApplierTest
                         "'myProcedure'" +
                         ")" +
                 "END";
-     return  procedureQuery.replaceAll("\\s","");
+
+     return  procedureQuery.replaceAll(emptySpaceRegex,"");
     }
 }
