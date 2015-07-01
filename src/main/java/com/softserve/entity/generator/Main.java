@@ -32,9 +32,11 @@ public class Main
         ApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
         Main main = context.getBean(Main.class);
         main.testConfig();
-        main.testApplier();
+       /* main.testApplier();*/
         EntityRequester entityRequester = new EntityRequester();
-        entityRequester.getFullEntityInfo();
+       /* entityRequester.getFullEntityInfo();*/
+        entityRequester.getEntityByExternalId("ENTITY");
+/*        entityRequester.getById("a002000000fIb4LAAS");*/
     }
 
     public void testConfig()
