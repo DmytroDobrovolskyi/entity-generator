@@ -1,32 +1,24 @@
 package com.softserve.entity.generator;
 
 
-import com.sforce.soap.enterprise.Connector;
-import com.sforce.soap.enterprise.EnterpriseConnection;
-import com.sforce.soap.enterprise.LoginResult;
-import com.sforce.ws.ConnectionException;
-import com.sforce.ws.ConnectorConfig;
 import com.softserve.entity.generator.config.JpaConfig;
-import com.softserve.entity.generator.config.soap.Config;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.Applier;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-
 
 import static com.softserve.entity.generator.entity.util.EntityGenerator.generateEntity;
 
 @Component
 public class Main
 {
-    private EnterpriseConnection connection;
+/*    private EnterpriseConnection connection;
     private ConnectorConfig config;
     private LoginResult loginResult;
-    private static final Logger logger = Logger.getLogger(Main.class);
+    private static final Logger logger = Logger.getLogger(Main.class);*/
 
     @Autowired
     private Applier<Entity> applier;
@@ -54,7 +46,7 @@ public class Main
     }
 
     public void login(){
-        config = new ConnectorConfig();
+       /* config = new ConnectorConfig();
         config.setUsername(Config.getConfig().getUserName());
         config.setPassword(Config.getConfig().getPassword());
         try
@@ -66,6 +58,6 @@ public class Main
         catch (ConnectionException e1)
         {
             System.out.println("fail to login");
-        }
+        }*/
     }
 }

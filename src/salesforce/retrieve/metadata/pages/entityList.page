@@ -33,7 +33,7 @@
                             <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteEntity}" rendered="{!entity.Id != null}"
                                               reRender="table-panel" styleClass="js-killer">
                                 <i class="fa fa-times" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="Delete"></i>
-                                <apex:param name="entityId" value="{!entity.Id}" assignTo="{!entityId}"/>
+                                <apex:param name="tableName" value="{!entity.TableName__c}" assignTo="{!tableName}"/>
                             </apex:commandLink>
 
                             <apex:commandLink action="{!URLFOR($Action.Entity__c.Edit, entity.Id)}" rendered="{!entity.Id != null}">
@@ -42,6 +42,8 @@
                             </apex:commandLink>
                         </apex:column>
                     </apex:dataTable>
+
+                    <apex:pageMessages/>
 
                     <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 
