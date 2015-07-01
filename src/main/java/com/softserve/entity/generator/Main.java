@@ -5,6 +5,7 @@ import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.Applier;
 import com.softserve.entity.generator.service.request.Authentication;
+import com.softserve.entity.generator.service.request.EntityRequester;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -32,8 +33,8 @@ public class Main
         Main main = context.getBean(Main.class);
         main.testConfig();
         main.testApplier();
-        Authentication authentication = new Authentication();
-        authentication.login();
+        EntityRequester entityRequester = new EntityRequester();
+        entityRequester.getfullEntityInfo();
     }
 
     public void testConfig()

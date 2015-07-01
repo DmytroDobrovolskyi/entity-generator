@@ -13,7 +13,7 @@ public class Authentication
     private ConnectorConfig config;
     private LoginResult loginResult;
 
-    public void login()
+    public String login()
     {
         config = new ConnectorConfig();
         config.setUsername(Config.getConfig().getUserName());
@@ -28,5 +28,6 @@ public class Authentication
         {
             System.out.println("fail");
         }
+        return loginResult.getSessionId();
     }
 }
