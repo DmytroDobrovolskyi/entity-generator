@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" name="entity-generator" default="run">
-    <target name="sf-purge" description="Purges an organization of most customizations and components">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce">
 
-        <property file="salesforce.credentials.properties"/>
+    <target name="sf-purge" description="Purges an organization of most customizations and components">
 
         <delete dir="purge"/>
         <mkdir dir="purge"/>

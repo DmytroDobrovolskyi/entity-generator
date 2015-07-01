@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" >
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" name="entity-generator">
 
     <property file="build.properties"/>
-    <property file="src/salesforce/resources/salesforce.credentials.properties"/>
+    <property file="${sf.resources}/sf.credentials.properties"/>
 
-    <import file="src/salesforce/resources/salesforce.build.xml"/>
+    <import file="${sf.resources}/sf.build.xml"/>
+    <import file="${resources.dir}/WEB-INF/database.build.xml"/>
+    <import file="${sf.resources}/sf.purge.build.xml"/>
 
     <target name="run" depends="install">
         <java classname="com.softserve.entity.generator.Main">
@@ -85,57 +87,4 @@
             </fileset>
         </delete>
     </target>
-
-    <target name="db-init" depends="compile">
-        <java classname="com.softserve.entity.generator.config.database.init.DatabaseInitializer">
-
-            <classpath refid="runtime.path"/>
-
-            <classpath>
-                <pathelement location="${main.classes.dir}"/>
-                <pathelement location="${resources.dir}"/>
-                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
-            </classpath>
-        </java>
-    </target>
-
-    <target name="db-clean" depends="compile">
-        <java classname="com.softserve.entity.generator.config.database.init.DatabaseCleaner">
-
-            <classpath refid="runtime.path"/>
-
-            <classpath>
-                <pathelement location="${main.classes.dir}"/>
-                <pathelement location="${resources.dir}"/>
-                <pathelement location="${lib.dir}/sqljdbc4-4.0.jar"/>
-            </classpath>
-        </java>
-    </target>
-
-
-    <target name="sf-retrieve">
-        <mkdir dir="${sf.metadata.dir}"/>
-        <sf:retrieve username="${sf.src.username}"
-                     password="${sf.src.password}"
-                     serverurl="${sf.src.serverurl}"
-                     maxPoll="${sf.maxPoll}"
-                     unpackaged="${sf.receive.dir}/package.xml"
-                     retrieveTarget="${sf.metadata.dir}"/>
-    </target>
-
-    <target name="sf-deploy">
-        <delete file="${sf.metadata.dir}/layouts/FeedItem-Feed Item Layout.layout"/>
-        <delete file="${sf.metadata.dir}/layouts/SocialPost-Social Post Layout.layout"/>
-
-        <sf:deploy username="${sf.dest.username}"
-                   password="${sf.dest.password}"
-                   serverurl="${sf.dest.serverurl}"
-                   maxPoll="${sf.maxPoll}"
-                   deployRoot="${sf.metadata.dir}"/>
-    </target>
-
-    <target name="sf-clean">
-        <delete dir="${sf.metadata.dir}"/>
-    </target>
-
 </project>
