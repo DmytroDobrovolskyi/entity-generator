@@ -18,17 +18,26 @@ public class FieldUtil
 		for (Field__c field : fields)
 		{
 			Entity__c entity = entityByName.get(field.Entity__c);
-			field.ColumnName__c = field.Name.replaceAll('\\s','_')
-			.replaceAll('\\W','')
-			.replaceAll('\\d', '')
-			.toUpperCase();
-            
-			field.FieldId__c = entity.Name.replaceAll('\\s','')
-			.replaceAll('\\W','')
-			.replaceAll('\\d', '')+'.';
-			field.FieldId__c += field.Name.replaceAll('\\s','')
-			.replaceAll('\\W','')
-			.replaceAll('\\d', '');       
+
+			String columnName = field.ColumnName__c
+													.replaceAll('\\s', '')
+													.replaceAll('\\W', '')
+													.replaceAll('_', '')
+													.replaceAll('\\d', '');
+
+			field.ColumnName__c = field.ColumnName__c
+													.replaceAll('\\s','_')
+													.replaceAll('\\W','')
+													.replaceAll('\\d', '')
+													.toUpperCase();
+
+
+			field.FieldId__c = entity.TableName__c
+													.replaceAll('\\s','')
+													.replaceAll('\\W','')
+													.replaceAll('\\d', '')+'.';
+
+			field.FieldId__c += columnName;
 		}
 	}
 }
