@@ -1,0 +1,26 @@
+.header {
+    font-size: 20pt;
+}
+
+.fa-reply-all {
+    font-size: 5em;
+    color: #46b8da;
+}
+
+.input {
+    border: none;
+    width: 350px;
+}
+
+.fa-times {
+    font-size: 1.5em;
+    color: red;
+}
+
+.fa-plus-square-o {
+    font-size: 5em;
+}
+
+.container {
+    padding-top: 50px;
+}

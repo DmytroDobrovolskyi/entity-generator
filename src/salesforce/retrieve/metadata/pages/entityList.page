@@ -1,0 +1,64 @@
+<apex:page standardStylesheets="false" showHeader="true" sidebar="false"
+           controller="EntityListController">
+
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'bootstrap/css/bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'font-awesome/css/font-awesome.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'styles/css/entity-list.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/jquery-1.11.3.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/js/bootstrap.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'js/entity-list.js')}"/>
+    
+    <div class="container">
+        <div class="col-md-12">
+            <apex:form id="table-form" styleClass="form-group">
+                <apex:outputPanel id="table-panel">
+
+                    <apex:dataTable value="{!entities}" var="entity" styleClass="table table-bordered table-condensed" columnClasses="text-center"
+                                    captionClass="text-center text-info header">
+
+                        <apex:facet name="caption">
+                            Entities
+                        </apex:facet>
+
+                        <apex:column headerValue="Name">
+                            <apex:inputField value="{!entity.Name}" styleClass="input text-center" onchange="setWereChanges()" required="true"/>
+                        </apex:column>
+
+                        <apex:column headerValue="Table name">
+                            <apex:inputField value="{!entity.TableName__c}" styleClass="input text-center" onchange="setWereChanges()"
+                                             onclick="generateTableName(this)" required="true"/>
+                        </apex:column>
+
+                        <apex:column headerValue="Actions" styleClass="text-center">
+                            <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteEntity}" rendered="{!entity.Id != null}"
+                                              reRender="table-panel" styleClass="js-killer">
+                                <i class="fa fa-times" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="Delete"></i>
+                                <apex:param name="entityId" value="{!entity.Id}" assignTo="{!entityId}"/>
+                            </apex:commandLink>
+
+                            <apex:commandLink action="{!URLFOR($Action.Entity__c.Edit, entity.Id)}" rendered="{!entity.Id != null}">
+                                <i class="fa fa-pencil-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                   data-content="Edit"></i>
+                            </apex:commandLink>
+                        </apex:column>
+                    </apex:dataTable>
+
+                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
+
+                    <apex:outputPanel id="apply-block">
+                        <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
+                                            onclick="fillForReset()"/>
+
+                        <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
+                                            styleClass="btn btn-info pull-right"/>
+                    </apex:outputPanel>
+
+                    <apex:commandLink action="{!addRow}" reRender="table-panel">
+                        <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
+                           data-content="Add new entity"></i>
+                    </apex:commandLink>
+                </apex:outputPanel>
+            </apex:form>
+        </div>
+    </div>
+</apex:page>
