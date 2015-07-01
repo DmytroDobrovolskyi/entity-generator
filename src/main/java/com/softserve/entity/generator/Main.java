@@ -65,7 +65,7 @@ public class Main
         }
         catch (ConnectionException e1)
         {
-            System.out.println("fail to login");
+            System.out.println("fail");
         }
     }
 }
