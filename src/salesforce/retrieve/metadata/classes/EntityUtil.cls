@@ -4,13 +4,19 @@ public class EntityUtil
     {
        for(Entity__c entity : entities)
    		{
-       	  entity.TableName__c = entity.Name.replaceAll('\\s','_')
-                    .replaceAll('\\W','')
-                    .replaceAll('\\d', '')
-                    .toUpperCase();
-            entity.EntityId__c = entity.Name.replaceAll('\\s','')
-                    .replaceAll('\\W','')
-                    .replaceAll('\\d', '');
+   		    String tableName = entity.TableName__c
+                                                    .replaceAll('\\s','')
+                                                    .replaceAll('\\W','')
+                                                    .replaceAll('_','')
+                                                    .replaceAll('\\d', '');
+
+            entity.TableName__c = entity.TableName__c
+                                                    .replaceAll('\\s','_')
+                                                    .replaceAll('\\W','')
+                                                    .replaceAll('\\d', '')
+                                                    .toUpperCase();
+
+            entity.EntityId__c = tableName;
     	}
     }
 }
