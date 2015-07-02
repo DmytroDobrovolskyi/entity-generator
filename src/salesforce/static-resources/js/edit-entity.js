@@ -1,7 +1,24 @@
 $(function ()
 {
-    $('[data-toggle="popover"]').popover();
+    init();
+    var input = $('.input').first();
+    var times = 0;
+    input.focus(function ()
+    {
+        input.blur();
+        times++;
+        if (times === 2) //don't ask why
+        {
+            input.off('focus');
+        }
+    });
 });
+
+function init()
+{
+    $('[data-toggle="popover"]').popover();
+}
+
 
 
 function setWereChanges()

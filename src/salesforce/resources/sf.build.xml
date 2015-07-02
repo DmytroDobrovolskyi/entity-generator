@@ -17,13 +17,14 @@
 
 
     <target name="unzip-resources" depends="retrieve-before-unzip">
+        <delete dir="${sf.static-resources}"/>
         <delete dir="${static-resources.dir}"/>
         <move file="${sf.static-resources}" tofile="${zip.static-resources}"/>
         <unzip src="${zip.static-resources}" dest="${static-resources.dir}"/>
+        <delete file="${zip.static-resources}"/>
     </target>
 
     <target name="zip-resources">
-        <delete dir="${sf.static-resources}"/>
         <zip destfile="${sf.static-resources}" basedir="${static-resources.dir}"/>
     </target>
 

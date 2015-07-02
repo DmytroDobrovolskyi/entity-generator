@@ -75,7 +75,7 @@
 
                         <apex:column headerValue="Actions" styleClass="text-center">
                             <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteField}"
-                                              rendered="{!field.Id != null}" reRender="table-panel">
+                                              rendered="{!field.Id != null}" reRender="table-panel" oncomplete="init()">
                                 <i class="fa fa-times" data-toggle="popover" data-placement="left" data-trigger="hover"
                                    data-content="Delete"></i>
                                 <apex:param name="columnName" value="{!field.ColumnName__c}" assignTo="{!columnName}"/>
@@ -90,12 +90,12 @@
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
-                                            onclick="fillForReset()"/>
+                                            onclick="fillForReset()" oncomplete="init()"/>
                         <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
-                                            styleClass="btn btn-info pull-right"/>
+                                            styleClass="btn btn-info pull-right" oncomplete="init()"/>
                     </apex:outputPanel>
 
-                    <apex:commandLink action="{!addRow}" reRender="table-panel">
+                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="init()">
                         <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
                            data-content="Add new field"></i>
                     </apex:commandLink>

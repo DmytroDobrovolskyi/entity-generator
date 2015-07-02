@@ -1,28 +1,28 @@
 $(function ()
 {
     init();
-    var inputs = $('.input');
-    inputs.blur(function (index, element)
+
+    var input = $('.input').first();
+    var times = 0;
+    input.focus(function ()
     {
-        console.log("blur");
+        input.blur();
+        times++;
+        if (times === 2) //don't ask why
+        {
+            input.off('focus');
+        }
     });
 });
 
-function test()
-{
-    console.log("test()");
-}
-
 function init()
 {
-    console.log("init()");
     $('[data-toggle="popover"]').popover();
 }
 
 
 function setWereChanges()
 {
-    console.log("setWereChanges()");
     EntityListController.setWereChanges();
 }
 
@@ -63,4 +63,9 @@ function fillForReset()
         {
             element.value = 'resetting...';
         });
+}
+
+function deleteEntity()
+{
+    alert('ALARM!!');
 }
