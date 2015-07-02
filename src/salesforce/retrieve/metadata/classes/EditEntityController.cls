@@ -17,20 +17,20 @@ public class EditEntityController
         this.entity = (Entity__c) controller.getRecord();
         this.fieldMap = new Map<String, Field__c>();
 
-        for (Field__c filed :
+        for (Field__c field :
         [
             SELECT Id, Name, ColumnName__c, Type__c
             FROM Field__c
             WHERE Entity__c = :entity.Id
         ])
         {
-            fieldMap.put(filed.ColumnName__c, filed);
+            fieldMap.put(field.ColumnName__c, field);
         }
-        
-        this.entity = 
+
+        this.entity =
         [
-            SELECT Name, TableName__c 
-            FROM Entity__c 
+            SELECT Name, TableName__c
+            FROM Entity__c
             WHERE Entity__c.id = :entity.Id
         ];
     }
@@ -65,16 +65,34 @@ public class EditEntityController
 
     public void applyChanges()
     {
-        Database.update(fieldMap.values(), false);
-        wereChanges = false;
-        if(newField != null)
+        Boolean hasError = false;
+
+        List<String> columnNames = new List<String>();
+        for (Field__c filed : fieldMap.values())
+        {
+            columnNames.add(filed.ColumnName__c);
+        }
+        Set<String> uniqueColumnNames =  new Set<String>(columnNames);
+
+        if (columnNames.size() != uniqueColumnNames.size())
+        {
+            showError();
+            return;
+        }
+        else
+        {
+            Set<Field__c> filedsToUpdate = new Set<Field__c>(fieldMap.values());
+            filedsToUpdate.remove(newField);
+            Database.SaveResult[] results = Database.update(new List<Field__c> (filedsToUpdate), false);
+        }
+
+        if (newField != null)
         {
             if (fieldMap.containsKey(newField.ColumnName__c))
             {
-                ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique');
-                ApexPages.addMessage(error);
-                wereChanges = true;
-            } else
+                hasError = true;
+            }
+            else
             {
                 fieldMap.remove(null);
                 fieldMap.put(newField.ColumnName__c, newField);
@@ -83,9 +101,17 @@ public class EditEntityController
                 newField = null;
             }
         }
+        if (hasError)
+        {
+            showError();
+        }
+        else
+        {
+            wereChanges = false;
+        }
     }
-    
-    public PageReference discardChanges() 
+
+    public PageReference discardChanges()
     {
         return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
@@ -93,5 +119,11 @@ public class EditEntityController
     public void setWereChanges()
     {
         wereChanges = true;
+    }
+
+    private void showError()
+    {
+        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique');
+        ApexPages.addMessage(error);
     }
 }

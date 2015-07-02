@@ -42,30 +42,42 @@ public class EntityListController
 
     public void applyChanges()
     {
-        Database.SaveResult[] results = Database.update(entityMap.values(), false);
+        Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
+        entitiesToUpdate.remove(newEntity);
+
+        Database.SaveResult[] results = Database.update(new List<Entity__c>(entitiesToUpdate), false);
+        Boolean hasError = false;
 
         for(Database.SaveResult result : results)
         {
-            System.debug(result);
-            System.debug(result.isSuccess());
+            if(!result.isSuccess())
+            {
+                hasError = true;
+            }
         }
 
-        wereChanges = false;
         if (newEntity != null)
         {
             if (entityMap.containsKey(newEntity.TableName__c))
             {
-                ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique');
-                ApexPages.addMessage(error);
-                wereChanges = true;
+                hasError = true;
             } else
             {
                 entityMap.remove(null);
-                entityMap.put(newEntity.TableName__c, newEntity );
+                entityMap.put(newEntity.TableName__c, newEntity);
 
                 Database.insert(newEntity);
                 newEntity = null;
             }
+        }
+        if(hasError)
+        {
+            ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique');
+            ApexPages.addMessage(error);
+        }
+        else
+        {
+            wereChanges = false;
         }
     }
 
