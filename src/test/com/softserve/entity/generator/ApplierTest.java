@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ApplierTest
 {
-    private static final int columnQuantity =3;
+    private static final int columnQuantity = 3;
     private static final String emptySpaceRegex = "\\s";
     @Autowired
     private Applier<Entity> applier;
@@ -44,14 +44,16 @@ public class ApplierTest
 
         String createProcedureQuery = ProcedureGenerator.generateProcedure(entity);
 
-        assertEquals(
-                        this.generateProcedure(),createProcedureQuery
-                                                                    .replaceAll("First_Column int", "")
-                                                                    .replaceAll("Second_Column int", "")
-                                                                    .replaceAll("Third_Column int", "")
-                                                                    .replaceAll(",", "")
-                                                                    .replaceAll(emptySpaceRegex, "")
-                     );
+        assertEquals
+                (
+                        this.generateProcedure(),
+                        createProcedureQuery
+                                .replaceAll("First_Column int", "")
+                                .replaceAll("Second_Column int", "")
+                                .replaceAll("Third_Column int", "")
+                                .replaceAll(",", "")
+                                .replaceAll(emptySpaceRegex, "")
+                );
 
         assertEquals(columnQuantity, entity.getFields().size());
 
@@ -78,28 +80,28 @@ public class ApplierTest
         String procedureQuery =
                 "IF  EXISTS " +
                         "(" +
-                        "SELECT * " +
-                        "FROM sys.procedures" +
-                "        WHERE name ='myProcedure'" +
-                "            )" +
-                "DROP PROCEDURE myProcedure" +
-                "BEGIN" +
-                "EXEC " +
-                        "('" +
-                "CREATE PROCEDURE myProcedure" +
-                "AS" +
-                "CREATE TABLE [core_schema].NEW_TABLE" +
-                        "(" +
-                "    );" +
-                "')" +
-                "END" +
-                "BEGIN" +
-                "EXEC " +
-                        "(" +
-                        "'myProcedure'" +
+                            "SELECT * " +
+                            "FROM sys.procedures" +
+                            "WHERE name ='myProcedure'" +
                         ")" +
-                "END";
+                        "DROP PROCEDURE myProcedure" +
+                        "BEGIN" +
+                        "EXEC " +
+                        "('" +
+                        "CREATE PROCEDURE myProcedure" +
+                        "AS" +
+                        "CREATE TABLE [core_schema].NEW_TABLE" +
+                        "(" +
+                        "    );" +
+                        "')" +
+                        "END" +
+                        "BEGIN" +
+                        "EXEC " +
+                        "(" +
+                            "'myProcedure'" +
+                        ")" +
+                        "END";
 
-     return  procedureQuery.replaceAll(emptySpaceRegex,"");
+        return procedureQuery.replaceAll(emptySpaceRegex, "");
     }
 }

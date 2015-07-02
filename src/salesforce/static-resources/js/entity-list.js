@@ -1,15 +1,28 @@
-$(function()
+$(function ()
 {
     init();
+    var inputs = $('.input');
+    inputs.blur(function (index, element)
+    {
+        console.log("blur");
+    });
 });
+
+function test()
+{
+    console.log("test()");
+}
 
 function init()
 {
+    console.log("init()");
     $('[data-toggle="popover"]').popover();
 }
 
+
 function setWereChanges()
 {
+    console.log("setWereChanges()");
     EntityListController.setWereChanges();
 }
 
@@ -27,24 +40,26 @@ function generateTableName(context)
         .each(function (index, element)
         {
             name = element.value;
-
         });
 
-    context.value = name
-        .replace(/ /g, '_')
-        .replace(/\d+/g, '')
-        .replace(/\W/g, '')
-        .toUpperCase();
+    if (!context.value)
+    {
+        context.value = name
+            .replace(/ /g, '_')
+            .replace(/\d+/g, '')
+            .replace(/\W/g, '')
+            .toUpperCase();
+    }
 }
 
 function fillForReset()
 {
-    var inputs = $('.requiredInput')
-        .children('input')
+    $('.input')
         .filter(function (index, element)
         {
             return !element.value;
-        }).each(function (index, element)
+        })
+        .each(function (index, element)
         {
             element.value = 'resetting...';
         });

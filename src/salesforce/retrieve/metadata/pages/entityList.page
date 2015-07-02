@@ -36,28 +36,28 @@
                             </apex:commandLink>
 
                             <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteEntity}" rendered="{!entity.Id != null}"
-                                              reRender="table-panel" styleClass="js-killer">
+                                              reRender="table-panel" oncomplete="init()">
                                 <i class="fa fa-times" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Delete"></i>
                                 <apex:param name="tableName" value="{!entity.TableName__c}" assignTo="{!tableName}"/>
                             </apex:commandLink>
                         </apex:column>
                     </apex:dataTable>
 
-                    <apex:pageMessages />
+                    <apex:pageMessages id="error"/>
 
-                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
+                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block, error" name="setWereChanges" oncomplete="test()"/>
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
-                                            onclick="fillForReset()"/>
+                                            onclick="fillForReset()" oncomplete="init()"/>
 
                         <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
-                                            styleClass="btn btn-info pull-right"/>
+                                            styleClass="btn btn-info pull-right apply-button" oncomplete="init()"/>
                     </apex:outputPanel>
 
                     <apex:commandLink action="{!addRow}" reRender="table-panel">
                         <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
-                           data-content="Add new entity"></i>
+                           data-content="Add new entity" oncomplete="init()"></i>
                     </apex:commandLink>
                 </apex:outputPanel>
             </apex:form>

@@ -6,6 +6,10 @@ $(function ()
 
 function setWereChanges()
 {
+    $('.errorMsg').each(function (i, e)
+    {
+        console.log(e);
+    });
     EditEntityController.setWereChanges();
 }
 
@@ -24,11 +28,14 @@ function generateColumnName(context)
             name = element.value;
         });
 
-    context.value = name
-        .replace(/ /g, '_')
-        .replace(/\d+/g, '')
-        .replace(/\W/g, '')
-        .toUpperCase();
+    if (!context.value)
+    {
+        context.value = name
+            .replace(/ /g, '_')
+            .replace(/\d+/g, '')
+            .replace(/\W/g, '')
+            .toUpperCase();
+    }
 }
 
 function fillForReset()

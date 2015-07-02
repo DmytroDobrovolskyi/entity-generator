@@ -13,7 +13,8 @@ import java.io.IOException;
 
 public class EntityRequester
 {
-    private String accessToken =new Authentication().login(); ;
+    private String accessToken = new Authentication().login();
+
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v33.0/";
 
@@ -32,12 +33,10 @@ public class EntityRequester
         }
         catch (ClientProtocolException ex)
         {
-
             throw new AssertionError(ex);
         }
         catch (IOException ex)
         {
-
             throw new AssertionError(ex);
         }
     }
@@ -46,14 +45,13 @@ public class EntityRequester
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        String sqlQuery = "SELECT+EntityId__c,TableName__c,Name,(Select+ColumnName__c,Type__c,FieldId__c,Entity__c,Name+From+Fields__r)"+
-        "+FROM+Entity__c+" +
+        String sqlQuery = "SELECT+EntityId__c,TableName__c,Name,(Select+ColumnName__c,Type__c,FieldId__c,Entity__c,Name+From+Fields__r)" +
+                "+FROM+Entity__c+" +
                 "WHERE+EntityId__c='" + id + "'";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
         httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + accessToken));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
-
 
         try
         {
@@ -75,7 +73,7 @@ public class EntityRequester
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        String sqlQuery = "SELECT+EntityId__c,TableName__c,Name,(Select+ColumnName__c,Type__c,FieldId__c,Entity__c,Name+From+Fields__r)"+
+        String sqlQuery = "SELECT+EntityId__c,TableName__c,Name,(Select+ColumnName__c,Type__c,FieldId__c,Entity__c,Name+From+Fields__r)" +
                 "+FROM+Entity__c";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);

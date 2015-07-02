@@ -4,7 +4,6 @@ import com.softserve.entity.generator.config.JpaConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.Applier;
-import com.softserve.entity.generator.service.request.Authentication;
 import com.softserve.entity.generator.service.request.EntityRequester;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-
 
 import static com.softserve.entity.generator.entity.util.EntityGenerator.generateEntity;
 
@@ -36,15 +34,19 @@ public class Main
         ApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
         Main main = context.getBean(Main.class);
         main.testConfig();
-       /* main.testApplier();*/
+ main.testApplier();
+
         EntityRequester entityRequester = new EntityRequester();
         entityRequester.getAllEntitiesWithFields();
-      /*  entityRequester.getFullEntityInfo();*/
-        /*entityRequester.getEntityByExternalId("ENTITY");*/
-/*        entityRequester.getById("a002000000fIb4LAAS");*/
+  entityRequester.getFullEntityInfo();
+
+entityRequester.getEntityByExternalId("ENTITY");
+
+        entityRequester.getById("a002000000fIb4LAAS");
 
 
-       /* Options options = new Options();
+
+ Options options = new Options();
         options.addOption("t", false, "display current time");
         CommandLineParser parser = new DefaultParser();
         try {
@@ -57,11 +59,13 @@ public class Main
             }
         } catch (ParseException e) {
             e.printStackTrace();
-        }*/
+        }
+
 
 
 // add t option
-        /*options.addOption("t", false, "display current time");*/
+options.addOption("t", false, "display current time");
+
     }
 
     public void testConfig()
