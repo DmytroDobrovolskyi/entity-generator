@@ -49,6 +49,10 @@
         <dependency org="org.json" name="json" rev="20090211"
                     conf="compile->default;sources;javadoc"/>
 
+        <dependency org="commons-cli" name="commons-cli" rev="1.2"
+                    conf="compile->default;sources;javadoc"/>
+
+
     </dependencies>
 
 </ivy-module>

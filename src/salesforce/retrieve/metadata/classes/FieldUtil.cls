@@ -19,12 +19,7 @@ public class FieldUtil
 		{
 			Entity__c entity = entityByName.get(field.Entity__c);
 
-			String columnName = field.ColumnName__c
-													.replaceAll('\\s', '')
-													.replaceAll('\\W', '')
-													.replaceAll('_', '')
-													.replaceAll('\\d', '');
-
+			String columnName = field.ColumnName__c;
 			field.ColumnName__c = field.ColumnName__c
 													.replaceAll('\\s','_')
 													.replaceAll('\\W','')
@@ -35,9 +30,17 @@ public class FieldUtil
 			field.FieldId__c = entity.TableName__c
 													.replaceAll('\\s','')
 													.replaceAll('\\W','')
-													.replaceAll('\\d', '')+'.';
+													.replaceAll('\\d', '')
+													.replaceAll('_','')
+													.toLowerCase() + '.';
 
-			field.FieldId__c += columnName;
+
+			field.FieldId__c += columnName
+											.replaceAll('\\s', '')
+											.replaceAll('\\W', '')
+											.replaceAll('_', '')
+											.replaceAll('\\d', '')
+											.toLowerCase();
 		}
 	}
 }

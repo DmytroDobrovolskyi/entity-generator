@@ -14,7 +14,7 @@
     <div class="container">
 
         <div class="col-md-2">
-            <apex:form>
+            <apex:form >
                 <apex:commandLink action="{!URLFOR($Action.Entity__c.Tab, $ObjectType.Entity__c)}">
                     <i class="fa fa-reply-all" data-toggle="popover" data-placement="top" data-trigger="hover"
                        data-content="Return to entity list"></i>
@@ -84,7 +84,7 @@
 
                     </apex:dataTable>
 
-                    <apex:pageMessages/>
+                    <apex:pageMessages />
 
                     <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 

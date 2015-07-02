@@ -28,7 +28,6 @@ function generateTableName(context)
         {
             name = element.value;
 
-
         });
 
     context.value = name

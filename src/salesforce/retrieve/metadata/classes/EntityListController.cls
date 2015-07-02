@@ -42,7 +42,14 @@ public class EntityListController
 
     public void applyChanges()
     {
-        Database.update(entityMap.values(), false);
+        Database.SaveResult[] results = Database.update(entityMap.values(), false);
+
+        for(Database.SaveResult result : results)
+        {
+            System.debug(result);
+            System.debug(result.isSuccess());
+        }
+
         wereChanges = false;
         if (newEntity != null)
         {

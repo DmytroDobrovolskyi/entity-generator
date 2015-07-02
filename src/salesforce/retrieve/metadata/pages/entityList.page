@@ -43,7 +43,7 @@
                         </apex:column>
                     </apex:dataTable>
 
-                    <apex:pageMessages/>
+                    <apex:pageMessages />
 
                     <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 
