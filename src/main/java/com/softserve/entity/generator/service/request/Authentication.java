@@ -5,28 +5,31 @@ import com.sforce.soap.enterprise.EnterpriseConnection;
 import com.sforce.soap.enterprise.LoginResult;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
-import com.softserve.entity.generator.config.soap.Config;
+import org.apache.log4j.Logger;
 
 public class Authentication
 {
-    private EnterpriseConnection connection;
-    private ConnectorConfig config;
     private LoginResult loginResult;
+    private static final String USERNAME = "gwini777@gmail.com";
+    private static final String PASSWORD = "Nap18129523$veOlEXt4dfLlIEqYTp8xCNT6I";
+
+    private static final Logger logger = Logger.getLogger(Authentication.class);
 
     public String login()
     {
-        config = new ConnectorConfig();
-        config.setUsername(Config.getConfig().getUserName());
-        config.setPassword(Config.getConfig().getPassword());
+        ConnectorConfig config = new ConnectorConfig();
+        config.setUsername(USERNAME);
+        config.setPassword(PASSWORD);
+
+        LoginResult loginResult = null;
         try
         {
-            connection = Connector.newConnection(config);
-            loginResult = connection.login(Config.getConfig().getUserName(), Config.getConfig().getPassword());
-            System.out.println(loginResult.getSessionId());
+            EnterpriseConnection connection = Connector.newConnection(config);
+            loginResult = connection.login(USERNAME, PASSWORD);
         }
-        catch (ConnectionException e1)
+        catch (ConnectionException ex)
         {
-            System.out.println("fail");
+            logger.error(ex);
         }
         return loginResult.getSessionId();
     }

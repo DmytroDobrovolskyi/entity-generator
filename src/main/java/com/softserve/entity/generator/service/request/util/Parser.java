@@ -1,24 +1,23 @@
 package com.softserve.entity.generator.service.request.util;
 
+import org.apache.log4j.Logger;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser
 {
-    public void parse(String toParse)
+    private static final Logger logger = Logger.getLogger(Parser.class);
+
+    public void parse(String data)
     {
-        System.out.println("////////");
-        StringBuilder stringBuilder = new StringBuilder();
-        String patternString = "\"attributes\"";
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(toParse);
-        while (matcher.find()){
-            stringBuilder.append(matcher.group());
+        data = data.replaceAll("\\s", "$");
+        logger.info(data);
+        Matcher matcher = Pattern.compile(",", Pattern.DOTALL).matcher(data);
+
+        while (matcher.find())
+        {
+            logger.info(matcher.group());
         }
-        System.out.println(stringBuilder);
     }
 }
-
-
-/*String patternString = "\"attributes\" : \\{.*?\\}";*/
-       /* String parsed = toParse.replaceAll("\"attributes\" : \\{.*?\\}","");*/
