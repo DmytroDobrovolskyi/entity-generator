@@ -1,15 +1,26 @@
 $(function ()
 {
-    $('[data-toggle="popover"]').popover();
+    init();
+    var input = $('.input').first();
+    var times = 0;
+    input.focus(function ()
+    {
+        input.blur();
+        times++;
+        if (times === 2) //don't ask why
+        {
+            input.off('focus');
+        }
+    });
 });
 
+function init()
+{
+    $('[data-toggle="popover"]').popover();
+}
 
 function setWereChanges()
 {
-    $('.errorMsg').each(function (i, e)
-    {
-        console.log(e);
-    });
     EditEntityController.setWereChanges();
 }
 
@@ -48,5 +59,34 @@ function fillForReset()
         }).each(function (index, element)
         {
             element.value = 'resetting...';
+        });
+}
+
+function initAndDeleteErrors()
+{
+    init();
+    $('.errorMsg').remove();
+}
+
+function deleteField(columnName)
+{
+    $("#dialog-confirm").dialog(
+        {
+            resizable: false,
+            height: 'auto',
+            width: 500,
+            modal: true,
+            dialogClass: 'confirmation-dialog',
+            buttons: {
+                "Delete": function ()
+                {
+                    callDeleteField(columnName);
+                    $(this).dialog("close");
+                },
+                Cancel: function ()
+                {
+                    $(this).dialog("close");
+                }
+            }
         });
 }

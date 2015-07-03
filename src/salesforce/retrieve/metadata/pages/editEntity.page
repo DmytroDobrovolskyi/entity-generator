@@ -2,8 +2,11 @@
 
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'bootstrap/css/bootstrap.min.css')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'font-awesome/css/font-awesome.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'jquery/ui/jquery-ui.min.css')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'styles/css/edit-entity.css')}"/>
+
     <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/jquery-1.11.3.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/ui/jquery-ui.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/js/bootstrap.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'js/edit-entity.js')}"/>
 
@@ -74,11 +77,8 @@
                         </apex:column>
 
                         <apex:column headerValue="Actions" styleClass="text-center">
-                            <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteField}"
-                                              rendered="{!field.Id != null}" reRender="table-panel">
-                                <i class="fa fa-times" data-toggle="popover" data-placement="left" data-trigger="hover"
-                                   data-content="Delete"></i>
-                                <apex:param name="columnName" value="{!field.ColumnName__c}" assignTo="{!columnName}"/>
+                            <apex:commandLink onclick="deleteField('{!field.ColumnName__c}')" rendered="{!field.Id != null}" oncomplete="init()">
+                                <i class="fa fa-times" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Delete"></i>
                             </apex:commandLink>
                         </apex:column>
 
@@ -86,16 +86,20 @@
 
                     <apex:pageMessages />
 
+                    <apex:actionFunction action="{!deleteField}" name="callDeleteField" reRender="table-panel" oncomplete="init()" immediate="true" >
+                        <apex:param name="columnName" value="" assignTo="{!columnName}"/>
+                    </apex:actionFunction>
+
                     <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
                                             onclick="fillForReset()"/>
                         <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
-                                            styleClass="btn btn-info pull-right"/>
+                                            styleClass="btn btn-info pull-right" oncomplete="initAndDeleteErrors()"/>
                     </apex:outputPanel>
 
-                    <apex:commandLink action="{!addRow}" reRender="table-panel">
+                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="init()">
                         <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
                            data-content="Add new field"></i>
                     </apex:commandLink>
@@ -104,4 +108,9 @@
             </apex:form>
         </div>
     </div>
+
+    <div id="dialog-confirm" title="Delete this field?" style="display: none">
+        <p><i class="fa fa-exclamation-circle"></i>These item will be permanently deleted and cannot be recovered. Are you sure?</p>
+    </div>
+
 </apex:page>

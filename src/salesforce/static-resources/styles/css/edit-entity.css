@@ -25,19 +25,6 @@
     padding-top: 50px;
 }
 
-.message {
-    position: relative !important;
-    min-height: 1px !important;
-    padding-right: 15px !important;
-    padding-left: 15px !important;
-    width: 25% !important
-    margin-right: -15px !important;
-    margin-left: -15px !important;
-    display: block !important;
-    margin-right: auto !important;
-    margin-left: auto !important;
-}
-
 .btn {
     display: inline-block !important;
     padding: 6px 12px !important;
@@ -75,4 +62,22 @@
 
 .noSidebarCell {
     padding-bottom: 345px;
+}
+
+.ui-dialog-titlebar-close {
+    visibility: hidden;
+}
+
+.confirmation-dialog.ui-dialog .fa-exclamation-circle {
+    font-size: 3em;
+    float: left;
+    color: #f6a828 ;
+}
+
+.confirmation-dialog.ui-dialog {
+    text-align: center;
+}
+
+.message {
+    width: 50%;
 }

@@ -3,11 +3,14 @@
 
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'bootstrap/css/bootstrap.min.css')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'font-awesome/css/font-awesome.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'jquery/ui/jquery-ui.min.css')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'styles/css/entity-list.css')}"/>
+
     <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/jquery-1.11.3.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/ui/jquery-ui.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/js/bootstrap.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'js/entity-list.js')}"/>
-    
+
     <div class="container">
         <div class="col-md-12">
             <apex:form id="table-form" styleClass="form-group">
@@ -35,32 +38,41 @@
                                    data-content="Edit"></i>
                             </apex:commandLink>
 
-                            <apex:commandLink onclick="if(!confirm('Are you sure?')){return}" action="{!deleteEntity}" rendered="{!entity.Id != null}"
-                                              reRender="table-panel" oncomplete="init()">
+                            <apex:commandLink onclick="deleteEntity('{!entity.TableName__c}')" rendered="{!entity.Id != null}" oncomplete="init()">
                                 <i class="fa fa-times" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Delete"></i>
-                                <apex:param name="tableName" value="{!entity.TableName__c}" assignTo="{!tableName}"/>
                             </apex:commandLink>
                         </apex:column>
+
                     </apex:dataTable>
 
-                    <apex:pageMessages id="error"/>
+                    <apex:pageMessages/>
 
-                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block, error" name="setWereChanges" oncomplete="test()"/>
+                    <apex:actionFunction action="{!deleteEntity}" name="callDeleteEntity" reRender="table-panel" oncomplete="init()" immediate="true">
+                        <apex:param name="tableName" value="" assignTo="{!tableName}"/>
+                    </apex:actionFunction>
+
+
+                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
-                                            onclick="fillForReset()" oncomplete="init()"/>
+                                            onclick="fillForReset()"/>
 
                         <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
-                                            styleClass="btn btn-info pull-right apply-button" oncomplete="init()"/>
+                                            styleClass="btn btn-info pull-right apply-button" oncomplete="initAndDeleteErrors()"/>
                     </apex:outputPanel>
 
-                    <apex:commandLink action="{!addRow}" reRender="table-panel">
+                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="init()">
                         <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
-                           data-content="Add new entity" oncomplete="init()"></i>
+                           data-content="Add new entity"></i>
                     </apex:commandLink>
                 </apex:outputPanel>
             </apex:form>
         </div>
     </div>
+
+    <div id="dialog-confirm" title="Delete this entity?" style="display: none">
+        <p><i class="fa fa-exclamation-circle"></i>These item will be permanently deleted and cannot be recovered. Are you sure?</p>
+    </div>
+
 </apex:page>
