@@ -13,10 +13,8 @@ import javax.sql.DataSource;
 
 import static com.softserve.entity.generator.config.DatabaseInitializationConfig.DATABASE_NAME;
 import static com.softserve.entity.generator.config.DatabaseInitializationConfig.SCHEMA_NAME;
-import static com.softserve.entity.generator.config.database.init.util.DatabaseUtil.isExistDatabase;
 
 @Component
-//TODO SINGLE TARGET
 public class DatabaseInitializer
 {
     private static final Logger logger = Logger.getLogger(DatabaseInitializer.class);
@@ -41,19 +39,14 @@ public class DatabaseInitializer
 
     public void initDatabase()
     {
-
-        if (!isExistDatabase(DATABASE_NAME))
-        {
-            jdbcTemplate.execute("CREATE DATABASE " + DATABASE_NAME);
-            jdbcTemplate.execute(
-                            "USE " + DATABASE_NAME + "; " +
-                            "EXEC ('CREATE SCHEMA " + SCHEMA_NAME + " ;');"
-            );
-
-            logger.info("Database " + DATABASE_NAME + " successfully created");
-        } else
-        {
-            logger.info("Database " + DATABASE_NAME + " already exist");
-        }
+        jdbcTemplate.execute("IF ( EXISTS(" +
+                "SELECT name " +
+                "FROM master.dbo.sysdatabases " +
+                "WHERE name='" + DATABASE_NAME + "')) " +
+                "DROP DATABASE " + DATABASE_NAME + "; " +
+                "CREATE DATABASE " + DATABASE_NAME + "; " +
+                "USE " + DATABASE_NAME + "; " +
+                "EXEC ('CREATE SCHEMA " + SCHEMA_NAME + " ;');"
+        );
     }
 }
