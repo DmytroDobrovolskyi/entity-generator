@@ -81,3 +81,10 @@
 .message {
     width: 50%;
 }
+
+.message {
+    width: 50% !important;
+    display: block !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}

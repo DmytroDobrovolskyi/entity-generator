@@ -75,7 +75,7 @@
 .confirmation-dialog.ui-dialog .fa-exclamation-circle {
     font-size: 3em;
     float: left;
-    color: #f6a828 ;
+    color: #f6a828;
 }
 
 .confirmation-dialog.ui-dialog {
@@ -83,5 +83,8 @@
 }
 
 .message {
-    width: 50%;
+    width: 50% !important;
+    display: block !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
 }
