@@ -24,11 +24,13 @@ public class Field {
     @ManyToOne
     private Entity entity;
 
-    public String getFieldId() {
+    public String getFieldId()
+    {
         return fieldId;
     }
 
-    public void setFieldId(String fieldId) {
+    public void setFieldId(String fieldId)
+    {
         this.fieldId = fieldId;
     }
 

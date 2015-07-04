@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.service.request;
 
+import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.service.request.util.Parser;
 import org.apache.http.HttpResponse;
@@ -91,12 +92,12 @@ public class EntityRequester
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
             stringifiedResponse = stringifiedResponse.replaceAll("\\}\\n.*},\\s\\{","%");
 
-            List<String>list = new ArrayList<String>();
+            List<String>listOfParsedObjects = new ArrayList<String>();
             Parser parser = new Parser();
 
             for(String s:splitSObjects(stringifiedResponse))
             {
-                list.add(parser.parseSObjectJson(s,Field.class));
+                listOfParsedObjects.add(parser.parseSObjectJson(s, Field.class.getClass()));
             }
         }
         catch (ClientProtocolException ex)
