@@ -34,47 +34,16 @@ public class Main
         ApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
         Main main = context.getBean(Main.class);
         main.testConfig();
- main.testApplier();
-
+        /*main.testApplier();*/
         EntityRequester entityRequester = new EntityRequester();
         entityRequester.getAllEntitiesWithFields();
-  entityRequester.getFullEntityInfo();
-
-entityRequester.getEntityByExternalId("ENTITY");
-
-        entityRequester.getById("a002000000fIb4LAAS");
-
-
-
- Options options = new Options();
-        options.addOption("t", false, "display current time");
-        CommandLineParser parser = new DefaultParser();
-        try {
-            CommandLine cmd = parser.parse( options, args);
-            if(cmd.hasOption("t")) {
-                System.out.println("print the date and time");
-            }
-            else {
-                System.out.println("print the date");
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-
-// add t option
-options.addOption("t", false, "display current time");
-
     }
 
-    public void testConfig()
-    {
+    public void testConfig() {
         entityService.merge(new Entity("Any", "Any"));
     }
 
-    public void testApplier()
-    {
+    public void testApplier() {
         applier.apply(generateEntity());
     }
 

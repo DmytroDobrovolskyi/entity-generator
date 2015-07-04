@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.service.request;
 
+import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.service.request.util.Parser;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -10,6 +11,10 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EntityRequester
 {
@@ -84,8 +89,15 @@ public class EntityRequester
         {
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
-            System.out.println(stringifiedResponse);
-            new Parser().parse(stringifiedResponse);
+            stringifiedResponse = stringifiedResponse.replaceAll("\\}\\n.*},\\s\\{","%");
+
+            List<String>list = new ArrayList<String>();
+            Parser parser = new Parser();
+
+            for(String s:splitSObjects(stringifiedResponse))
+            {
+                list.add(parser.parseSObjectJson(s,Field.class));
+            }
         }
         catch (ClientProtocolException ex)
         {
@@ -95,6 +107,19 @@ public class EntityRequester
         {
             throw new AssertionError(ex);
         }
+    }
+
+    private List<String> splitSObjects(String stringifiedJson )
+    {
+        List<String>objectsList = new ArrayList<String>();
+        String []sObject = stringifiedJson.split("%");
+
+        for (String s:sObject)
+        {
+            objectsList.add(s);
+        }
+
+        return objectsList;
     }
 
     public void getById(String id)
@@ -110,6 +135,7 @@ public class EntityRequester
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
             System.out.println();
+            System.out.println("//////");
             System.out.println(stringifiedResponse);
         }
         catch (ClientProtocolException ex)

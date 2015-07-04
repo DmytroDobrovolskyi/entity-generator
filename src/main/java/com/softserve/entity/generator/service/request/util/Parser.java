@@ -5,20 +5,18 @@ import java.util.regex.Pattern;
 
 public class Parser
 {
-    public void parse(String toParse)
-    {
-        System.out.println("////////");
-        StringBuilder stringBuilder = new StringBuilder();
-        String patternString = "\"attributes\"";
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(toParse);
-        while (matcher.find()){
-            stringBuilder.append(matcher.group());
-        }
-        System.out.println(stringBuilder);
+
+    public String parseSObjectJson(String sObjectJson, Class<?> relation) {
+        String removeRecords = "\"records\" : \\[ \\{.*? \\},";
+        sObjectJson = Pattern.compile(removeRecords, Pattern.DOTALL).matcher(sObjectJson).replaceAll("");
+
+        String removeAttributes = "\"attributes\" : \\{.*?\\},";
+        sObjectJson = Pattern.compile(removeAttributes, Pattern.DOTALL).matcher(sObjectJson).replaceAll("");
+        System.out.println("-----------------");
+        System.out.println(sObjectJson);
+        System.out.println("-----------------");
+
+
+        return sObjectJson;
     }
 }
-
-
-/*String patternString = "\"attributes\" : \\{.*?\\}";*/
-       /* String parsed = toParse.replaceAll("\"attributes\" : \\{.*?\\}","");*/

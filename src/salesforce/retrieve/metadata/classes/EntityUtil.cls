@@ -16,7 +16,7 @@ public class EntityUtil
                                                     .replaceAll('\\d', '')
                                                     .toUpperCase();
 
-            entity.EntityId__c = tableName;
+            entity.EntityId__c = tableName.toLowerCase();
     	}
     }
 }

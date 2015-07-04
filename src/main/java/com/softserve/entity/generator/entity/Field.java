@@ -9,15 +9,28 @@ import javax.persistence.*;
 @Table(name = "FIELD")
 public class Field {
 
-    @Id
+    private String fieldId;
+
     @Column(name = "Name")
     private String name;
 
+    @Id
     @Column(name="Column_Name")
     private String columnName;
 
     @Column(name = "Type")
     private String type;
+
+    @ManyToOne
+    private Entity entity;
+
+    public String getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
+    }
 
     public String getName() {
         return name;
@@ -41,6 +54,25 @@ public class Field {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Field{" +
+                "name='" + name + '\'' +
+                ", columnName='" + columnName + '\'' +
+                ", type='" + type + '\'' +
+                ", entity=" + entity +
+                '}';
     }
 
     @Override

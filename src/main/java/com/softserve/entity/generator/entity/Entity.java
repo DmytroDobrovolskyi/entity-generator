@@ -7,6 +7,7 @@ import java.util.Set;
 @Table(name = "ENTITY")
 public class Entity
 {
+    private String entityId;
     @Id
     @Column(name = "Table_Name")
     private String tableName;
@@ -24,6 +25,14 @@ public class Entity
     {
         this.tableName = tableName;
         this.name = name;
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 
     public String getName()
@@ -54,5 +63,13 @@ public class Entity
     public void setFields(Set<Field> fields)
     {
         this.fields = fields;
+    }
+
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "tableName='" + tableName + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
