@@ -14,12 +14,8 @@ public class Parser
         String removeAttributes = "\"attributes\" : \\{.*?\\},";
         sObjectJson = Pattern.compile(removeAttributes, Pattern.DOTALL).matcher(sObjectJson).replaceAll("");
 
-        sObjectJson = sObjectJson.replaceAll("\\{\\n.*\"totalSize\" : .,\\n.*\"done\" :.*,","");
-
-       /* String remove = "\\{.*\"totalSize\" : .,.*?,";
-        sObjectJson = Pattern.compile(remove, Pattern.DOTALL).matcher(sObjectJson).replaceAll("");*/
-
             sObjectJson = sObjectJson
+                                        .replaceAll("\\{\\n.*\"totalSize\" : .,\\n.*\"done\" :.*,","")
                                         .replaceAll("\\]","] }")
                                         .replaceAll("\\}\\n.*} \\] \\}\\n.*\\}","")
                                         .replaceAll("\\{\\n.*\\n.*\\n.*\\{","\\{")
@@ -32,10 +28,6 @@ public class Parser
                                         .replaceAll("Type", "type")
                                         .replaceAll("FieldId","fieldId")
                                         .replaceAll("\"Entity\" : .*?,","");
-
-        System.out.println("-----------------");
-        System.out.println(sObjectJson);
-        System.out.println("-----------------");
 
         return sObjectJson;
     }
