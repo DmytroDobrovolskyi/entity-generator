@@ -31,7 +31,7 @@ public class EntityRequester
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         String sqlQuery = "SELECT+EntityId__c,TableName__c,Name,(Select+ColumnName__c,Type__c,FieldId__c," +
-                "Entity__c,Name+From+Fields__r)" +
+                "Name+From+Fields__r)" +
                 "+FROM+Entity__c";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
@@ -66,6 +66,7 @@ public class EntityRequester
                 }
             }
             System.out.println(entities.size());
+            System.out.println(entities.get(1).getTableName());
         }
         catch (ClientProtocolException ex)
         {
