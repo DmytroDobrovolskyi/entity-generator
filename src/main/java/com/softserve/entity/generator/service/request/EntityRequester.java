@@ -100,14 +100,22 @@ public class EntityRequester
             {
                 listOfParsedObjects.add(parser.parseSObjectJson(s, Field.class.getClass()));
             }
-            System.out.println("++++++");
-            System.out.println(listOfParsedObjects.get(1));
-            System.out.println("++++++");
 
             Gson gson = new Gson();
-            Entity entity = gson.fromJson(listOfParsedObjects.get(1), Entity.class);
-            System.out.println(entity);
-            System.out.println(entity.getFields().size());
+
+            List<Entity>entities = new ArrayList<Entity>();
+
+            for(String parsedString:listOfParsedObjects)
+            {
+                Entity entity = gson.fromJson(parsedString,Entity.class);
+                entities.add(entity);
+
+                for (Field field : entity.getFields())
+                {
+                    field.setEntity(entity);
+                }
+            }
+            System.out.println(entities.size());
         }
         catch (ClientProtocolException ex)
         {
