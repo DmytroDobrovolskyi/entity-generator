@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.service.request;
 
+import com.google.gson.Gson;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.service.request.util.Parser;
@@ -99,6 +100,13 @@ public class EntityRequester
             {
                 listOfParsedObjects.add(parser.parseSObjectJson(s, Field.class.getClass()));
             }
+            System.out.println("++++++");
+            System.out.println(listOfParsedObjects.get(0));
+            System.out.println("++++++");
+
+            Gson gson = new Gson();
+            Entity entity = gson.fromJson(listOfParsedObjects.get(0), Entity.class);
+            System.out.println(entity);
         }
         catch (ClientProtocolException ex)
         {

@@ -33,7 +33,7 @@ public class Main
     {
         ApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
         Main main = context.getBean(Main.class);
-        main.testConfig();
+        /*main.testConfig();*/
         /*main.testApplier();*/
         EntityRequester entityRequester = new EntityRequester();
         entityRequester.getAllEntitiesWithFields();
