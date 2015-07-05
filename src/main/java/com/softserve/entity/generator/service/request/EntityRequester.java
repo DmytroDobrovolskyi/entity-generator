@@ -101,12 +101,13 @@ public class EntityRequester
                 listOfParsedObjects.add(parser.parseSObjectJson(s, Field.class.getClass()));
             }
             System.out.println("++++++");
-            System.out.println(listOfParsedObjects.get(0));
+            System.out.println(listOfParsedObjects.get(1));
             System.out.println("++++++");
 
             Gson gson = new Gson();
-            Entity entity = gson.fromJson(listOfParsedObjects.get(0), Entity.class);
+            Entity entity = gson.fromJson(listOfParsedObjects.get(1), Entity.class);
             System.out.println(entity);
+            System.out.println(entity.getFields().size());
         }
         catch (ClientProtocolException ex)
         {
