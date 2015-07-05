@@ -1,12 +1,13 @@
 package com.softserve.entity.generator.service.request.util;
 
+import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser
 {
 
-    public String parseSObjectJson(String sObjectJson, Class fieldName)
+    public String parseSObjectJson(String sObjectJson, Class relation)
     {
 
         String removeRecords = "\"records\" : \\[ \\{.*? \\},";
@@ -37,12 +38,15 @@ public class Parser
         {
             stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
         }
+
         sObjectJson = stringBuilder.toString();
         sObjectJson = sObjectJson.replaceAll("__c","");
 
 
         System.out.println("++++++++++");
-        System.out.println(sObjectJson);
+        System.out.println(stringBuilder);
+        Field[]field = relation.getFields();
+        System.out.println(field.length);
         System.out.println("++++++++++");
 
         return "{ "+sObjectJson;

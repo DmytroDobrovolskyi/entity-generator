@@ -48,7 +48,7 @@ public class EntityRequester
 
             for (String s : splitter.splitSObjects(stringifiedResponse))
             {
-                listOfParsedObjects.add(parser.parseSObjectJson(s, Field.class.getClass()));
+                listOfParsedObjects.add(parser.parseSObjectJson(s, Entity.class));
             }
 
             Gson gson = new Gson();
