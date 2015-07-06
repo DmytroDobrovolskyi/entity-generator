@@ -11,15 +11,13 @@ public class Splitter
 {
     public List<String> splitSObjects(String stringifiedJson)
     {
-        List<String> objectsList = new ArrayList<String>();
+        List<String> sObjects = new ArrayList<String>();
         stringifiedJson = stringifiedJson
                 .replaceAll("\\}\\n.*},\\s\\{", "%")
                 .replaceAll("__r\" : null\\n.*\\}, \\{", "__r\": \\[ \\] %");
 
-        String[] sObject = stringifiedJson.split("%");
+        Collections.addAll(sObjects, stringifiedJson.split("%"));
 
-        Collections.addAll(objectsList, sObject);
-
-        return objectsList;
+        return sObjects;
     }
 }

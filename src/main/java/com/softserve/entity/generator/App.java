@@ -12,6 +12,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 public class App
 {
@@ -25,7 +27,7 @@ public class App
 
     public static void main(String[] args)
     {
-        if (args[0] != null)
+        if (args[0].length() > 2)
         {
             args = args[0].split(" ");
         }

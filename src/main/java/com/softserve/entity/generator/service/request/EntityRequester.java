@@ -3,6 +3,7 @@ package com.softserve.entity.generator.service.request;
 import com.google.gson.Gson;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
+import com.softserve.entity.generator.service.request.util.FieldsRegister;
 import com.softserve.entity.generator.service.request.util.Parser;
 import com.softserve.entity.generator.service.request.util.Splitter;
 import org.apache.http.HttpResponse;
@@ -25,27 +26,38 @@ public class EntityRequester
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v33.0/";
 
-    private Splitter splitter;
-    private Parser parser;
-    private Authenticator authenticator;
+    private final Splitter splitter;
+    private final Parser parser;
+    private final Authenticator authenticator;
+
+    private final String customFields;
+    private final String relation;
+    private final String relationCustomFileds;
 
     public EntityRequester(String username, String password, String secToken)
     {
         splitter = new Splitter();
         parser = new Parser();
         authenticator = new Authenticator(username, password, secToken);
+
+        customFields = FieldsRegister.getCustomFieldsMap().get(Entity.class);
+        relation = FieldsRegister.getRelationsMap().get(Entity.class);
+        relationCustomFileds = FieldsRegister.getCustomFieldsMap().get(Field.class);
     }
 
     public List<Entity> getAllEntities()
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
+        String entityName = Entity.class.getSimpleName();
+
         String sqlQuery =
-                        "SELECT+EntityId__c,TableName__c,Name," +
+                        "SELECT+Name," + customFields + "," +
                         "(" +
-                            "Select+ColumnName__c,Type__c,FieldId__c,Name+From+Fields__r" +
+                            "SELECT+Name," + relationCustomFileds + "+" +
+                            "FROM+" + relation +
                         ")+" +
-                        "FROM+Entity__c";
+                        "FROM+" + entityName;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
         httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
@@ -125,13 +137,16 @@ public class EntityRequester
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
+        String entityName = Entity.class.getSimpleName();
+
         String sqlQuery =
-                        "SELECT+EntityId__c,TableName__c,Name," +
+                        "SELECT+Name," + customFields + "," +
                         "(" +
-                        "   Select+ColumnName__c,Type__c,FieldId__c,Name+From+Fields__r" +
+                            "SELECT+Name," + relationCustomFileds + "+" +
+                            "FROM+" + relation +
                         ")+" +
-                        "FROM+Entity__c+" +
-                        "WHERE+EntityId__c='" + id + "'";
+                        "FROM+" + entityName + "+" +
+                        "WHERE+" + entityName + "Id__c" + "='" + id + "'";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
         httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
