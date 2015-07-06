@@ -68,9 +68,10 @@ public class FieldsRegister
         {
             if (!field.getName().equals("name"))
             {
-                boolean isRelation = Collection.class.isAssignableFrom(field.getType());
+                Class<?> filedType = field.getType();
+                boolean isRelation = Collection.class.isAssignableFrom(filedType);
 
-                if (toCustom && !isRelation)
+                if (toCustom && !isRelation && !ENTITIES.contains(filedType))
                 {
                     filteredFields.add(field);
                 }

@@ -57,7 +57,7 @@ public class EntityRequester
                             "SELECT+Name," + relationCustomFileds + "+" +
                             "FROM+" + relation +
                         ")+" +
-                        "FROM+" + entityName;
+                        "FROM+" + entityName + "__c";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
         httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
@@ -145,7 +145,7 @@ public class EntityRequester
                             "SELECT+Name," + relationCustomFileds + "+" +
                             "FROM+" + relation +
                         ")+" +
-                        "FROM+" + entityName + "+" +
+                        "FROM+" + entityName + "__c+" +
                         "WHERE+" + entityName + "Id__c" + "='" + id + "'";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);

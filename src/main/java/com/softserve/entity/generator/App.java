@@ -27,7 +27,7 @@ public class App
 
     public static void main(String[] args)
     {
-        if (args[0].length() > 2)
+        if (args[0].length() > 2) //TODO
         {
             args = args[0].split(" ");
         }

@@ -30,6 +30,8 @@ public class Parser
         sObjectJson = FiledFormatter.toJavaStyle(sObjectJson)
                 .replaceAll("\\{ null\\n.*\\} \\] \\}", "\\]");
 
+        System.out.println(sObjectJson);
+
         return "{ " + sObjectJson;
     }
 }
