@@ -9,7 +9,8 @@ public class EntityGenerator
 {
     public static Entity generateEntity()
     {
-        Entity entity = new Entity("NEW_TABLE", "New table");
+        Entity entity = new Entity("EntityId", "New table");
+        entity.setTableName("NEW_TABLE");
 
         Field firstField = new Field();
         firstField.setName("first");
