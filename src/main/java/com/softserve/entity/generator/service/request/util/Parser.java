@@ -31,16 +31,16 @@ public class Parser
             stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
         }
 
-         pattern = Pattern.compile("\"[A-Z].*__r\"");
-         matcher = pattern.matcher(stringBuilder);
+        pattern = Pattern.compile("\"[A-Z].*__r\"");
+        matcher = pattern.matcher(stringBuilder);
 
         while (matcher.find())
         {
             stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
         }
 
-         pattern = Pattern.compile("\"Name\"");
-         matcher = pattern.matcher(stringBuilder);
+        pattern = Pattern.compile("\"Name\"");
+        matcher = pattern.matcher(stringBuilder);
 
         while (matcher.find())
         {
@@ -49,14 +49,14 @@ public class Parser
 
         sObjectJson = stringBuilder.toString();
         sObjectJson = sObjectJson
-            .replaceAll("__c","")
-            . replaceAll("__r. :", "\" : \\[ \\{");
+                .replaceAll("__c", "")
+                .replaceAll("__r. :", "\" : \\[ \\{");
 
 
         System.out.println("++++++++++");
         System.out.println(sObjectJson);
         System.out.println("++++++++++");
 
-        return "{ "+sObjectJson;
+        return "{ " + sObjectJson;
     }
 }
