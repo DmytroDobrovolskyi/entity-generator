@@ -78,7 +78,7 @@ public class BaseRepositoryTest
     public void testFindAll()
     {
         Class<Entity> entityClass = Entity.class;
-        String query = "SELECT FROM " + entityClass.getSimpleName();
+        String query = "FROM " + entityClass.getSimpleName();
 
         doReturn(mock(TypedQuery.class))
                 .when(entityManager)

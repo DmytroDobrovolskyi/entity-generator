@@ -13,7 +13,7 @@
 
     <property refid="jdbc.driver" name="driver"/>
 
-    <target name="db-init">
+    <target name="db-install">
         <java classname="com.softserve.entity.generator.config.database.init.DatabaseInitializer">
 
             <classpath refid="runtime.path"/>

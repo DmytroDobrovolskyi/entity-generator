@@ -65,6 +65,7 @@ public class AppConfig
         jpaProperties.put("hibernate.use_sql_comments", env.getProperty("hb.sqlComment"));
         jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hb.hbm2ddl.auto"));
         jpaProperties.put("hibernate.default_schema", env.getProperty("hb.defaultSchema"));
+        jpaProperties.put("hibernate.enable_lazy_load_no_trans", env.getProperty("hb.enableLazyLoadNoTrans"));
 
         return jpaProperties;
     }

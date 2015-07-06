@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import static com.softserve.entity.generator.util.LoggerUtil.logger;
-
 @Service
 public class EntityApplier implements Applier<Entity>
 {
@@ -23,8 +21,6 @@ public class EntityApplier implements Applier<Entity>
     {
         String createProcedureQueryString = ProcedureGenerator.generateProcedure(entity);
 
-        logger(this).info(createProcedureQueryString);
-        System.out.println(createProcedureQueryString);
         entityManager.createNativeQuery(createProcedureQueryString).executeUpdate();
     }
 }

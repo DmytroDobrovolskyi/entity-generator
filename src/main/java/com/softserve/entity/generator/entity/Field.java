@@ -75,7 +75,6 @@ public class Field {
                 "name='" + name + '\'' +
                 ", columnName='" + columnName + '\'' +
                 ", type='" + type + '\'' +
-                ", entity=" + entity +
                 '}';
     }
 

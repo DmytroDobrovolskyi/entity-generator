@@ -1,6 +1,7 @@
-IF  EXISTS (SELECT *
-            FROM sys.procedures
-            WHERE name ='$procedureName'
+IF  EXISTS (
+              SELECT *
+              FROM sys.procedures
+              WHERE name ='$procedureName'
             )
 DROP PROCEDURE $procedureName
 BEGIN
@@ -8,6 +9,8 @@ EXEC ('
 CREATE PROCEDURE $procedureName
 AS
 CREATE TABLE [core_schema].$entity.getTableName()(
+Id int PRIMARY KEY,
+Name varchar UNIQUE,
 #foreach($field in $entity.getFields())
     #if($foreach.index != $entity.getFields().size() - 1)
         $field.getColumnName() $field.getType().concat(',')

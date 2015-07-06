@@ -52,7 +52,7 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T>
     public List<T> findAll()
     {
         return entityManager
-                .createQuery("SELECT FROM " + entityClass.getSimpleName(), entityClass)
+                .createQuery("FROM " + entityClass.getSimpleName(), entityClass)
                 .getResultList();
     }
 }
