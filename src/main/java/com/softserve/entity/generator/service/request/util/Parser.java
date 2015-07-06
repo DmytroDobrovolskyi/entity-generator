@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class Parser
 {
 
-    public String parseSObjectJson(String sObjectJson, Class relation)
+    public String parseSObjectJson(String sObjectJson)
     {
 
         String removeRecords = "\"records\" : \\[ \\{.*? \\},";
@@ -20,8 +20,7 @@ public class Parser
                 .replaceAll("\\{\\n.*\"totalSize\" : .,\\n.*\"done\" :.*,", "")
                 .replaceAll("\\]", "] }")
                 .replaceAll("\\}\\n.*} \\] \\}\\n.*\\}", "")
-                .replaceAll("\\{\\n.*\\n.*\\n.*\\{", "\\{")
-                .replaceAll("\"[A-Z].*__r\" :", "\"fields\" : \\[ \\{");
+                .replaceAll("\\{\\n.*\\n.*\\n.*\\{", "\\{");
 
         StringBuilder stringBuilder = new StringBuilder(sObjectJson);
         Pattern pattern = Pattern.compile("\"[A-Z].*__c\"");
@@ -31,6 +30,15 @@ public class Parser
         {
             stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
         }
+
+         pattern = Pattern.compile("\"[A-Z].*__r\"");
+         matcher = pattern.matcher(stringBuilder);
+
+        while (matcher.find())
+        {
+            stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
+        }
+
          pattern = Pattern.compile("\"Name\"");
          matcher = pattern.matcher(stringBuilder);
 
@@ -40,13 +48,13 @@ public class Parser
         }
 
         sObjectJson = stringBuilder.toString();
-        sObjectJson = sObjectJson.replaceAll("__c","");
+        sObjectJson = sObjectJson
+            .replaceAll("__c","")
+            . replaceAll("__r. :", "\" : \\[ \\{");
 
 
         System.out.println("++++++++++");
-        System.out.println(stringBuilder);
-        Field[]field = relation.getFields();
-        System.out.println(field.length);
+        System.out.println(sObjectJson);
         System.out.println("++++++++++");
 
         return "{ "+sObjectJson;

@@ -16,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class EntityRequester
 {
@@ -46,9 +47,10 @@ public class EntityRequester
 
             List<String> listOfParsedObjects = new ArrayList<String>();
 
-            for (String s : splitter.splitSObjects(stringifiedResponse))
+
+            for (String stringToParse : splitter.splitSObjects(stringifiedResponse))
             {
-                listOfParsedObjects.add(parser.parseSObjectJson(s, Entity.class));
+                listOfParsedObjects.add(parser.parseSObjectJson(stringToParse));
             }
 
             Gson gson = new Gson();
@@ -59,13 +61,19 @@ public class EntityRequester
             {
                 Entity entity = gson.fromJson(parsedString, Entity.class);
                 entities.add(entity);
-
-                for (Field field : entity.getFields())
+                if(entity.getFields()!=null)
                 {
-                    field.setEntity(entity);
+                    for (Field field : entity.getFields())
+                    {
+                        field.setEntity(entity);
+                    }
                 }
             }
             System.out.println(entities.size());
+            Set<Field> fields = entities.get(1).getFields();
+            for(Field field :fields){
+                System.out.println(field.getColumnName());
+            }
             System.out.println(entities.get(1).getTableName());
         }
         catch (ClientProtocolException ex)
