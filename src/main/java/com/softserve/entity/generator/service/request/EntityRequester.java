@@ -43,7 +43,6 @@ public class EntityRequester
         {
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
-            stringifiedResponse = stringifiedResponse.replaceAll("\\}\\n.*},\\s\\{", "%");
 
             List<String> listOfParsedObjects = new ArrayList<String>();
 
@@ -61,6 +60,7 @@ public class EntityRequester
             {
                 Entity entity = gson.fromJson(parsedString, Entity.class);
                 entities.add(entity);
+
                 if(entity.getFields()!=null)
                 {
                     for (Field field : entity.getFields())
@@ -68,7 +68,11 @@ public class EntityRequester
                         field.setEntity(entity);
                     }
                 }
+
             }
+            System.out.println(entities.size());
+            for(int i=0;entities.size()>i;i++){
+                System.out.println(entities.get(i).getTableName());}
         }
         catch (ClientProtocolException ex)
         {
@@ -78,19 +82,6 @@ public class EntityRequester
         {
             throw new AssertionError(ex);
         }
-    }
-
-    private List<String> splitSObjects(String stringifiedJson)
-    {
-        List<String> objectsList = new ArrayList<String>();
-        String[] sObject = stringifiedJson.split("%");
-
-        for (String s : sObject)
-        {
-            objectsList.add(s);
-        }
-
-        return objectsList;
     }
 
     public void getFullEntityInfo()

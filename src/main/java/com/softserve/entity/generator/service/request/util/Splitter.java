@@ -8,6 +8,10 @@ public class Splitter
     public List<String> splitSObjects(String stringifiedJson)
     {
         List<String> objectsList = new ArrayList<String>();
+        stringifiedJson = stringifiedJson
+                .replaceAll("\\}\\n.*},\\s\\{", "%")
+                .replaceAll("__r\" : null\\n.*\\}, \\{", "__r\": \\[ \\] %");
+
         String[] sObject = stringifiedJson.split("%");
 
         for (String s : sObject)

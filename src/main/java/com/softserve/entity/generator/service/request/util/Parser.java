@@ -53,6 +53,9 @@ public class Parser
                 .replaceAll("__r. :", "\" : \\[ \\{")
                 .replaceAll("\\{ null\\n.*\\} \\] \\}","\\]");
 
+        System.out.println("------------");
+        System.out.println(sObjectJson);
+        System.out.println("------------");
         return "{ " + sObjectJson;
     }
 }
