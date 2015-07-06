@@ -9,12 +9,14 @@ import javax.persistence.*;
 @Table(name = "FIELD")
 public class Field {
 
+    @Id
+    @Column(name = "Field_Id")
     private String fieldId;
 
     @Column(name = "Name")
     private String name;
 
-    @Id
+
     @Column(name="Column_Name")
     private String columnName;
 

@@ -7,8 +7,10 @@ import java.util.Set;
 @Table(name = "ENTITY")
 public class Entity
 {
-    private String entityId;
     @Id
+    @Column(name = "Entity_Id")
+    private String entityId;
+
     @Column(name = "Table_Name")
     private String tableName;
 
@@ -21,9 +23,9 @@ public class Entity
 
     protected Entity() {}
 
-    public Entity(String tableName, String name)
+    public Entity(String entityId, String name)
     {
-        this.tableName = tableName;
+        this.entityId = entityId;
         this.name = name;
     }
 
