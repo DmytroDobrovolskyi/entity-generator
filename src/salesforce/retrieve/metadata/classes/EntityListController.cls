@@ -29,6 +29,8 @@ public class EntityListController
 
     public void deleteEntity()
     {
+        Id id = System.currentPageReference().getParameters().get('id');
+        System.debug(id);
         Database.delete(entityMap.get(tableName));
         entityMap.remove(tableName);
     }

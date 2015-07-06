@@ -108,7 +108,7 @@ public class EntityRequester
     public static void main(String[] args)
     {
         String result = new EntityRequester().getAllEntities();
-//        logger.info(result);
-        new Parser().parse(result);
+      logger.info(result);
+
     }
 }
