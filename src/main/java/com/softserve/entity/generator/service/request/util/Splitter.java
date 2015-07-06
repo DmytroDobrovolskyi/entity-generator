@@ -1,8 +1,12 @@
 package com.softserve.entity.generator.service.request.util;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+@Service
 public class Splitter
 {
     public List<String> splitSObjects(String stringifiedJson)
@@ -14,10 +18,7 @@ public class Splitter
 
         String[] sObject = stringifiedJson.split("%");
 
-        for (String s : sObject)
-        {
-            objectsList.add(s);
-        }
+        Collections.addAll(objectsList, sObject);
 
         return objectsList;
     }

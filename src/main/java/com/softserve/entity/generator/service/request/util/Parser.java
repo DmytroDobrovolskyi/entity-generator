@@ -1,11 +1,15 @@
 package com.softserve.entity.generator.service.request.util;
 
-import java.lang.reflect.Field;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class Parser
 {
+    private static final Logger logger = Logger.getLogger(Parser.class);
 
     public String parseSObjectJson(String sObjectJson)
     {
@@ -51,11 +55,8 @@ public class Parser
         sObjectJson = sObjectJson
                 .replaceAll("__c", "")
                 .replaceAll("__r. :", "\" : \\[ \\{")
-                .replaceAll("\\{ null\\n.*\\} \\] \\}","\\]");
+                .replaceAll("\\{ null\\n.*\\} \\] \\}", "\\]");
 
-        System.out.println("------------");
-        System.out.println(sObjectJson);
-        System.out.println("------------");
         return "{ " + sObjectJson;
     }
 }

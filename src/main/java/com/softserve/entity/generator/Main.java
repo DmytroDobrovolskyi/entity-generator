@@ -1,14 +1,9 @@
 package com.softserve.entity.generator;
 
-import com.softserve.entity.generator.config.JpaConfig;
+import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.Applier;
-import com.softserve.entity.generator.service.request.EntityRequester;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -31,12 +26,10 @@ public class Main
 
     public static void main(String[] args)
     {
-        ApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         Main main = context.getBean(Main.class);
         main.testConfig();
-       /* main.testApplier();*/
-        EntityRequester entityRequester = new EntityRequester();
-        entityRequester.getAllEntitiesWithFields();
+        main.testApplier();
     }
 
     public void testConfig()

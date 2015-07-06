@@ -20,7 +20,7 @@ import java.util.Map;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.softserve.entity.generator")
 @PropertySource(value = "/WEB-INF/database.properties")
-public class JpaConfig
+public class AppConfig
 {
     @Autowired
     private Environment env;

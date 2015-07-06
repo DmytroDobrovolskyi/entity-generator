@@ -7,12 +7,26 @@
     <property name="soap.output.jar" value="${lib.dir}/compile/output.jar"/>
     <property name="soap.wsc" value="${lib.dir}/compile/wsc-22.jar"/>
     <property name="jdbc.driver" value="${lib.dir}/sqljdbc4-4.0.jar"/>
+    <property name="compile.dir" value="${lib.dir}/compile"/>
+    <property name="runtime.dir" value="${lib.dir}/runtime"/>
 
     <import file="${sf.resources}/sf.build.xml"/>
     <import file="${resources.dir}/WEB-INF/database.build.xml"/>
     <import file="${sf.resources}/sf.purge.build.xml"/>
 
-    <target name="run" depends="install">
+    <path id="runtime.path">
+        <fileset dir="${runtime.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="compile.path">
+        <fileset dir="${compile.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="run">
         <java classname="com.softserve.entity.generator.Main">
 
             <classpath refid="runtime.path"/>
@@ -99,5 +113,22 @@
                 <include name="*.log"/>
             </fileset>
         </delete>
+    </target>
+
+    <target name="run-app">
+        <java classname="com.softserve.entity.generator.App">
+
+            <arg value="${command.line.args}"/>
+
+            <classpath refid="runtime.path"/>
+
+            <classpath>
+                <pathelement location="${main.classes.dir}"/>
+                <pathelement location="${resources.dir}"/>
+                <pathelement location="${jdbc.driver}"/>
+                <pathelement location="${soap.output.jar}"/>
+                <pathelement location="${soap.wsc}"/>
+            </classpath>
+        </java>
     </target>
 </project>

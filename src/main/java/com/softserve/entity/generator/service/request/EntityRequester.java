@@ -12,31 +12,43 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class EntityRequester
 {
-    private String accessToken = new Authentication().login();
+    private static final Logger logger = Logger.getLogger(EntityRequester.class);
 
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v33.0/";
-    private Splitter splitter = new Splitter();
-    private Parser parser = new Parser();
 
-    public void getAllEntitiesWithFields()
+    private Splitter splitter;
+    private Parser parser;
+    private Authenticator authenticator;
+
+    public EntityRequester(String username, String password, String secToken)
+    {
+        splitter = new Splitter();
+        parser = new Parser();
+        authenticator = new Authenticator(username, password, secToken);
+    }
+
+    public List<Entity> getAllEntities()
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        String sqlQuery = "SELECT+EntityId__c,TableName__c,Name,(Select+ColumnName__c,Type__c,FieldId__c," +
-                "Name+From+Fields__r)" +
-                "+FROM+Entity__c";
+        String sqlQuery =
+                        "SELECT+EntityId__c,TableName__c,Name," +
+                        "(" +
+                            "Select+ColumnName__c,Type__c,FieldId__c,Name+From+Fields__r" +
+                        ")+" +
+                        "FROM+Entity__c";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + accessToken));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
@@ -44,120 +56,116 @@ public class EntityRequester
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
 
-            List<String> listOfParsedObjects = new ArrayList<String>();
+            List<String> parsableSObjects = new ArrayList<String>();
 
-
-            for (String stringToParse : splitter.splitSObjects(stringifiedResponse))
+            for (String parsableSObject : splitter.splitSObjects(stringifiedResponse))
             {
-                listOfParsedObjects.add(parser.parseSObjectJson(stringToParse));
+                parsableSObjects.add(parser
+                                .parseSObjectJson(parsableSObject)
+                );
             }
 
             Gson gson = new Gson();
 
             List<Entity> entities = new ArrayList<Entity>();
 
-            for (String parsedString : listOfParsedObjects)
+            for (String parsableSObject : parsableSObjects)
             {
-                Entity entity = gson.fromJson(parsedString, Entity.class);
+                Entity entity = gson.fromJson(parsableSObject, Entity.class);
                 entities.add(entity);
 
-                if(entity.getFields()!=null)
+                if (entity.getFields() != null)
                 {
                     for (Field field : entity.getFields())
                     {
                         field.setEntity(entity);
                     }
                 }
-
             }
-            System.out.println(entities.size());
-            for(int i=0;entities.size()>i;i++){
-                System.out.println(entities.get(i).getTableName());}
+            return entities;
         }
         catch (ClientProtocolException ex)
         {
+            logger.error(ex);
             throw new AssertionError(ex);
         }
         catch (IOException ex)
         {
+            logger.error(ex);
             throw new AssertionError(ex);
         }
     }
 
-    public void getFullEntityInfo()
+    public String getFullInfo()
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "sobjects/Entity__c");
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + accessToken));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
         {
             HttpResponse response = httpClient.execute(httpGet);
-            System.out.println(EntityUtils.toString(response.getEntity()));
+            return EntityUtils.toString(response.getEntity());
         }
         catch (ClientProtocolException ex)
         {
+            logger.error(ex);
             throw new AssertionError(ex);
         }
         catch (IOException ex)
         {
+            logger.error(ex);
             throw new AssertionError(ex);
         }
     }
 
-    public void getEntityByExternalId(String id)
+    public Entity getEntityByExternalId(String id)
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        String sqlQuery = "SELECT+EntityId__c,TableName__c,Name,(Select+ColumnName__c," +
-                "Type__c,FieldId__c,Entity__c,Name+From+Fields__r)" +
-                "+FROM+Entity__c+" +
-                "WHERE+EntityId__c='" + id + "'";
+        String sqlQuery =
+                        "SELECT+EntityId__c,TableName__c,Name," +
+                        "(" +
+                        "   Select+ColumnName__c,Type__c,FieldId__c,Name+From+Fields__r" +
+                        ")+" +
+                        "FROM+Entity__c+" +
+                        "WHERE+EntityId__c='" + id + "'";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + accessToken));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
         {
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
-            System.out.println(stringifiedResponse);
+
+            String parsableSObject = parser.parseSObjectJson(stringifiedResponse);
+
+            Gson gson = new Gson();
+
+            Entity entity = gson.fromJson(parsableSObject, Entity.class);
+
+            if (entity.getFields() != null)
+            {
+                for (Field field : entity.getFields())
+                {
+                    field.setEntity(entity);
+                }
+            }
+
+            return entity;
         }
         catch (ClientProtocolException ex)
         {
+            logger.error(ex);
             throw new AssertionError(ex);
         }
         catch (IOException ex)
         {
-            throw new AssertionError(ex);
-        }
-    }
-
-    public void getById(String id)
-    {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
-        HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION +
-                "sobjects/Entity__c/" + id);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + accessToken));
-
-        try
-        {
-            HttpResponse response = httpClient.execute(httpGet);
-            String stringifiedResponse = EntityUtils.toString(response.getEntity());
-            System.out.println();
-            System.out.println("//////");
-            System.out.println(stringifiedResponse);
-        }
-        catch (ClientProtocolException ex)
-        {
-            throw new AssertionError(ex);
-        }
-        catch (IOException ex)
-        {
+            logger.error(ex);
             throw new AssertionError(ex);
         }
     }
