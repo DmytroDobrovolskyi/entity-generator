@@ -13,12 +13,13 @@ public class Parser
 
     public String parseSObjectJson(String sObjectJson)
     {
+        sObjectJson = Pattern.compile("\"records\" : \\[ \\{.*? \\},", Pattern.DOTALL)
+                .matcher(sObjectJson)
+                .replaceAll("");
 
-        String removeRecords = "\"records\" : \\[ \\{.*? \\},";
-        sObjectJson = Pattern.compile(removeRecords, Pattern.DOTALL).matcher(sObjectJson).replaceAll("");
-
-        String removeAttributes = "\"attributes\" : \\{.*?\\},";
-        sObjectJson = Pattern.compile(removeAttributes, Pattern.DOTALL).matcher(sObjectJson).replaceAll("");
+        sObjectJson = Pattern.compile("\"attributes\" : \\{.*?\\},", Pattern.DOTALL)
+                .matcher(sObjectJson)
+                .replaceAll("");
 
         sObjectJson = sObjectJson
                 .replaceAll("\\{\\n.*\"totalSize\" : .,\\n.*\"done\" :.*,", "")
@@ -26,35 +27,7 @@ public class Parser
                 .replaceAll("\\}\\n.*} \\] \\}\\n.*\\}", "")
                 .replaceAll("\\{\\n.*\\n.*\\n.*\\{", "\\{");
 
-        StringBuilder stringBuilder = new StringBuilder(sObjectJson);
-        Pattern pattern = Pattern.compile("\"[A-Z].*__c\"");
-        Matcher matcher = pattern.matcher(stringBuilder);
-
-        while (matcher.find())
-        {
-            stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
-        }
-
-        pattern = Pattern.compile("\"[A-Z].*__r\"");
-        matcher = pattern.matcher(stringBuilder);
-
-        while (matcher.find())
-        {
-            stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
-        }
-
-        pattern = Pattern.compile("\"Name\"");
-        matcher = pattern.matcher(stringBuilder);
-
-        while (matcher.find())
-        {
-            stringBuilder.setCharAt(matcher.start() + 1, Character.toLowerCase(stringBuilder.charAt(matcher.start() + 1)));
-        }
-
-        sObjectJson = stringBuilder.toString();
-        sObjectJson = sObjectJson
-                .replaceAll("__c", "")
-                .replaceAll("__r. :", "\" : \\[ \\{")
+        sObjectJson = FiledFormatter.toJavaStyle(sObjectJson)
                 .replaceAll("\\{ null\\n.*\\} \\] \\}", "\\]");
 
         return "{ " + sObjectJson;

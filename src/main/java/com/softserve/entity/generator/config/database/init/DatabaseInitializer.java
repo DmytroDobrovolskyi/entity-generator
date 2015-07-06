@@ -48,5 +48,6 @@ public class DatabaseInitializer
                 "USE " + DATABASE_NAME + "; " +
                 "EXEC ('CREATE SCHEMA " + SCHEMA_NAME + " ;');"
         );
+        logger.info("Database was successfully initialized");
     }
 }
