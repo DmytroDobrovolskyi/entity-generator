@@ -50,12 +50,8 @@ public class Parser
         sObjectJson = stringBuilder.toString();
         sObjectJson = sObjectJson
                 .replaceAll("__c", "")
-                .replaceAll("__r. :", "\" : \\[ \\{");
-
-
-        System.out.println("++++++++++");
-        System.out.println(sObjectJson);
-        System.out.println("++++++++++");
+                .replaceAll("__r. :", "\" : \\[ \\{")
+                .replaceAll("\\{ null\\n.*\\} \\] \\}","\\]");
 
         return "{ " + sObjectJson;
     }

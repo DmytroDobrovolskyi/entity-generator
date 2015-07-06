@@ -69,12 +69,6 @@ public class EntityRequester
                     }
                 }
             }
-            System.out.println(entities.size());
-            Set<Field> fields = entities.get(1).getFields();
-            for(Field field :fields){
-                System.out.println(field.getColumnName());
-            }
-            System.out.println(entities.get(1).getTableName());
         }
         catch (ClientProtocolException ex)
         {
