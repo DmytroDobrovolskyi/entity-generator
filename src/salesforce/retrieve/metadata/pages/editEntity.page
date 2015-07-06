@@ -99,7 +99,7 @@
                                             styleClass="btn btn-info pull-right" oncomplete="initAndDeleteErrors()"/>
                     </apex:outputPanel>
 
-                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="init()">
+                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="initAndDeleteErrors()">
                         <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
                            data-content="Add new field"></i>
                     </apex:commandLink>

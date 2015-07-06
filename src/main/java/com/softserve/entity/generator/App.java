@@ -75,10 +75,6 @@ public class App
     {
         for (Entity entity : entityService.findAll())
         {
-            logger.info("---------------------");
-            logger.info(entity);
-            logger.info(entity.getFields());
-            logger.info("---------------------");
             applier.apply(entity);
         }
     }
