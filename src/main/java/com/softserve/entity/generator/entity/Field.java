@@ -3,11 +3,15 @@ package com.softserve.entity.generator.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @javax.persistence.Entity
 @Table(name = "FIELD")
-public class Field {
+public class Field
+{
 
     @Id
     @Column(name = "Field_Id")
@@ -16,8 +20,7 @@ public class Field {
     @Column(name = "Name")
     private String name;
 
-
-    @Column(name="Column_Name")
+    @Column(name = "Column_Name")
     private String columnName;
 
     @Column(name = "Type")
@@ -36,65 +39,73 @@ public class Field {
         this.fieldId = fieldId;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public String getColumnName() {
+    public String getColumnName()
+    {
         return columnName;
     }
 
-    public void setColumnName(String columnName) {
+    public void setColumnName(String columnName)
+    {
         this.columnName = columnName;
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(String type)
+    {
         this.type = type;
     }
 
-    public Entity getEntity() {
+    public Entity getEntity()
+    {
         return entity;
     }
 
-    public void setEntity(Entity entity) {
+    public void setEntity(Entity entity)
+    {
         this.entity = entity;
     }
 
-
-    @Override
-    public String toString() {
-        return "Field{" +
-                "name='" + name + '\'' +
-                ", columnName='" + columnName + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Field field = (Field) o;
-
+    public boolean isChanged(Field field)
+    {
         return new EqualsBuilder()
-                .append(name, field.name)
+                .append(columnName, field.columnName)
+                .append(type, field.type)
                 .isEquals();
     }
 
     @Override
-    public int hashCode() {
+    public boolean equals(Object o)
+    {
+        if (this == o) { return true; }
+
+        if (o == null || getClass() != o.getClass()) { return false; }
+
+        Field field = (Field) o;
+
+        return new EqualsBuilder()
+                .append(fieldId, field.fieldId)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode()
+    {
         return new HashCodeBuilder(17, 37)
-                .append(name)
+                .append(fieldId)
                 .toHashCode();
     }
 }

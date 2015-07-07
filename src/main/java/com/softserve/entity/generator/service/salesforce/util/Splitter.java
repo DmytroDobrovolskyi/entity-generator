@@ -1,15 +1,12 @@
-package com.softserve.entity.generator.service.request.util;
-
-import org.springframework.stereotype.Service;
+package com.softserve.entity.generator.service.salesforce.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Service
 public class Splitter
 {
-    public List<String> splitSObjects(String stringifiedJson)
+    public static List<String> splitSObjects(String stringifiedJson)
     {
         List<String> sObjects = new ArrayList<String>();
         stringifiedJson = stringifiedJson

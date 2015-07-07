@@ -1,11 +1,10 @@
-package com.softserve.entity.generator.service.request;
+package com.softserve.entity.generator.service.salesforce;
 
 import com.google.gson.Gson;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
-import com.softserve.entity.generator.service.request.util.FieldsRegister;
-import com.softserve.entity.generator.service.request.util.Parser;
-import com.softserve.entity.generator.service.request.util.Splitter;
+import com.softserve.entity.generator.service.salesforce.util.Parser;
+import com.softserve.entity.generator.service.salesforce.util.Splitter;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -26,38 +25,37 @@ public class EntityRequester
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v33.0/";
 
-    private final Splitter splitter;
-    private final Parser parser;
-    private final Authenticator authenticator;
+    private Authenticator authenticator;
 
-    private final String customFields;
-    private final String relation;
-    private final String relationCustomFileds;
+    private static final String CUSTOM_FIELDS;
+    private static final String RELATION;
+    private static final String RELATION_CUSTOM_FIELDS;
+    private static final String ENTITY_NAME;
 
-    public EntityRequester(String username, String password, String secToken)
+   static
+   {
+        ENTITY_NAME = Entity.class.getSimpleName() + "__c";
+        CUSTOM_FIELDS = FieldsRegister.getCustomFieldsMap().get(Entity.class);
+        RELATION = Field.class.getSimpleName() + "s__r";
+        RELATION_CUSTOM_FIELDS = FieldsRegister.getCustomFieldsMap().get(Field.class);
+    }
+
+    public EntityRequester(Authenticator authenticator)
     {
-        splitter = new Splitter();
-        parser = new Parser();
-        authenticator = new Authenticator(username, password, secToken);
-
-        customFields = FieldsRegister.getCustomFieldsMap().get(Entity.class);
-        relation = FieldsRegister.getRelationsMap().get(Entity.class);
-        relationCustomFileds = FieldsRegister.getCustomFieldsMap().get(Field.class);
+        this.authenticator = authenticator;
     }
 
     public List<Entity> getAllEntities()
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        String entityName = Entity.class.getSimpleName();
-
         String sqlQuery =
-                        "SELECT+Name," + customFields + "," +
+                        "SELECT+Name," + CUSTOM_FIELDS + "," +
                         "(" +
-                            "SELECT+Name," + relationCustomFileds + "+" +
-                            "FROM+" + relation +
+                            "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
+                            "FROM+" + RELATION +
                         ")+" +
-                        "FROM+" + entityName + "__c";
+                        "FROM+" + ENTITY_NAME;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
         httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
@@ -70,10 +68,10 @@ public class EntityRequester
 
             List<String> parsableSObjects = new ArrayList<String>();
 
-            for (String parsableSObject : splitter.splitSObjects(stringifiedResponse))
+            for (String parsableSObject : Splitter.splitSObjects(stringifiedResponse))
             {
-                parsableSObjects.add(parser
-                                .parseSObjectJson(parsableSObject)
+                parsableSObjects.add(
+                        Parser.parseSObjectJson(parsableSObject)
                 );
             }
 
@@ -140,10 +138,10 @@ public class EntityRequester
         String entityName = Entity.class.getSimpleName();
 
         String sqlQuery =
-                        "SELECT+Name," + customFields + "," +
+                        "SELECT+Name," + CUSTOM_FIELDS + "," +
                         "(" +
-                            "SELECT+Name," + relationCustomFileds + "+" +
-                            "FROM+" + relation +
+                            "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
+                            "FROM+" + RELATION +
                         ")+" +
                         "FROM+" + entityName + "__c+" +
                         "WHERE+" + entityName + "Id__c" + "='" + id + "'";
@@ -157,7 +155,7 @@ public class EntityRequester
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
 
-            String parsableSObject = parser.parseSObjectJson(stringifiedResponse);
+            String parsableSObject = Parser.parseSObjectJson(stringifiedResponse);
 
             Gson gson = new Gson();
 

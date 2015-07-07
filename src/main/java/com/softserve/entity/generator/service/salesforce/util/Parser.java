@@ -1,17 +1,14 @@
-package com.softserve.entity.generator.service.request.util;
+package com.softserve.entity.generator.service.salesforce.util;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service
 public class Parser
 {
     private static final Logger logger = Logger.getLogger(Parser.class);
 
-    public String parseSObjectJson(String sObjectJson)
+    public static String parseSObjectJson(String sObjectJson)
     {
         sObjectJson = Pattern.compile("\"records\" : \\[ \\{.*? \\},", Pattern.DOTALL)
                 .matcher(sObjectJson)

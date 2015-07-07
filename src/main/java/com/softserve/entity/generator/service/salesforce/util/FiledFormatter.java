@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.service.request.util;
+package com.softserve.entity.generator.service.salesforce.util;
 
 import org.apache.log4j.Logger;
 

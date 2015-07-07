@@ -12,7 +12,8 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import static com.softserve.entity.generator.config.DatabaseInitializationConfig.DATABASE_NAME;
-import static com.softserve.entity.generator.config.DatabaseInitializationConfig.SCHEMA_NAME;
+import static com.softserve.entity.generator.config.DatabaseInitializationConfig.DEFAULT_SCHEMA;
+import static com.softserve.entity.generator.config.DatabaseInitializationConfig.GENERATED_TABLES_SCHEMA;
 
 @Component
 public class DatabaseInitializer
@@ -46,7 +47,8 @@ public class DatabaseInitializer
                 "DROP DATABASE " + DATABASE_NAME + "; " +
                 "CREATE DATABASE " + DATABASE_NAME + "; " +
                 "USE " + DATABASE_NAME + "; " +
-                "EXEC ('CREATE SCHEMA " + SCHEMA_NAME + " ;');"
+                "EXEC ('CREATE SCHEMA " + DEFAULT_SCHEMA + " ;');" +
+                "EXEC ('CREATE SCHEMA " + GENERATED_TABLES_SCHEMA + " ;');"
         );
         logger.info("Database was successfully initialized");
     }

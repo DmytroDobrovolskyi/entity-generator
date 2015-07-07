@@ -1,26 +1,28 @@
-IF  EXISTS (
-              SELECT *
-              FROM sys.procedures
-              WHERE name ='$procedureName'
-            )
-DROP PROCEDURE $procedureName
-BEGIN
-EXEC ('
-CREATE PROCEDURE $procedureName
-AS
-CREATE TABLE [core_schema].$entity.getTableName()(
-Id int PRIMARY KEY,
-Name varchar UNIQUE,
-#foreach($field in $entity.getFields())
-    #if($foreach.index != $entity.getFields().size() - 1)
-        $field.getColumnName() $field.getType().concat(',')
-    #else
-        $field.getColumnName() $field.getType()
+#set($fields = $entity.getFields())
+
+#if($fields.size() != 0 && $entity.getProcessingIsNeeded())
+    IF  EXISTS (
+                    SELECT *
+                    FROM sys.procedures
+                    WHERE name ='$procedureName'
+                )
+    DROP PROCEDURE $procedureName
+    BEGIN
+    EXEC ('
+    CREATE PROCEDURE $procedureName
+    AS
+    CREATE TABLE [mdd].$entity.getTableName()(
+    #foreach($field in $fields)
+        #if($foreach.index != $entity.getFields().size() - 1)
+            $field.getColumnName() $field.getType().concat(',')
+        #else
+            $field.getColumnName() $field.getType()
+        #end
     #end
+        );
+    ')
+    END
+    BEGIN
+    EXEC ('$procedureName')
+    END
 #end
-);
-')
-END
-BEGIN
-EXEC ('$procedureName')
-END

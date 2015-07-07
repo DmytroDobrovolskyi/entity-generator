@@ -4,7 +4,9 @@ import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.Applier;
-import com.softserve.entity.generator.service.request.EntityRequester;
+import com.softserve.entity.generator.service.salesforce.Authenticator;
+import com.softserve.entity.generator.service.salesforce.EntityChangesTracker;
+import com.softserve.entity.generator.service.salesforce.EntityRequester;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class App
@@ -23,11 +25,14 @@ public class App
     private EntityService entityService;
 
     @Autowired
+    private EntityChangesTracker entityChangesTracker;
+
+    @Autowired
     private Applier<Entity> applier;
 
     public static void main(String[] args)
     {
-        if (args[0].length() > 2) //TODO
+        if (args.length == 1)
         {
             args = args[0].split(" ");
         }
@@ -51,23 +56,43 @@ public class App
             {
                 help(options);
             }
+
+            String username = commandLine.getOptionValue('u');
+            String password = commandLine.getOptionValue('p');
+            String token = commandLine.getOptionValue('t');
+
+            if (username == null || password == null || token == null)
+            {
+                help(options);
+                System.exit(0);
+            }
+
             ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
             App app = context.getBean(App.class);
 
-            app.saveEntities(commandLine.getOptionValue('u'), commandLine.getOptionValue('p'),
-                    commandLine.getOptionValue('t'));
+            Authenticator authenticator = new Authenticator(
+                    username,
+                    password,
+                    token
+            );
+
+            EntityRequester entityRequester = new EntityRequester(authenticator);
+
+            app.saveEntities(entityRequester.getAllEntities());
 
             app.executeProcedures();
         }
         catch (ParseException ex)
         {
             logger.info("Failed to parse command line properties", ex);
+            help(options);
         }
     }
 
-    public void saveEntities(String username, String password, String secToken)
+    public void saveEntities(List<Entity> entities)
     {
-        for (Entity entity : new EntityRequester(username, password, secToken).getAllEntities())
+        entityChangesTracker.trackChanges(entities);
+        for (Entity entity : entities)
         {
             entityService.merge(entity);
         }
@@ -78,6 +103,8 @@ public class App
         for (Entity entity : entityService.findAll())
         {
             applier.apply(entity);
+            entity.setProcessingIsNeeded(false);
+            entityService.merge(entity);
         }
     }
 

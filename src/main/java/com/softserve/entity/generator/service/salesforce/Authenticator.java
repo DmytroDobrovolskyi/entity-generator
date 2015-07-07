@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.service.request;
+package com.softserve.entity.generator.service.salesforce;
 
 import com.sforce.soap.enterprise.Connector;
 import com.sforce.soap.enterprise.EnterpriseConnection;
@@ -49,6 +49,7 @@ public class Authenticator
         catch (ConnectionException ex)
         {
             logger.error("Failed to establish connection", ex);
+            System.exit(0);
         }
         return loginResult.getSessionId();
     }

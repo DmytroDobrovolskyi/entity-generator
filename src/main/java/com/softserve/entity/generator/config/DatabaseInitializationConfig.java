@@ -17,7 +17,8 @@ public class DatabaseInitializationConfig
     private static final Logger logger = Logger.getLogger(DatabaseInitializationConfig.class);
 
     public static final String DATABASE_NAME = "entity_generator";
-    public static final String SCHEMA_NAME = "core_schema";
+    public static final String DEFAULT_SCHEMA = "core_schema";
+    public static final String GENERATED_TABLES_SCHEMA = "mdd";
 
     @Autowired
     private Environment env;
