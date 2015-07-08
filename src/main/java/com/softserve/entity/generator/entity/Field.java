@@ -24,7 +24,7 @@ public class Field
     private String type;
 
     @Embedded
-    private State state;
+    private State state = new State();
 
     @ManyToOne
     @JoinColumn(name = "Entity_Id")
@@ -93,12 +93,6 @@ public class Field
 
     public State getState()
     {
-        if (state == null)
-        {
-            state = new State();
-            state.setIsNew(true);
-            state.setIsDeleted(false);
-        }
         return state;
     }
 

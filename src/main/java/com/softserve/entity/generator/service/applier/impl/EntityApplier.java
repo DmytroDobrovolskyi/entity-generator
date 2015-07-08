@@ -17,13 +17,15 @@ public class EntityApplier implements Applier<Entity>
 
     @Override
     @Transactional
-    public void apply(Entity entity)
+    public boolean apply(Entity entity)
     {
-        if (entity.getFields().size() != 0)
+        if (entity.getFields().size() != 0 || entity.getState().getIsDeleted())
         {
             String createProcedureQueryString = ProcedureGenerator.generateProcedure(entity);
 
             entityManager.createNativeQuery(createProcedureQueryString).executeUpdate();
+            return true;
         }
+        return false;
     }
 }

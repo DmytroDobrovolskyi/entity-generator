@@ -38,20 +38,24 @@ public class EntityChangesTracker
                 boolean isChanged = entity.isChanged(managedEntity);
                 if (isChanged)
                 {
-                    state.setIsNameChanged(true);
                     state.setOldName(managedEntity.getTableName());
                 }
 
-                state.setIsNew(false);
+                if (managedEntity.getFields().size() != 0 || state.getIsDeleted())
+                {
+                    state.setIsNew(false);
+                }
             }
             managedEntities.remove(id);
         }
 
         for (String id : managedEntities.keySet())
         {
-            managedEntities
-                    .get(id)
-                    .getState().setIsDeleted(true);
+            Entity entity = managedEntities.get(id);
+            State entityState= entity.getState();
+            entityState.setIsDeleted(true);
+            entityState.setIsNew(false);
+            entityService.merge(entity);
         }
     }
 }

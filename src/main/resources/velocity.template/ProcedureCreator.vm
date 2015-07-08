@@ -1,6 +1,7 @@
 #set($fields = $entity.getFields())
 #set($tableName = $entity.getTableName())
 #set($state = $entity.getState())
+#set($oldName = $state.getOldName())
 
     IF  EXISTS
     (
@@ -25,10 +26,10 @@
                     #end
                 #end
             )'
-        )
+        );
 
         EXEC ('$procedureName')
-    #elseif($state.getIsNameChanged())
+    #elseif($oldName)
         DECLARE @query nvarchar(255);
 
         SET @query =
@@ -36,11 +37,18 @@
             'CREATE PROCEDURE $procedureName
              AS
              EXEC sp_rename ''$schema.$state.getOldName()'', ''$tableName'' '
-        )
+        );
 
         exec sp_executesql @query
 
         EXEC ('$procedureName')
+    #elseif($state.getIsDeleted())
+        EXEC
+        (
+            'CREATE PROCEDURE $procedureName
+             AS
+             DROP TABLE $schema.$tableName'
+        );
+
+        EXEC ('$procedureName')
     #end
-
-

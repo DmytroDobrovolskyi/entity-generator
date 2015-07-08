@@ -24,9 +24,9 @@ public class Entity
     private String name;
 
     @Embedded
-    private State state;
+    private State state = new State();
 
-    @Column(name = "Is_Field_Changed")
+    @Column(name = "Is_Fields_Changed")
     private Boolean isFieldsChanged = false;
 
     @OneToMany(cascade = {CascadeType.MERGE})
@@ -84,11 +84,6 @@ public class Entity
 
     public State getState()
     {
-        if (state == null)
-        {
-            state = new State();
-            state.setIsNew(true);
-        }
         return state;
     }
 
@@ -150,5 +145,18 @@ public class Entity
         return new HashCodeBuilder(17, 37)
                 .append(entityId)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Entity{" +
+                "entityId='" + entityId + '\'' +
+                ", tableName='" + tableName + '\'' +
+                ", name='" + name + '\'' +
+                ", state=" + state +
+                ", isFieldsChanged=" + isFieldsChanged +
+                ", fields=" + fields +
+                '}';
     }
 }

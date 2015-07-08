@@ -2,6 +2,7 @@ package com.softserve.entity.generator;
 
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.State;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.Applier;
 import com.softserve.entity.generator.service.salesforce.Authenticator;
@@ -102,9 +103,23 @@ public class App
     {
         for (Entity entity : entityService.findAll())
         {
-            applier.apply(entity);
-            entity.getState().setIsNew(false);
-            entityService.merge(entity);
+            logger.info(entity);
+            boolean isSucceed = applier.apply(entity);
+
+            if (isSucceed)
+            {
+                logger.info(entity);
+                State entityState = entity.getState();
+
+                if (entityState.getIsDeleted())
+                {
+                    entityService.delete(entity);
+                }
+                else
+                {
+                    entityState.resetAfterApply();
+                }
+            }
         }
     }
 

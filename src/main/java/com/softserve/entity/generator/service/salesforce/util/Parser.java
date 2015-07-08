@@ -19,7 +19,7 @@ public class Parser
                 .replaceAll("");
 
         sObjectJson = sObjectJson
-                .replaceAll("\\{\\n.*\"totalSize\" : .,\\n.*\"done\" :.*,", "")
+                .replaceAll("\\{\\n.*\"totalSize\" : \\d+,\\n.*\"done\" :.*,", "")
                 .replaceAll("\\]", "] }")
                 .replaceAll("\\}\\n.*} \\] \\}\\n.*\\}", "")
                 .replaceAll("\\{\\n.*\\n.*\\n.*\\{", "\\{");
