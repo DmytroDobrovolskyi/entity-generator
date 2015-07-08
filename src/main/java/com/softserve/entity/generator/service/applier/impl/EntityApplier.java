@@ -19,8 +19,11 @@ public class EntityApplier implements Applier<Entity>
     @Transactional
     public void apply(Entity entity)
     {
-        String createProcedureQueryString = ProcedureGenerator.generateProcedure(entity);
+        if (entity.getFields().size() != 0)
+        {
+            String createProcedureQueryString = ProcedureGenerator.generateProcedure(entity);
 
-        entityManager.createNativeQuery(createProcedureQueryString).executeUpdate();
+            entityManager.createNativeQuery(createProcedureQueryString).executeUpdate();
+        }
     }
 }

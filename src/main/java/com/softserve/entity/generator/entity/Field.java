@@ -3,10 +3,7 @@ package com.softserve.entity.generator.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @javax.persistence.Entity
 @Table(name = "FIELD")
@@ -26,10 +23,23 @@ public class Field
     @Column(name = "Type")
     private String type;
 
+    @Embedded
+    private State state;
+
     @ManyToOne
+    @JoinColumn(name = "Entity_Id")
     private Entity entity;
 
-    public String getFieldId()
+    protected Field() {}
+
+    public Field(String name, String columnName, String type)
+    {
+        this.name = name;
+        this.columnName = columnName;
+        this.type = type;
+    }
+
+    private String getFieldId()
     {
         return fieldId;
     }
@@ -44,7 +54,8 @@ public class Field
         return name;
     }
 
-    public void setName(String name)
+
+    private void setName(String name)
     {
         this.name = name;
     }
@@ -54,7 +65,8 @@ public class Field
         return columnName;
     }
 
-    public void setColumnName(String columnName)
+
+    private void setColumnName(String columnName)
     {
         this.columnName = columnName;
     }
@@ -64,7 +76,7 @@ public class Field
         return type;
     }
 
-    public void setType(String type)
+    private void setType(String type)
     {
         this.type = type;
     }
@@ -79,12 +91,28 @@ public class Field
         this.entity = entity;
     }
 
+    public State getState()
+    {
+        if (state == null)
+        {
+            state = new State();
+            state.setIsNew(true);
+            state.setIsDeleted(false);
+        }
+        return state;
+    }
+
+    public void setState(State state)
+    {
+        this.state = state;
+    }
+
     public boolean isChanged(Field field)
     {
-        return new EqualsBuilder()
+        return !(new EqualsBuilder()
                 .append(columnName, field.columnName)
                 .append(type, field.type)
-                .isEquals();
+                .isEquals());
     }
 
     @Override

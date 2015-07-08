@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.service.salesforce;
 
 import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.State;
 import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,26 @@ public class EntityChangesTracker
             String id = entity.getEntityId();
             if (managedEntities.containsKey(id))
             {
-                boolean processingIsNeeded = !entity.isChanged(managedEntities.get(id)) ||
-                                                 managedEntities.get(id).getProcessingIsNeeded();
+                Entity managedEntity = managedEntities.get(id);
+                State state = entity.getState();
 
-                entity.setProcessingIsNeeded(processingIsNeeded);
+                boolean isChanged = entity.isChanged(managedEntity);
+                if (isChanged)
+                {
+                    state.setIsNameChanged(true);
+                    state.setOldName(managedEntity.getTableName());
+                }
+
+                state.setIsNew(false);
             }
-            else
-            {
-                entity.setProcessingIsNeeded(true);
-            }
+            managedEntities.remove(id);
+        }
+
+        for (String id : managedEntities.keySet())
+        {
+            managedEntities
+                    .get(id)
+                    .getState().setIsDeleted(true);
         }
     }
 }

@@ -23,8 +23,11 @@ public class Entity
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "Processing_Is_Needed")
-    private Boolean processingIsNeeded = false;
+    @Embedded
+    private State state;
+
+    @Column(name = "Is_Field_Changed")
+    private Boolean isFieldsChanged = false;
 
     @OneToMany(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "Entity_Id")
@@ -32,10 +35,11 @@ public class Entity
 
     protected Entity() {}
 
-    public Entity(String entityId, String name)
+    public Entity(String entityId, String name, String tableName)
     {
         this.entityId = entityId;
         this.name = name;
+        this.tableName = tableName;
     }
 
     public String getEntityId()
@@ -43,7 +47,7 @@ public class Entity
         return entityId;
     }
 
-    public void setEntityId(String entityId)
+    private void setEntityId(String entityId)
     {
         this.entityId = entityId;
     }
@@ -53,7 +57,7 @@ public class Entity
         return name;
     }
 
-    public void setName(String name)
+    private void setName(String name)
     {
         this.name = name;
     }
@@ -63,7 +67,7 @@ public class Entity
         return tableName;
     }
 
-    public void setTableName(String tableName)
+    private void setTableName(String tableName)
     {
         this.tableName = tableName;
     }
@@ -78,37 +82,52 @@ public class Entity
         this.fields = fields;
     }
 
-    public Boolean getProcessingIsNeeded()
+    public State getState()
     {
-        return processingIsNeeded;
+        if (state == null)
+        {
+            state = new State();
+            state.setIsNew(true);
+        }
+        return state;
     }
 
-    public void setProcessingIsNeeded(Boolean processingIsNeeded)
+    public void setState(State state)
     {
-        this.processingIsNeeded = processingIsNeeded;
+        this.state = state;
+    }
+
+    public Boolean getIsFieldsChanged()
+    {
+        return isFieldsChanged;
+    }
+
+    public void setIsFieldsChanged(Boolean isFieldsChanged)
+    {
+        this.isFieldsChanged = isFieldsChanged;
     }
 
     public boolean isChanged(Entity entity)
     {
-        boolean isChanged = tableName.equals(entity.tableName);
-        if (!isChanged)
-        {
-            List<Field> managedFields = new ArrayList<Field>(entity.getFields());
-            List<Field> transientFields = new ArrayList<Field>(getFields());
-            if (managedFields.size() != transientFields.size())
-            {
-                return false;
-            }
-            for (int i = 0; i < managedFields.size(); i++)
-            {
-                if (managedFields.get(i).isChanged(transientFields.get(i)))
-                {
-                    return true;
-                }
-            }
-        }
+       /* List<Field> managedFields = new ArrayList<Field>(entity.getFields());
+        List<Field> transientFields = new ArrayList<Field>(getFields());
+        int managedFieldsSize = managedFields.size();
+        int transientFieldsSize = transientFields.size();
 
-        return isChanged;
+        int bound = managedFieldsSize >= transientFieldsSize ? managedFieldsSize : transientFieldsSize;
+
+        for (int i = 0; i < bound && i != managedFieldsSize && i != transientFieldsSize; i++)
+        {
+            Field managedField = managedFields.get(i);
+            Field transientField = transientFields.get(i);
+
+            if (managedField.isChanged(transientField))
+            {
+                transientField.getState().set
+            }
+        }*/
+
+        return !tableName.equals(entity.tableName);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class FieldsRegister
     );
 
     private static final List<String> EXCLUSIONS = Collections.unmodifiableList(
-            Arrays.<String>asList("processingIsNeeded")
+            Arrays.<String>asList("state", "isFieldsChanged")
     );
 
     private static Map<Class<?>, String> customFieldsMap;
@@ -29,4 +29,3 @@ public class FieldsRegister
         return customFieldsMap;
     }
 }
-

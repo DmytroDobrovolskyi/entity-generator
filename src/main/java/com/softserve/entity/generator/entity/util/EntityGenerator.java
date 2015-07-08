@@ -9,23 +9,11 @@ public class EntityGenerator
 {
     public static Entity generateEntity()
     {
-        Entity entity = new Entity("EntityId", "New table");
-        entity.setTableName("NEW_TABLE");
+        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
 
-        Field firstField = new Field();
-        firstField.setName("first");
-        firstField.setColumnName("First_Column");
-        firstField.setType("int");
-
-        Field secondField = new Field();
-        secondField.setName("Second");
-        secondField.setColumnName("Second_Column");
-        secondField.setType("int");
-
-        Field thirdField = new Field();
-        thirdField.setName("Third");
-        thirdField.setColumnName("Third_Column");
-        thirdField.setType("int");
+        Field firstField = new Field("first", "First_Column", "int");
+        Field secondField = new Field("Second", "Second_Column", "int");
+        Field thirdField = new Field("Third", "Third_Column", "int");
 
         Set<Field> fields = new HashSet<Field>();
         fields.add(firstField);

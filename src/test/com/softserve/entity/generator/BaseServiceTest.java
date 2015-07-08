@@ -42,7 +42,7 @@ public class BaseServiceTest
     @Test
     public void testSave()
     {
-        Entity entity = new Entity("testId", "testName");
+        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
         service.save(entity);
 
         verify(repository).save(entity);
@@ -51,7 +51,7 @@ public class BaseServiceTest
     @Test
     public void testMerge()
     {
-        Entity entity = new Entity("testId", "testName");
+        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
         service.merge(entity);
 
         verify(repository).merge(entity);
@@ -60,7 +60,7 @@ public class BaseServiceTest
     @Test
     public void testDelete()
     {
-        Entity entity = new Entity("testId", "testName");
+        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
         service.delete(entity);
 
         verify(repository).delete(entity);

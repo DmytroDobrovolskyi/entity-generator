@@ -1,28 +1,46 @@
 #set($fields = $entity.getFields())
+#set($tableName = $entity.getTableName())
+#set($state = $entity.getState())
 
-#if($fields.size() != 0 && $entity.getProcessingIsNeeded())
-    IF  EXISTS (
-                    SELECT *
-                    FROM sys.procedures
-                    WHERE name ='$procedureName'
-                )
+    IF  EXISTS
+    (
+        SELECT *
+        FROM sys.procedures
+        WHERE name ='$procedureName'
+    )
     DROP PROCEDURE $procedureName
-    BEGIN
-    EXEC ('
-    CREATE PROCEDURE $procedureName
-    AS
-    CREATE TABLE [mdd].$entity.getTableName()(
-    #foreach($field in $fields)
-        #if($foreach.index != $entity.getFields().size() - 1)
-            $field.getColumnName() $field.getType().concat(',')
-        #else
-            $field.getColumnName() $field.getType()
-        #end
+
+    #if($state.getIsNew())
+        EXEC
+        (
+           'CREATE PROCEDURE $procedureName
+            AS
+            CREATE TABLE $schema.$tableName
+            (
+                #foreach($field in $fields)
+                    #if($foreach.index != $entity.getFields().size() - 1)
+                        $field.getColumnName() $field.getType().concat(',')
+                    #else
+                        $field.getColumnName() $field.getType()
+                    #end
+                #end
+            )'
+        )
+
+        EXEC ('$procedureName')
+    #elseif($state.getIsNameChanged())
+        DECLARE @query nvarchar(255);
+
+        SET @query =
+        (
+            'CREATE PROCEDURE $procedureName
+             AS
+             EXEC sp_rename ''$schema.$state.getOldName()'', ''$tableName'' '
+        )
+
+        exec sp_executesql @query
+
+        EXEC ('$procedureName')
     #end
-        );
-    ')
-    END
-    BEGIN
-    EXEC ('$procedureName')
-    END
-#end
+
+

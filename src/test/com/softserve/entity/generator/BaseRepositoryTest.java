@@ -41,7 +41,7 @@ public class BaseRepositoryTest
     @Test
     public void testSave()
     {
-        Entity entity = new Entity("testId", "testName");
+        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
         repository.save(entity);
 
         verify(entityManager).persist(entity);
@@ -50,7 +50,7 @@ public class BaseRepositoryTest
     @Test
     public void testMerge()
     {
-        Entity entity = new Entity("testId", "testName");
+        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
         repository.merge(entity);
 
         verify(entityManager).merge(entity);
@@ -59,7 +59,7 @@ public class BaseRepositoryTest
     @Test
     public void testDelete()
     {
-        Entity entity = new Entity("testId", "testName");
+        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
         repository.delete(entity);
 
         verify(entityManager).remove(entity);

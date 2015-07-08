@@ -103,7 +103,7 @@ public class App
         for (Entity entity : entityService.findAll())
         {
             applier.apply(entity);
-            entity.setProcessingIsNeeded(false);
+            entity.getState().setIsNew(false);
             entityService.merge(entity);
         }
     }
