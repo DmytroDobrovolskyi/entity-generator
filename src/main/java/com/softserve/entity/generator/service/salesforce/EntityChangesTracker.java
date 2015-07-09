@@ -17,6 +17,9 @@ public class EntityChangesTracker
     @Autowired
     private EntityService entityService;
 
+    @Autowired
+    private FieldChangesTracker fieldChangesTracker;
+
     private static final Logger logger = Logger.getLogger(EntityChangesTracker.class);
 
     public void trackChanges(List<Entity> entitiesToTrack)
@@ -27,34 +30,42 @@ public class EntityChangesTracker
             managedEntities.put(entity.getEntityId(), entity);
         }
 
-        for (Entity entity : entitiesToTrack)
+        for (Entity transientEntity : entitiesToTrack)
         {
-            String id = entity.getEntityId();
+            String id = transientEntity.getEntityId();
+            Entity managedEntity = managedEntities.get(id);
+
             if (managedEntities.containsKey(id))
             {
-                Entity managedEntity = managedEntities.get(id);
-                State state = entity.getState();
+                State state = transientEntity.getState();
 
-                boolean isChanged = entity.isChanged(managedEntity);
-                if (isChanged)
+                if (managedEntity.isChanged(transientEntity))
                 {
                     state.setOldName(managedEntity.getTableName());
                 }
 
-                if (managedEntity.getFields().size() != 0 || state.getIsDeleted())
+                if (managedEntity.getFields().size() != 0)
                 {
                     state.setIsNew(false);
                 }
+
+                fieldChangesTracker.trackChanges(transientEntity, managedEntity);
             }
             managedEntities.remove(id);
         }
+        resolveDeleted(managedEntities);
+    }
 
+    private void resolveDeleted(Map<String, Entity> managedEntities)
+    {
         for (String id : managedEntities.keySet())
         {
             Entity entity = managedEntities.get(id);
-            State entityState= entity.getState();
+            State entityState = entity.getState();
+
             entityState.setIsDeleted(true);
             entityState.setIsNew(false);
+
             entityService.merge(entity);
         }
     }

@@ -35,9 +35,9 @@ public class EntityRequester
    static
    {
         ENTITY_NAME = Entity.class.getSimpleName() + "__c";
-        CUSTOM_FIELDS = FieldsRegister.getCustomFieldsMap().get(Entity.class);
+        CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Entity.class);
         RELATION = Field.class.getSimpleName() + "s__r";
-        RELATION_CUSTOM_FIELDS = FieldsRegister.getCustomFieldsMap().get(Field.class);
+        RELATION_CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Field.class);
     }
 
     public EntityRequester(Authenticator authenticator)

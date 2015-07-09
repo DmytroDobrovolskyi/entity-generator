@@ -1,7 +1,6 @@
 #set($fields = $entity.getFields())
 #set($tableName = $entity.getTableName())
 #set($state = $entity.getState())
-#set($oldName = $state.getOldName())
 
     IF  EXISTS
     (
@@ -11,12 +10,21 @@
     )
     DROP PROCEDURE $procedureName
 
+    DECLARE @procedureQuery nvarchar(MAX);
+    DECLARE @initialProcedureQueryLength int;
+
+    SET @procedureQuery =
+    (
+        'CREATE PROCEDURE $procedureName
+        AS '
+    )
+
+    SET @initialProcedureQueryLength = LEN(@procedureQuery)
+
     #if($state.getIsNew())
-        EXEC
+        SET @procedureQuery = @procedureQuery +
         (
-           'CREATE PROCEDURE $procedureName
-            AS
-            CREATE TABLE $schema.$tableName
+            'CREATE TABLE $schema.$tableName
             (
                 #foreach($field in $fields)
                     #if($foreach.index != $entity.getFields().size() - 1)
@@ -27,28 +35,45 @@
                 #end
             )'
         );
-
-        EXEC ('$procedureName')
-    #elseif($oldName)
-        DECLARE @query nvarchar(255);
-
-        SET @query =
+    #elseif($state.getOldName())
+        SET @procedureQuery = @procedureQuery +
         (
-            'CREATE PROCEDURE $procedureName
-             AS
-             EXEC sp_rename ''$schema.$state.getOldName()'', ''$tableName'' '
+             'EXEC sp_rename ''$schema.$state.getOldName()'', ''$tableName''; '
         );
-
-        exec sp_executesql @query
-
-        EXEC ('$procedureName')
     #elseif($state.getIsDeleted())
-        EXEC
+        SET @procedureQuery = @procedureQuery +
         (
-            'CREATE PROCEDURE $procedureName
-             AS
-             DROP TABLE $schema.$tableName'
+            'DROP TABLE $schema.$tableName'
         );
-
-        EXEC ('$procedureName')
     #end
+
+    #if(!$state.getIsNew() && !$state.getIsDeleted())
+        #foreach($field in $fields)
+            #set($fieldState = $field.getState())
+
+            #if($fieldState.getIsNew())
+                SET @procedureQuery = @procedureQuery +
+                (
+                    'ALTER TABLE $schema.$tableName
+                     ADD $field.getColumnName() $field.getType()'
+                );
+            #elseif($fieldState.getOldName())
+                SET @procedureQuery = @procedureQuery +
+                (
+                    'EXEC sp_RENAME ''$schema.$tableName.$fieldState.getOldName()'' ,
+                    ''$field.getColumnName()'', ''COLUMN'' '
+                );
+            #elseif($fieldState.getIsDeleted())
+                SET @procedureQuery = @procedureQuery +
+                (
+                    'ALTER TABLE $schema.$tableName
+                     DROP COLUMN $field.getColumnName()'
+                );
+            #end
+        #end
+    #end
+
+    EXEC sp_executesql @procedureQuery
+
+    IF LEN(@procedureQuery) > @initialProcedureQueryLength
+        EXEC ('$procedureName')

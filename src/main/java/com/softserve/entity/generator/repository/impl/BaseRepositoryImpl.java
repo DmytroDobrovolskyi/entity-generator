@@ -33,7 +33,7 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T>
     @Override
     public void delete(T entity)
     {
-        entityManager.remove(entity);
+        entityManager.remove(merge(entity));
     }
 
     @Override

@@ -4,10 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @javax.persistence.Entity
 @Table(name = "ENTITY")
@@ -26,10 +23,7 @@ public class Entity
     @Embedded
     private State state = new State();
 
-    @Column(name = "Is_Fields_Changed")
-    private Boolean isFieldsChanged = false;
-
-    @OneToMany(cascade = {CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.MERGE} , orphanRemoval = true)
     @JoinColumn(name = "Entity_Id")
     private Set<Field> fields = new HashSet<Field>();
 
@@ -92,36 +86,8 @@ public class Entity
         this.state = state;
     }
 
-    public Boolean getIsFieldsChanged()
-    {
-        return isFieldsChanged;
-    }
-
-    public void setIsFieldsChanged(Boolean isFieldsChanged)
-    {
-        this.isFieldsChanged = isFieldsChanged;
-    }
-
     public boolean isChanged(Entity entity)
     {
-       /* List<Field> managedFields = new ArrayList<Field>(entity.getFields());
-        List<Field> transientFields = new ArrayList<Field>(getFields());
-        int managedFieldsSize = managedFields.size();
-        int transientFieldsSize = transientFields.size();
-
-        int bound = managedFieldsSize >= transientFieldsSize ? managedFieldsSize : transientFieldsSize;
-
-        for (int i = 0; i < bound && i != managedFieldsSize && i != transientFieldsSize; i++)
-        {
-            Field managedField = managedFields.get(i);
-            Field transientField = transientFields.get(i);
-
-            if (managedField.isChanged(transientField))
-            {
-                transientField.getState().set
-            }
-        }*/
-
         return !tableName.equals(entity.tableName);
     }
 
@@ -155,7 +121,6 @@ public class Entity
                 ", tableName='" + tableName + '\'' +
                 ", name='" + name + '\'' +
                 ", state=" + state +
-                ", isFieldsChanged=" + isFieldsChanged +
                 ", fields=" + fields +
                 '}';
     }

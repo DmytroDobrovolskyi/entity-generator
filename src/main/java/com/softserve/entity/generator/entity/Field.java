@@ -39,12 +39,12 @@ public class Field
         this.type = type;
     }
 
-    private String getFieldId()
+    public String getFieldId()
     {
         return fieldId;
     }
 
-    public void setFieldId(String fieldId)
+    private void setFieldId(String fieldId)
     {
         this.fieldId = fieldId;
     }
@@ -129,5 +129,17 @@ public class Field
         return new HashCodeBuilder(17, 37)
                 .append(fieldId)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Field{" +
+                "fieldId='" + fieldId + '\'' +
+                ", name='" + name + '\'' +
+                ", columnName='" + columnName + '\'' +
+                ", type='" + type + '\'' +
+                ", state=" + state +
+                '}';
     }
 }

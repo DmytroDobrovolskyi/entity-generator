@@ -2,6 +2,7 @@ package com.softserve.entity.generator;
 
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.entity.State;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.Applier;
@@ -15,7 +16,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class App
@@ -108,7 +111,20 @@ public class App
 
             if (isSucceed)
             {
-                logger.info(entity);
+                Set<Field> fields = entity.getFields();
+                for (Iterator<Field> iterator = fields.iterator(); iterator.hasNext();)
+                {
+                    State fieldState = iterator.next().getState();
+                    if (fieldState.getIsDeleted())
+                    {
+                        iterator.remove();
+                    }
+                    else
+                    {
+                        fieldState.resetAfterApply();
+                    }
+                    logger.info(entity);
+                }
                 State entityState = entity.getState();
 
                 if (entityState.getIsDeleted())
@@ -118,6 +134,7 @@ public class App
                 else
                 {
                     entityState.resetAfterApply();
+                    entityService.merge(entity);
                 }
             }
         }

@@ -29,7 +29,7 @@ public class BaseServiceImpl<T> implements BaseService<T>
     @Transactional
     public void delete(T entity)
     {
-        repository.delete(merge(entity));
+        repository.delete(entity);
     }
 
     @Override
