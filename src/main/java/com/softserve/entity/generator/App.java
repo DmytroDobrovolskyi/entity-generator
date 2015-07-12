@@ -80,7 +80,7 @@ public class App
 
             EntityRequester entityRequester = new EntityRequester(authenticator);
 
-            app.saveEntities(entityRequester.remoteAccess());
+            app.saveEntities(entityRequester.getAllEntities());
 
             app.executeProcedures();
         } catch (ParseException ex)
@@ -103,6 +103,7 @@ public class App
     {
         for (Entity entity : entityService.findAll())
         {
+            logger.info(entity);
             boolean isSucceed = applier.apply(entity);
 
             if (isSucceed)

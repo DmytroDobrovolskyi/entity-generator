@@ -49,55 +49,6 @@ public class EntityRequester
         this.authenticator = authenticator;
     }
 
-    public List<Entity> remoteAccess()
-    {
-        try
-        {
-            Scanner scanner = new Scanner(new File("entity.json")) ;
-
-            StringBuilder stringifiedResponse = new StringBuilder();
-            while(scanner.hasNext())
-            {
-                stringifiedResponse.append(scanner.nextLine());
-                stringifiedResponse.append("\n");
-            }
-
-            logger.info(stringifiedResponse);
-
-            List<String> parsableSObjects = new ArrayList<String>();
-
-            for (String parsableSObject : Splitter.splitSObjects(stringifiedResponse.toString()))
-            {
-                parsableSObjects.add(
-                        Parser.parseSObjectJson(parsableSObject)
-                );
-            }
-
-            Gson gson = new Gson();
-
-            List<Entity> entities = new ArrayList<Entity>();
-
-            for (String parsableSObject : parsableSObjects)
-            {
-                Entity entity = gson.fromJson(parsableSObject, Entity.class);
-                entities.add(entity);
-
-                if (entity.getFields() != null)
-                {
-                    for (Field field : entity.getFields())
-                    {
-                        field.setEntity(entity);
-                    }
-                }
-            }
-            return entities;
-        } catch (FileNotFoundException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-    }
-
     public List<Entity> getAllEntities()
     {
         HttpClient httpClient = HttpClientBuilder.create().build();

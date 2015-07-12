@@ -57,7 +57,7 @@
                     'ALTER TABLE $schema.$tableName
                      ADD $field.getColumnName() $field.getType()'
                 );
-            #elseif($fieldState.getOldName())
+            #elseif($fieldState.getOldMetadata())
                 SET @procedureQuery = @procedureQuery +
                 (
                     'EXEC sp_RENAME ''$schema.$tableName.$fieldState.getOldMetadata().get("oldColumnName")'' ,
