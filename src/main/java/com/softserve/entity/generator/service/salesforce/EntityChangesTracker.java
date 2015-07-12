@@ -41,7 +41,9 @@ public class EntityChangesTracker
 
                 if (managedEntity.isChanged(transientEntity))
                 {
-                    state.setOldName(managedEntity.getTableName());
+                    Map<String, String> oldMetadata = new HashMap<String, String>();
+                    oldMetadata.put("oldTableName", managedEntity.getTableName());
+                    state.setOldMetadata(oldMetadata);
                 }
 
                 if (managedEntity.getFields().size() != 0)

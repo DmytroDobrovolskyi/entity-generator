@@ -112,16 +112,4 @@ public class Entity
                 .append(entityId)
                 .toHashCode();
     }
-
-    @Override
-    public String toString()
-    {
-        return "Entity{" +
-                "entityId='" + entityId + '\'' +
-                ", tableName='" + tableName + '\'' +
-                ", name='" + name + '\'' +
-                ", state=" + state +
-                ", fields=" + fields +
-                '}';
-    }
 }

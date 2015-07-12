@@ -130,16 +130,4 @@ public class Field
                 .append(fieldId)
                 .toHashCode();
     }
-
-    @Override
-    public String toString()
-    {
-        return "Field{" +
-                "fieldId='" + fieldId + '\'' +
-                ", name='" + name + '\'' +
-                ", columnName='" + columnName + '\'' +
-                ", type='" + type + '\'' +
-                ", state=" + state +
-                '}';
-    }
 }

@@ -16,9 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class App
@@ -82,11 +80,10 @@ public class App
 
             EntityRequester entityRequester = new EntityRequester(authenticator);
 
-            app.saveEntities(entityRequester.getAllEntities());
+            app.saveEntities(entityRequester.remoteAccess());
 
             app.executeProcedures();
-        }
-        catch (ParseException ex)
+        } catch (ParseException ex)
         {
             logger.info("Failed to parse command line properties", ex);
             help(options);
@@ -106,25 +103,10 @@ public class App
     {
         for (Entity entity : entityService.findAll())
         {
-            logger.info(entity);
             boolean isSucceed = applier.apply(entity);
 
             if (isSucceed)
             {
-                Set<Field> fields = entity.getFields();
-                for (Iterator<Field> iterator = fields.iterator(); iterator.hasNext();)
-                {
-                    State fieldState = iterator.next().getState();
-                    if (fieldState.getIsDeleted())
-                    {
-                        iterator.remove();
-                    }
-                    else
-                    {
-                        fieldState.resetAfterApply();
-                    }
-                    logger.info(entity);
-                }
                 State entityState = entity.getState();
 
                 if (entityState.getIsDeleted())
@@ -134,7 +116,12 @@ public class App
                 else
                 {
                     entityState.resetAfterApply();
-                    entityService.merge(entity);
+                    entityService.mergeAndResolveDeletedFields(entity);
+
+                    for (Field field : entity.getFields())
+                    {
+                        field.getState().resetAfterApply();
+                    }
                 }
             }
         }

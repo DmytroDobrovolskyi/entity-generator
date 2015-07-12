@@ -37,18 +37,21 @@ public class FieldChangesTracker
 
                 if (managedField.isChanged(transientField))
                 {
-                    state.setOldName(managedField.getColumnName());
+                    Map<String, String> oldMetadata = new HashMap<String, String>();
+                    oldMetadata.put("oldColumnName", managedField.getColumnName());
+                    oldMetadata.put("oldType", managedField.getType());
+                    state.setOldMetadata(oldMetadata);
                 }
                 state.setIsNew(false);
             }
             managedFields.remove(id);
         }
 
-        resolveDeleted(managedFields, managedOwner);
+        resolveDeleted(managedFields, transientOwner);
         entityService.merge(managedOwner);
     }
 
-    private void resolveDeleted(Map<String, Field> managedFields, Entity managedOwner)
+    private void resolveDeleted(Map<String, Field> managedFields, Entity transientOwner)
     {
         for (String id : managedFields.keySet())
         {
@@ -57,6 +60,8 @@ public class FieldChangesTracker
 
             fieldState.setIsDeleted(true);
             fieldState.setIsNew(false);
+
+            transientOwner.getFields().add(managedField);
         }
     }
 }

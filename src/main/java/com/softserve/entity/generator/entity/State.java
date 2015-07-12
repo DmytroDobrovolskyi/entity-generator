@@ -1,7 +1,12 @@
 package com.softserve.entity.generator.entity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 @Embeddable
 public class State
@@ -12,8 +17,8 @@ public class State
     @Column(name = "Is_Deleted")
     private Boolean isDeleted = false;
 
-    @Column(name = "Old_Name")
-    private String oldName;
+    @Column(name = "Old_Metadata")
+    private String oldMetadata;
 
     public Boolean getIsNew()
     {
@@ -35,30 +40,21 @@ public class State
         this.isDeleted = isDeleted;
     }
 
-    public String getOldName()
+    public Map<String, String> getOldMetadata()
     {
-        return oldName;
+        Type type = new TypeToken<Map<String, String>>() {}.getType();
+        return new Gson().fromJson(oldMetadata, type);
     }
 
-    public void setOldName(String oldName)
+    public void setOldMetadata(Map<String, String> oldMetadata)
     {
-        this.oldName = oldName;
+        this.oldMetadata = new Gson().toJson(oldMetadata);
     }
 
     public void resetAfterApply()
     {
         isNew = false;
         isDeleted = false;
-        oldName = null;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "State{" +
-                "isNew=" + isNew +
-                ", isDeleted=" + isDeleted +
-                ", oldName='" + oldName + '\'' +
-                '}';
+        oldMetadata = null;
     }
 }

@@ -15,7 +15,7 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T>
     private Class<T> entityClass;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     public BaseRepositoryImpl(Class<T> entityClass)
     {
@@ -33,7 +33,9 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T>
     @Override
     public void delete(T entity)
     {
-        entityManager.remove(merge(entity));
+        entityManager.remove(
+                entityManager.merge(entity) //TODO
+        );
     }
 
     @Override

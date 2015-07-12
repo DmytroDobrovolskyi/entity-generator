@@ -47,8 +47,8 @@ public class DatabaseInitializer
                 "DROP DATABASE " + DATABASE_NAME + "; " +
                 "CREATE DATABASE " + DATABASE_NAME + "; " +
                 "USE " + DATABASE_NAME + "; " +
-                "EXEC ('CREATE SCHEMA " + DEFAULT_SCHEMA + " ;');" +
-                "EXEC ('CREATE SCHEMA " + GENERATED_TABLES_SCHEMA + " ;');"
+                "EXEC ('CREATE SCHEMA " + DEFAULT_SCHEMA + " ');" +
+                "EXEC ('CREATE SCHEMA " + GENERATED_TABLES_SCHEMA + " ');"
         );
         logger.info("Database was successfully initialized");
     }

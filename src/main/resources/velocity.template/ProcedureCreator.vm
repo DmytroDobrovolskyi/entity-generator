@@ -35,10 +35,10 @@
                 #end
             )'
         );
-    #elseif($state.getOldName())
+    #elseif($state.getOldMetadata())
         SET @procedureQuery = @procedureQuery +
         (
-             'EXEC sp_rename ''$schema.$state.getOldName()'', ''$tableName''; '
+             'EXEC sp_rename ''$schema.$state.getOldMetadata().get("oldTableName")'', ''$tableName''; '
         );
     #elseif($state.getIsDeleted())
         SET @procedureQuery = @procedureQuery +
@@ -60,7 +60,7 @@
             #elseif($fieldState.getOldName())
                 SET @procedureQuery = @procedureQuery +
                 (
-                    'EXEC sp_RENAME ''$schema.$tableName.$fieldState.getOldName()'' ,
+                    'EXEC sp_RENAME ''$schema.$tableName.$fieldState.getOldMetadata().get("oldColumnName")'' ,
                     ''$field.getColumnName()'', ''COLUMN'' '
                 );
             #elseif($fieldState.getIsDeleted())
