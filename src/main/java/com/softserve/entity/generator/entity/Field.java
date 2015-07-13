@@ -101,14 +101,6 @@ public class Field
         this.state = state;
     }
 
-    public boolean isChanged(Field field)
-    {
-        return !(new EqualsBuilder()
-                .append(columnName, field.columnName)
-                .append(type, field.type)
-                .isEquals());
-    }
-
     @Override
     public boolean equals(Object o)
     {

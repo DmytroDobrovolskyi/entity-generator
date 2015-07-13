@@ -86,11 +86,6 @@ public class Entity
         this.state = state;
     }
 
-    public boolean isChanged(Entity entity)
-    {
-        return !tableName.equals(entity.tableName);
-    }
-
     @Override
     public boolean equals(Object o)
     {

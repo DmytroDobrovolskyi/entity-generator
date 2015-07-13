@@ -33,16 +33,25 @@ public class FieldChangesTracker
             if (managedFields.containsKey(id))
             {
                 Field managedField = managedFields.get(id);
-                State state = transientField.getState();
+                State transientFieldState = transientField.getState();
 
-                if (managedField.isChanged(transientField))
+                String managedFieldColumnName = managedField.getColumnName();
+
+                Map<String, String> oldMetadataMap = transientFieldState.getOldMetadataMap();
+
+                if (!managedFieldColumnName.equals(transientField.getColumnName()))
                 {
-                    Map<String, String> oldMetadata = new HashMap<String, String>();
-                    oldMetadata.put("oldColumnName", managedField.getColumnName());
-                    oldMetadata.put("oldType", managedField.getType());
-                    state.setOldMetadata(oldMetadata);
+                    oldMetadataMap.put("oldColumnName", managedFieldColumnName);
                 }
-                state.setIsNew(false);
+                String managedFieldType = managedField.getType();
+
+                if (!managedFieldType.equals(transientField.getType()))
+                {
+                    oldMetadataMap.put("oldType", managedFieldType);
+                }
+
+                transientFieldState.processOldMetadata();
+                transientFieldState.setIsNew(false);
             }
             managedFields.remove(id);
         }

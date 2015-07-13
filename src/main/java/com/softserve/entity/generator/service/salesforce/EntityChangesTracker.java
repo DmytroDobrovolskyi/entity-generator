@@ -37,20 +37,23 @@ public class EntityChangesTracker
 
             if (managedEntities.containsKey(id))
             {
-                State state = transientEntity.getState();
+                State transientEntityState = transientEntity.getState();
 
-                if (managedEntity.isChanged(transientEntity))
+                String managedEntityTableName = managedEntity.getTableName();
+
+                Map<String, String> oldMetadata = transientEntityState.getOldMetadataMap();
+
+                if (!managedEntityTableName.equals(transientEntity.getTableName()))
                 {
-                    Map<String, String> oldMetadata = new HashMap<String, String>();
-                    oldMetadata.put("oldTableName", managedEntity.getTableName());
-                    state.setOldMetadata(oldMetadata);
+                    oldMetadata.put("oldTableName", managedEntityTableName);
                 }
 
                 if (managedEntity.getFields().size() != 0)
                 {
-                    state.setIsNew(false);
+                    transientEntityState.setIsNew(false);
                 }
 
+                transientEntityState.processOldMetadata();
                 fieldChangesTracker.trackChanges(transientEntity, managedEntity);
             }
             managedEntities.remove(id);

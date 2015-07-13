@@ -57,12 +57,25 @@
                     'ALTER TABLE $schema.$tableName
                      ADD $field.getColumnName() $field.getType()'
                 );
-            #elseif($fieldState.getOldMetadata())
-                SET @procedureQuery = @procedureQuery +
-                (
-                    'EXEC sp_RENAME ''$schema.$tableName.$fieldState.getOldMetadata().get("oldColumnName")'' ,
-                    ''$field.getColumnName()'', ''COLUMN'' '
-                );
+            #elseif(!$fieldState.getOldMetadataMap().isEmpty())
+                #set($oldColumnName = $fieldState.getOldMetadataMap().get("oldColumnName"))
+                #set($oldType = $fieldState.getOldMetadataMap().get("oldType"))
+
+                #if($oldColumnName)
+                    SET @procedureQuery = @procedureQuery +
+                    (
+                        'EXEC sp_RENAME ''$schema.$tableName.$oldColumnName'' ,
+                        ''$field.getColumnName()'', ''COLUMN'' '
+                    );
+                #end
+
+                #if($oldType)
+                    SET @procedureQuery = @procedureQuery +
+                    (
+                        'ALTER TABLE $schema.$tableName
+                         ALTER COLUMN $field.getColumnName() $field.getType()'
+                    );
+                #end
             #elseif($fieldState.getIsDeleted())
                 SET @procedureQuery = @procedureQuery +
                 (
