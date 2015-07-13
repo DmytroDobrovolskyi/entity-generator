@@ -23,8 +23,7 @@ public class Entity
     @Embedded
     private State state = new State();
 
-    @OneToMany(cascade = {CascadeType.MERGE} , orphanRemoval = true)
-    @JoinColumn(name = "Entity_Id")
+    @OneToMany(mappedBy = "entity", cascade = {CascadeType.ALL} , orphanRemoval = true)
     private Set<Field> fields = new HashSet<Field>();
 
     protected Entity() {}

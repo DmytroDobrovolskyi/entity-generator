@@ -40,7 +40,7 @@
         (
              'EXEC sp_rename ''$schema.$state.getOldMetadataMap().get("oldTableName")'', ''$tableName''; '
         );
-    #elseif($state.getIsDeleted())
+    #elseif($state.getIsDeleted() && $fields.size() != 0)
         SET @procedureQuery = @procedureQuery +
         (
             'DROP TABLE $schema.$tableName'
@@ -55,7 +55,7 @@
                 SET @procedureQuery = @procedureQuery +
                 (
                     'ALTER TABLE $schema.$tableName
-                     ADD $field.getColumnName() $field.getType()'
+                     ADD $field.getColumnName() $field.getType() '
                 );
             #elseif(!$fieldState.getOldMetadataMap().isEmpty())
                 #set($oldColumnName = $fieldState.getOldMetadataMap().get("oldColumnName"))
@@ -81,13 +81,13 @@
                 #if($fields.size() == 1)
                     SET @procedureQuery = @procedureQuery +
                     (
-                        'DROP TABLE $schema.$tableName'
+                        'DROP TABLE $schema.$tableName '
                     );
                     #else
                         SET @procedureQuery = @procedureQuery +
                         (
                             'ALTER TABLE $schema.$tableName
-                             DROP COLUMN $field.getColumnName()'
+                             DROP COLUMN $field.getColumnName() '
                         );
                 #end
             #end
