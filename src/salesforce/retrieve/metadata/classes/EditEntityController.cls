@@ -43,8 +43,6 @@ public class EditEntityController
     public List<SelectOption> getTypes()
     {
         List<SelectOption> options = new List<SelectOption>();
-        options.add(new SelectOption('varchar(255) PRIMARY KEY','varchar(255) PRIMARY KEY'));
-        options.add(new SelectOption('int PRIMARY KEY','int PRIMARY KEY'));
         options.add(new SelectOption('varchar(255)','varchar(255)'));
         options.add(new SelectOption('int','int'));
         options.add(new SelectOption('date','date'));
@@ -65,15 +63,27 @@ public class EditEntityController
         wereChanges = true;
     }
 
+    public  Boolean containSpaces(String str)
+    {
+        if (str.containsAny(' '))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public void applyChanges()
     {
         Boolean hasError = false;
 
         List<String> columnNames = new List<String>();
+
         for (Field__c filed : fieldMap.values())
         {
             columnNames.add(filed.ColumnName__c);
         }
+
         Set<String> uniqueColumnNames =  new Set<String>(columnNames);
 
         if (columnNames.size() != uniqueColumnNames.size())
@@ -85,12 +95,24 @@ public class EditEntityController
         {
             Set<Field__c> filedsToUpdate = new Set<Field__c>(fieldMap.values());
             filedsToUpdate.remove(newField);
-            Database.SaveResult[] results = Database.update(new List<Field__c> (filedsToUpdate), false);
+
+             for (Field__c field : filedsToUpdate)
+              {
+                 if (containSpaces(field.ColumnName__c))
+                     {
+                        hasError = true;
+                     }
+              }
+
+              if (!hasError)
+              {
+                  Database.SaveResult[] results = Database.update(new List<Field__c> (filedsToUpdate), false);
+              }
         }
 
         if (newField != null)
         {
-            if (fieldMap.containsKey(newField.ColumnName__c))
+            if (fieldMap.containsKey(newField.ColumnName__c) || containSpaces(newField.ColumnName__c))
             {
                 hasError = true;
             }
@@ -125,7 +147,7 @@ public class EditEntityController
 
     private void showError()
     {
-        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique');
+        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique and not contain spaces');
         ApexPages.addMessage(error);
     }
 }

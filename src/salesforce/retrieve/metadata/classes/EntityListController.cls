@@ -40,39 +40,63 @@ public class EntityListController
         wereChanges = true;
     }
 
+    public  Boolean containSpaces(String str)
+    {
+          if (str.containsAny(' '))
+           {
+              return true;
+           }
+
+     return false;
+    }
+
     public void applyChanges()
     {
         Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
 
-        Database.SaveResult[] results = Database.update(new List<Entity__c>(entitiesToUpdate), false);
         Boolean hasError = false;
 
-        for(Database.SaveResult result : results)
+        for (Entity__c entity : entitiesToUpdate)
         {
-            if(!result.isSuccess())
+            if(containSpaces(entity.TableName__c))
             {
-                hasError = true;
+                 hasError = true;
             }
         }
 
-        if (newEntity != null)
+        if (!hasError)
         {
-            if (entityMap.containsKey(newEntity.TableName__c))
-            {
-                hasError = true;
-            } else
-            {
-                entityMap.remove(null);
-                entityMap.put(newEntity.TableName__c, newEntity);
+             Database.SaveResult[] results = Database.update(new List<Entity__c>(entitiesToUpdate), false);
 
-                Database.insert(newEntity);
-                newEntity = null;
+            for(Database.SaveResult result : results)
+            {
+                if(!result.isSuccess())
+                {
+                    hasError = true;
+                }
+            }
+
+            if (newEntity != null)
+            {
+                if (containSpaces(newEntity.TableName__c) || entityMap.containsKey(newEntity.TableName__c))
+                {
+                    hasError = true;
+                }
+                else
+                {
+                    entityMap.remove(null);
+                    entityMap.put(newEntity.TableName__c, newEntity);
+
+                    Database.insert(newEntity);
+                    newEntity = null;
+                }
             }
         }
-        if(hasError)
+
+        if (hasError)
         {
-            ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique');
+            ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique and not contain spaces');
             ApexPages.addMessage(error);
         }
         else
