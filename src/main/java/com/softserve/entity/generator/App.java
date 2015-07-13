@@ -103,7 +103,6 @@ public class App
     {
         for (Entity entity : entityService.findAll())
         {
-            logger.info(entity);
             boolean isSucceed = applier.apply(entity);
 
             if (isSucceed)
