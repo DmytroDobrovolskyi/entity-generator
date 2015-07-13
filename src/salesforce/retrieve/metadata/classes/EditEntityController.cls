@@ -43,7 +43,9 @@ public class EditEntityController
     public List<SelectOption> getTypes()
     {
         List<SelectOption> options = new List<SelectOption>();
-        options.add(new SelectOption('varchar','varchar'));
+        options.add(new SelectOption('varchar(255) PRIMARY KEY','varchar(255) PRIMARY KEY'));
+        options.add(new SelectOption('int PRIMARY KEY','int PRIMARY KEY'));
+        options.add(new SelectOption('varchar(255)','varchar(255)'));
         options.add(new SelectOption('int','int'));
         options.add(new SelectOption('date','date'));
         return options;
