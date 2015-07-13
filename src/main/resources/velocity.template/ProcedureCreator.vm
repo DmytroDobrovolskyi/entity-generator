@@ -35,10 +35,10 @@
                 #end
             )'
         );
-    #elseif($state.getOldMetadata())
+    #elseif(!$state.getOldMetadataMap().isEmpty())
         SET @procedureQuery = @procedureQuery +
         (
-             'EXEC sp_rename ''$schema.$state.getOldMetadata().get("oldTableName")'', ''$tableName''; '
+             'EXEC sp_rename ''$schema.$state.getOldMetadataMap().get("oldTableName")'', ''$tableName''; '
         );
     #elseif($state.getIsDeleted())
         SET @procedureQuery = @procedureQuery +
@@ -77,11 +77,19 @@
                     );
                 #end
             #elseif($fieldState.getIsDeleted())
-                SET @procedureQuery = @procedureQuery +
-                (
-                    'ALTER TABLE $schema.$tableName
-                     DROP COLUMN $field.getColumnName()'
-                );
+
+                #if($fields.size() == 1)
+                    SET @procedureQuery = @procedureQuery +
+                    (
+                        'DROP TABLE $schema.$tableName'
+                    );
+                    #else
+                        SET @procedureQuery = @procedureQuery +
+                        (
+                            'ALTER TABLE $schema.$tableName
+                             DROP COLUMN $field.getColumnName()'
+                        );
+                #end
             #end
         #end
     #end
