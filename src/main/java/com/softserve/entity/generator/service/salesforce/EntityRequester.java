@@ -14,13 +14,9 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class EntityRequester
 {
@@ -78,6 +74,7 @@ public class EntityRequester
                         Parser.parseSObjectJson(parsableSObject)
                 );
             }
+
 
             Gson gson = new Gson();
 

@@ -40,18 +40,15 @@ public class EntityListController
         wereChanges = true;
     }
 
-    public  Boolean containSpaces(String str)
+    public Boolean containSpaces(String str)
     {
-          if (str.containsAny(' '))
-           {
-              return true;
-           }
-
-     return false;
+        return str.containsAny(' ');
     }
 
     public void applyChanges()
     {
+        Map<String, Entity__c> newEntityMap = new Map<String, Entity__c>();
+
         Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
 
@@ -67,7 +64,7 @@ public class EntityListController
 
         if (!hasError)
         {
-             Database.SaveResult[] results = Database.update(new List<Entity__c>(entitiesToUpdate), false);
+            Database.SaveResult[] results = Database.update(new List<Entity__c>(entitiesToUpdate), false);
 
             for(Database.SaveResult result : results)
             {
@@ -85,8 +82,7 @@ public class EntityListController
                 }
                 else
                 {
-                    entityMap.remove(null);
-                    entityMap.put(newEntity.TableName__c, newEntity);
+                    newEntityMap.put(newEntity.TableName__c, newEntity);
 
                     Database.insert(newEntity);
                     newEntity = null;
@@ -101,6 +97,11 @@ public class EntityListController
         }
         else
         {
+            for (Entity__c entity : entitiesToUpdate)
+            {
+                newEntityMap.put(entity.TableName__c, entity);
+            }
+            entityMap = newEntityMap;
             wereChanges = false;
         }
     }
