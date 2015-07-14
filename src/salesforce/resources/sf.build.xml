@@ -15,7 +15,6 @@
                      retrieveTarget="${sf.metadata.dir}"/>
     </target>
 
-
     <target name="unzip-resources" depends="retrieve-before-unzip">
         <delete dir="${sf.static-resources}"/>
         <delete dir="${static-resources.dir}"/>
