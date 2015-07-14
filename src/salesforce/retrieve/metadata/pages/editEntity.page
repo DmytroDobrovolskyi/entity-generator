@@ -84,7 +84,7 @@
 
 
                          <apex:column headerValue="PK">
-                             <apex:inputCheckbox value="{!field.isPrimaryKey__c}" styleClass="pk-checkboxes" onchange = "resolveCheckboxes(this),setWereChanges()">
+                             <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" styleClass="pk-checkboxes" onchange="resolveCheckboxes(this),setWereChanges()">
                              </apex:inputCheckbox>
                          </apex:column>
 

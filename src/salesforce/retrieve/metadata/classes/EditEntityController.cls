@@ -21,7 +21,7 @@ public class EditEntityController
 
         for (Field__c field :
         [
-            SELECT Id, Name, ColumnName__c, Type__c, IsPrimaryKey__c
+            SELECT Id, Name, ColumnName__c, Type__c, isPrimaryKey__c
             FROM Field__c
             WHERE Entity__c = :entity.Id
         ])
@@ -146,6 +146,7 @@ public class EditEntityController
             fieldMap = newFieldMap;
             wereChanges = false;
         }
+        System.debug(newFieldMap);
     }
 
     public PageReference discardChanges()

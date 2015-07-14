@@ -19,10 +19,6 @@
                 <behavior>Edit</behavior>
                 <field>EntityId__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IsProcessingNeeded__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
