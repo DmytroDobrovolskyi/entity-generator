@@ -82,6 +82,12 @@
                             </apex:commandLink>
                         </apex:column>
 
+
+                         <apex:column headerValue="PK">
+                             <apex:inputCheckbox value="{!field.isPrimaryKey__c}" styleClass="pk-checkboxes" onchange = "resolveCheckboxes(this)">
+                             </apex:inputCheckbox>
+                         </apex:column>
+
                     </apex:dataTable>
 
                     <apex:pageMessages />

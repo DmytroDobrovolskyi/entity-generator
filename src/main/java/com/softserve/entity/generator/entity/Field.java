@@ -23,6 +23,9 @@ public class Field
     @Column(name = "Type")
     private String type;
 
+    @Column(name = "Is_Primary_Key")
+    private Boolean isPrimaryKey;
+
     @Embedded
     private State state = new State();
 
@@ -37,6 +40,16 @@ public class Field
         this.name = name;
         this.columnName = columnName;
         this.type = type;
+    }
+
+    public Boolean getIsPrimaryKey()
+    {
+        return isPrimaryKey;
+    }
+
+    public void setIsPrimaryKey(Boolean isPrimaryKey)
+    {
+        this.isPrimaryKey = isPrimaryKey;
     }
 
     public String getFieldId()
