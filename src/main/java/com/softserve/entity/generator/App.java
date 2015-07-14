@@ -16,9 +16,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class App
@@ -85,7 +84,8 @@ public class App
             app.saveEntities(entityRequester.getAllEntities());
 
             app.executeProcedures();
-        } catch (ParseException ex)
+        }
+        catch (ParseException ex)
         {
             logger.info("Failed to parse command line properties", ex);
             help(options);
@@ -107,24 +107,29 @@ public class App
         {
             boolean isSucceed = applier.apply(entity);
 
-            if (isSucceed)
+            State entityState = entity.getState();
+
+            if (entityState.getIsDeleted())
             {
-                State entityState = entity.getState();
+                entityService.delete(entity);
+            }
+            else if (isSucceed)
+            {
+                entityState.resetAfterApply();
 
-                if (entityState.getIsDeleted())
+                for (Iterator<Field> iterator = entity.getFields().iterator(); iterator.hasNext(); )
                 {
-                    entityService.delete(entity);
-                }
-                else
-                {
-                    entityState.resetAfterApply();
-                    entityService.mergeAndResolveDeletedFields(entity);
-
-                    for (Field field : entity.getFields())
+                    State fieldState = iterator.next().getState();
+                    if (fieldState.getIsDeleted())
                     {
-                        field.getState().resetAfterApply();
+                        iterator.remove();
+                    }
+                    else
+                    {
+                        fieldState.resetAfterApply();
                     }
                 }
+                entityService.merge(entity);
             }
         }
     }

@@ -19,7 +19,7 @@ public class EntityApplier implements Applier<Entity>
     @Transactional
     public boolean apply(Entity entity)
     {
-        if (entity.getFields().size() != 0 || entity.getState().getIsDeleted())
+        if (entity.getFields().size() != 0)
         {
             String createProcedureQueryString = ProcedureGenerator.generateProcedure(entity);
 

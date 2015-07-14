@@ -67,7 +67,7 @@
 
                         <apex:column headerValue="Column name">
                             <apex:inputField value="{!field.ColumnName__c}" styleClass="input text-center" onchange="setWereChanges()"
-                                             onclick="generateColumnName(this)" required="true"/>
+                                             onfocus="generateColumnName(this)" required="true"/>
                         </apex:column>
 
                         <apex:column headerValue="Type" styleClass="text-center">

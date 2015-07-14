@@ -80,16 +80,20 @@ public class EditEntityController
 
     public void applyChanges()
     {
+        Map<String, Field__c> newFieldMap = new Map<String, Field__c>();
+
         Boolean hasError = false;
 
         List<String> columnNames = new List<String>();
 
-        for (Field__c filed : fieldMap.values())
+        for (Field__c field : fieldMap.values())
         {
-            columnNames.add(filed.ColumnName__c);
+            columnNames.add(field.ColumnName__c);
         }
 
         Set<String> uniqueColumnNames =  new Set<String>(columnNames);
+
+        Set<Field__c> fieldsToUpdate = null;
 
         if (columnNames.size() != uniqueColumnNames.size())
         {
@@ -98,10 +102,10 @@ public class EditEntityController
         }
         else
         {
-            Set<Field__c> filedsToUpdate = new Set<Field__c>(fieldMap.values());
-            filedsToUpdate.remove(newField);
+            fieldsToUpdate = new Set<Field__c>(fieldMap.values());
+            fieldsToUpdate.remove(newField);
 
-             for (Field__c field : filedsToUpdate)
+             for (Field__c field : fieldsToUpdate)
               {
                  if (containSpaces(field.ColumnName__c))
                      {
@@ -111,7 +115,7 @@ public class EditEntityController
 
               if (!hasError)
               {
-                  Database.SaveResult[] results = Database.update(new List<Field__c> (filedsToUpdate), false);
+                  Database.SaveResult[] results = Database.update(new List<Field__c> (fieldsToUpdate), false);
               }
         }
 
@@ -123,8 +127,7 @@ public class EditEntityController
             }
             else
             {
-                fieldMap.remove(null);
-                fieldMap.put(newField.ColumnName__c, newField);
+                newFieldMap.put(newField.ColumnName__c, newField);
 
                 Database.insert(newField);
                 newField = null;
@@ -136,6 +139,11 @@ public class EditEntityController
         }
         else
         {
+            for (Field__c field : fieldsToUpdate)
+            {
+                newFieldMap.put(field.ColumnName__c, field);
+            }
+            fieldMap = newFieldMap;
             wereChanges = false;
         }
     }

@@ -29,7 +29,7 @@
 
                         <apex:column headerValue="Table name">
                             <apex:inputField value="{!entity.TableName__c}" styleClass="input text-center" onchange="setWereChanges()"
-                                             onclick="generateTableName(this)" required="true"/>
+                                             onfocus="generateTableName(this)" required="true"/>
                         </apex:column>
 
                         <apex:column headerValue="Actions" styleClass="text-center">

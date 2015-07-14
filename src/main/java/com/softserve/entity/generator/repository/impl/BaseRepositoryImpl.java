@@ -36,6 +36,7 @@ public class BaseRepositoryImpl<T> implements BaseRepository<T>
         entityManager.remove(
                 entityManager.merge(entity) //TODO
         );
+
     }
 
     @Override
