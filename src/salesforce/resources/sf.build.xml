@@ -11,7 +11,7 @@
                      password="${sf.password}"
                      serverurl="${sf.serverurl}"
                      maxPoll="${sf.maxPoll}"
-                     unpackaged="${sf.receive.dir}/package.xml"
+                     unpackaged="${sf.retrieve.dir}/package.xml"
                      retrieveTarget="${sf.metadata.dir}"/>
     </target>
 
