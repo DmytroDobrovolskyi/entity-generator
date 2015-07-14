@@ -70,7 +70,8 @@ function generateColumnName(context)
             .replace(/ /g, '_')
             .replace(/\d+/g, '')
             .replace(/\W/g, '')
-            .toUpperCase();
+            .replace(/^[a-z]/, function(firstCharacter){ return firstCharacter.toUpperCase() })
+            .replace(/_[a-z]/, function(character){ return character.toUpperCase() });
     }
 }
 

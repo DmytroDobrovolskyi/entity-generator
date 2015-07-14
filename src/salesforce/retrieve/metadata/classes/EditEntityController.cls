@@ -146,6 +146,7 @@ public class EditEntityController
             fieldMap = newFieldMap;
             wereChanges = false;
         }
+        System.debug(newFieldMap);
     }
 
     public PageReference discardChanges()
