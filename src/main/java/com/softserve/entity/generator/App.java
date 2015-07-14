@@ -2,12 +2,9 @@ package com.softserve.entity.generator;
 
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.entity.Field;
-import com.softserve.entity.generator.entity.State;
 import com.softserve.entity.generator.service.EntityService;
-import com.softserve.entity.generator.service.applier.Applier;
+import com.softserve.entity.generator.service.applier.EntityApplier;
 import com.softserve.entity.generator.service.salesforce.Authenticator;
-import com.softserve.entity.generator.service.salesforce.EntityChangesTracker;
 import com.softserve.entity.generator.service.salesforce.EntityRequester;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
@@ -16,7 +13,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -28,10 +24,7 @@ public class App
     private EntityService entityService;
 
     @Autowired
-    private EntityChangesTracker entityChangesTracker;
-
-    @Autowired
-    private Applier<Entity> applier;
+    private EntityApplier entityApplier;
 
     public static void main(String[] args)
     {
@@ -94,44 +87,14 @@ public class App
 
     public void saveEntities(List<Entity> entities)
     {
-        entityChangesTracker.trackChanges(entities);
-        for (Entity entity : entities)
-        {
-            entityService.merge(entity);
-        }
+        entityService.saveAndResolveDeleted(entities);
     }
 
     public void executeProcedures()
     {
-        for (Entity entity : entityService.findAll())
-        {
-            boolean isSucceed = applier.apply(entity);
-
-            State entityState = entity.getState();
-
-            if (entityState.getIsDeleted())
-            {
-                entityService.delete(entity);
-            }
-            else if (isSucceed)
-            {
-                entityState.resetAfterApply();
-
-                for (Iterator<Field> iterator = entity.getFields().iterator(); iterator.hasNext(); )
-                {
-                    State fieldState = iterator.next().getState();
-                    if (fieldState.getIsDeleted())
-                    {
-                        iterator.remove();
-                    }
-                    else
-                    {
-                        fieldState.resetAfterApply();
-                    }
-                }
-                entityService.merge(entity);
-            }
-        }
+            entityApplier.applyAll(
+                    entityService.findAll()
+            );
     }
 
     private static void help(Options options)

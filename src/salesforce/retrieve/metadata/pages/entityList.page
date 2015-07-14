@@ -25,11 +25,13 @@
 
                         <apex:column headerValue="Name">
                             <apex:inputField value="{!entity.Name}" styleClass="input text-center" onchange="setWereChanges()" required="true"/>
+                            <apex:param name="tableName" value="{!entity.TableName__c}" assignTo="{!tableName}"/>
                         </apex:column>
 
                         <apex:column headerValue="Table name">
                             <apex:inputField value="{!entity.TableName__c}" styleClass="input text-center" onchange="setWereChanges()"
                                              onfocus="generateTableName(this)" required="true"/>
+                            <apex:param name="tableName" value="{!entity.TableName__c}" assignTo="{!tableName}"/>
                         </apex:column>
 
                         <apex:column headerValue="Actions" styleClass="text-center">
@@ -45,7 +47,7 @@
 
                     </apex:dataTable>
 
-                    <apex:pageMessages/>
+                    <apex:pageMessages />
 
                     <apex:actionFunction action="{!deleteEntity}" name="callDeleteEntity" reRender="table-panel" oncomplete="init()" immediate="true">
                         <apex:param name="tableName" value="" assignTo="{!tableName}"/>

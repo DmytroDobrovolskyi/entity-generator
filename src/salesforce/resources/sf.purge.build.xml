@@ -85,8 +85,8 @@
     ]]></echo>
 
         <sf:retrieve
-                username="${sf.dest.username}"
-                password="${sf.dest.password}"
+                username="${sf.username}"
+                password="${sf.password}"
                 serverurl="https://login.salesforce.com"
                 retrieveTarget="purge"
                 unpackaged="purge/package.xml"
@@ -103,16 +103,16 @@
         </replace>
 
         <sf:deploy
-                username="${sf.dest.username}"
-                password="${sf.dest.password}"
+                username="${sf.username}"
+                password="${sf.password}"
                 serverurl="https://login.salesforce.com"
                 deployRoot="purge"
                 purgeOnDelete="true"
                 pollWaitMillis="1000"/>
 
         <sf:retrieve
-                username="${sf.dest.username}"
-                password="${sf.dest.password}"
+                username="${sf.username}"
+                password="${sf.password}"
                 serverurl="https://login.salesforce.com"
                 retrieveTarget="purge"
                 packageNames="Purge"
@@ -127,8 +127,8 @@
     ]]></echo>
 
         <sf:deploy
-                username="${sf.dest.username}"
-                password="${sf.dest.password}"
+                username="${sf.username}"
+                password="${sf.password}"
                 serverurl="https://login.salesforce.com"
                 deployRoot="purge"
                 purgeOnDelete="true"

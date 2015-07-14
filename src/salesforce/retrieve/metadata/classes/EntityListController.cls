@@ -14,7 +14,7 @@ public class EntityListController
 
         for (Entity__c entity :
         [
-            SELECT Id, Name, TableName__c
+            SELECT Id, Name, TableName__c, IsProcessingNeeded__c
             FROM Entity__c
         ])
         {
@@ -114,5 +114,6 @@ public class EntityListController
     public void setWereChanges()
     {
         wereChanges = true;
+        entityMap.get(tableName).IsProcessingNeeded__c = true;
     }
 }

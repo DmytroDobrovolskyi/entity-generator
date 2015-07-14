@@ -23,9 +23,6 @@ public class Field
     @Column(name = "Type")
     private String type;
 
-    @Embedded
-    private State state = new State();
-
     @ManyToOne
     @JoinColumn(name = "Entity_Id")
     private Entity entity;
@@ -89,16 +86,6 @@ public class Field
     public void setEntity(Entity entity)
     {
         this.entity = entity;
-    }
-
-    public State getState()
-    {
-        return state;
-    }
-
-    public void setState(State state)
-    {
-        this.state = state;
     }
 
     @Override

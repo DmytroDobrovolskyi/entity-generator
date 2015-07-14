@@ -7,9 +7,9 @@
 
     <target name="retrieve-before-unzip" depends="sf-clean">
         <mkdir dir="${sf.metadata.dir}"/>
-        <sf:retrieve username="${sf.src.username}"
-                     password="${sf.src.password}"
-                     serverurl="${sf.src.serverurl}"
+        <sf:retrieve username="${sf.username}"
+                     password="${sf.password}"
+                     serverurl="${sf.serverurl}"
                      maxPoll="${sf.maxPoll}"
                      unpackaged="${sf.receive.dir}/package.xml"
                      retrieveTarget="${sf.metadata.dir}"/>
@@ -34,9 +34,9 @@
         <delete file="${sf.metadata.dir}/layouts/FeedItem-Feed Item Layout.layout"/>
         <delete file="${sf.metadata.dir}/layouts/SocialPost-Social Post Layout.layout"/>
 
-        <sf:deploy username="${sf.dest.username}"
-                   password="${sf.dest.password}"
-                   serverurl="${sf.dest.serverurl}"
+        <sf:deploy username="${sf.username}"
+                   password="${sf.password}"
+                   serverurl="${sf.serverurl}"
                    maxPoll="${sf.maxPoll}"
                    deployRoot="${sf.metadata.dir}"/>
     </target>

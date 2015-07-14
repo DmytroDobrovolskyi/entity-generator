@@ -20,8 +20,8 @@ public class Entity
     @Column(name = "Name")
     private String name;
 
-    @Embedded
-    private State state = new State();
+    @Column(name = "Is_Processing_Needed")
+    private Boolean isProcessingNeeded;
 
     @OneToMany(mappedBy = "entity", cascade = {CascadeType.ALL} , orphanRemoval = true)
     private Set<Field> fields = new HashSet<Field>();
@@ -75,14 +75,14 @@ public class Entity
         this.fields = fields;
     }
 
-    public State getState()
+    public Boolean getIsProcessingNeeded()
     {
-        return state;
+        return isProcessingNeeded;
     }
 
-    public void setState(State state)
+    public void setIsProcessingNeeded(Boolean isProcessingNeeded)
     {
-        this.state = state;
+        this.isProcessingNeeded = isProcessingNeeded;
     }
 
     @Override

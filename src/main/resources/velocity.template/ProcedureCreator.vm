@@ -1,7 +1,3 @@
-#set($fields = $entity.getFields())
-#set($tableName = $entity.getTableName())
-#set($state = $entity.getState())
-
     IF  EXISTS
     (
         SELECT *
@@ -21,76 +17,55 @@
 
     SET @initialProcedureQueryLength = LEN(@procedureQuery)
 
-    #if($state.getIsNew())
-        SET @procedureQuery = @procedureQuery +
-        (
-            'CREATE TABLE $schema.$tableName
-            (
-                #foreach($field in $fields)
-                    #if($foreach.index != $entity.getFields().size() - 1)
-                        $field.getColumnName() $field.getType().concat(',')
-                    #else
-                        $field.getColumnName() $field.getType()
-                    #end
-                #end
-            )'
-        );
-    #elseif(!$state.getOldMetadataMap().isEmpty())
-        SET @procedureQuery = @procedureQuery +
-        (
-             'EXEC sp_rename ''$schema.$state.getOldMetadataMap().get("oldTableName")'', ''$tableName''; '
-        );
-    #elseif($state.getIsDeleted() && $fields.size() != 0)
-        SET @procedureQuery = @procedureQuery +
-        (
-            'DROP TABLE $schema.$tableName'
-        );
+    #set($tableNames = "'" + $entityClass.getSimpleName().toUpperCase() + "', '" + $fieldClass.getSimpleName().toUpperCase() + "'")
+
+    #foreach($entity in $entities)
+        #set($tableNames = $tableNames + ", '" + $entity.getTableName() + "'")
     #end
 
-    #if(!$state.getIsNew() && !$state.getIsDeleted())
-        #foreach($field in $fields)
-            #set($fieldState = $field.getState())
+    DECLARE @tablesToDelete nvarchar(MAX);
 
-            #if($fieldState.getIsNew())
+    SELECT @tablesToDelete = COALESCE(@tablesToDelete + ', ','') + SCHEMAS.name, @tablesToDelete = COALESCE(@tablesToDelete + '.','') + TABLES.name
+    FROM
+        sys.tables TABLES
+            JOIN
+        sys.schemas SCHEMAS
+    ON
+    TABLES.schema_id = SCHEMAS.schema_id
+    WHERE TABLES.name NOT IN ($tableNames)
+
+    IF LEN(@tablesToDelete) > 0
+        SET @procedureQuery = @procedureQuery +
+        (
+            'DROP TABLE ' + @tablesToDelete + ' '
+        )
+
+    #foreach($entity in $entities)
+        #set($fields = $entity.getFields())
+
+        #if($fields.size() != 0)
+
+            #set($tableName = $entity.getTableName())
+
+            IF ('$tableName')
+            NOT IN
+            (
+                SELECT name
+                FROM sys.tables
+            )
                 SET @procedureQuery = @procedureQuery +
                 (
-                    'ALTER TABLE $schema.$tableName
-                     ADD $field.getColumnName() $field.getType() '
-                );
-            #elseif(!$fieldState.getOldMetadataMap().isEmpty())
-                #set($oldColumnName = $fieldState.getOldMetadataMap().get("oldColumnName"))
-                #set($oldType = $fieldState.getOldMetadataMap().get("oldType"))
-
-                #if($oldColumnName)
-                    SET @procedureQuery = @procedureQuery +
+                    'CREATE TABLE $schema.$tableName
                     (
-                        'EXEC sp_RENAME ''$schema.$tableName.$oldColumnName'' ,
-                        ''$field.getColumnName()'', ''COLUMN'' '
-                    );
-                #end
-
-                #if($oldType)
-                    SET @procedureQuery = @procedureQuery +
-                    (
-                        'ALTER TABLE $schema.$tableName
-                         ALTER COLUMN $field.getColumnName() $field.getType()'
-                    );
-                #end
-            #elseif($fieldState.getIsDeleted())
-
-                #if($fields.size() == 1)
-                    SET @procedureQuery = @procedureQuery +
-                    (
-                        'DROP TABLE $schema.$tableName '
-                    );
-                    #else
-                        SET @procedureQuery = @procedureQuery +
-                        (
-                            'ALTER TABLE $schema.$tableName
-                             DROP COLUMN $field.getColumnName() '
-                        );
-                #end
-            #end
+                        #foreach($field in $fields)
+                            #if($foreach.index != $field.size() - 1)
+                                $field.getColumnName() $field.getType().concat(',')
+                            #else
+                                $field.getColumnName() $field.getType()
+                            #end
+                        #end
+                    ) '
+                )
         #end
     #end
 
