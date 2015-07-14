@@ -23,6 +23,9 @@ public class Field
     @Column(name = "Type")
     private String type;
 
+    @Column(name = "Is_Primary_Key")
+    private Boolean isPrimaryKey;
+
     @ManyToOne
     @JoinColumn(name = "Entity_Id")
     private Entity entity;
@@ -62,7 +65,6 @@ public class Field
         return columnName;
     }
 
-
     private void setColumnName(String columnName)
     {
         this.columnName = columnName;
@@ -86,6 +88,16 @@ public class Field
     public void setEntity(Entity entity)
     {
         this.entity = entity;
+    }
+
+    public Boolean getIsPrimaryKey()
+    {
+        return isPrimaryKey;
+    }
+
+    public void setIsPrimaryKey(Boolean isPrimaryKey)
+    {
+        this.isPrimaryKey = isPrimaryKey;
     }
 
     @Override

@@ -71,7 +71,7 @@ public class EntityRequester
 
             List<Entity> entities = new ArrayList<Entity>();
 
-          if (stringifiedResponse.indexOf(TOTAL_SIZE_ZERO) != -1)
+          if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
           {
               return entities;
           }
