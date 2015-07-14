@@ -31,6 +31,7 @@ public class EntityRequester
     private static final String RELATION;
     private static final String RELATION_CUSTOM_FIELDS;
     private static final String ENTITY_NAME;
+    private static final String TOTAL_SIZE_ZERO = "\"totalSize\" : 0";
 
    static
    {
@@ -66,6 +67,15 @@ public class EntityRequester
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
 
+            logger.info(stringifiedResponse);
+
+            List<Entity> entities = new ArrayList<Entity>();
+
+          if (stringifiedResponse.indexOf(TOTAL_SIZE_ZERO) != -1)
+          {
+              return entities;
+          }
+
             List<String> parsableSObjects = new ArrayList<String>();
 
             for (String parsableSObject : Splitter.splitSObjects(stringifiedResponse))
@@ -75,10 +85,7 @@ public class EntityRequester
                 );
             }
 
-
             Gson gson = new Gson();
-
-            List<Entity> entities = new ArrayList<Entity>();
 
             for (String parsableSObject : parsableSObjects)
             {

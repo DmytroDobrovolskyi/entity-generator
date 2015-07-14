@@ -20,7 +20,6 @@ function init()
     $('[data-toggle="popover"]').popover();
 }
 
-
 function setWereChanges()
 {
     EntityListController.setWereChanges();

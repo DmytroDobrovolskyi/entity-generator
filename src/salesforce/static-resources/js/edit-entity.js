@@ -24,6 +24,31 @@ function setWereChanges()
     EditEntityController.setWereChanges();
 }
 
+function resolveCheckboxes()
+{
+    var allIsUnchecked = true;
+
+    $('.pk-checkboxes').each(function(index,element)
+    {
+        console.log(this);
+        if($(this).is(':checked'))
+        {
+            console.log("Checkbox is checked.");
+            $(this).removeAttr('disabled');
+            allIsUnchecked = false;
+        }
+        else
+        {
+            $(this).attr("disabled", true);
+        }
+    });
+
+    if(allIsUnchecked)
+    {
+        $('.pk-checkboxes').removeAttr('disabled');
+    }
+}
+
 function generateColumnName(context)
 {
     var name = null;
@@ -45,7 +70,8 @@ function generateColumnName(context)
             .replace(/ /g, '_')
             .replace(/\d+/g, '')
             .replace(/\W/g, '')
-            .toUpperCase();
+            .replace(/^[a-z]/, function(firstCharacter){ return firstCharacter.toUpperCase() })
+            .replace(/_[a-z]/, function(character){ return character.toUpperCase() });
     }
 }
 
@@ -64,6 +90,7 @@ function fillForReset()
 
 function initAndDeleteErrors()
 {
+    resolveCheckboxes();
     init();
     $('.errorMsg').remove();
 }

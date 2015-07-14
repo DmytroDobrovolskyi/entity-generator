@@ -23,9 +23,7 @@ public class FieldUtil
 			field.ColumnName__c = field.ColumnName__c
 													.replaceAll('\\s','_')
 													.replaceAll('\\W','')
-													.replaceAll('\\d', '')
-													.toUpperCase();
-
+													.replaceAll('\\d', '');
 
 			field.FieldId__c = entity.TableName__c
 													.replaceAll('\\s','')
