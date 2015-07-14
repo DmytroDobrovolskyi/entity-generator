@@ -89,6 +89,7 @@ function fillForReset()
 
 function initAndDeleteErrors()
 {
+    resolveCheckboxes();
     init();
     $('.errorMsg').remove();
 }
