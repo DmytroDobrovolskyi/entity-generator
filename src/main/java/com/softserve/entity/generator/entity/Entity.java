@@ -89,6 +89,16 @@ public class Entity
                 .isEquals();
     }
 
+    public Boolean getIsProcessingNeeded()
+    {
+        return isProcessingNeeded;
+    }
+
+    public void setIsProcessingNeeded(Boolean isProcessingNeeded)
+    {
+        this.isProcessingNeeded = isProcessingNeeded;
+    }
+
     @Override
     public int hashCode()
     {

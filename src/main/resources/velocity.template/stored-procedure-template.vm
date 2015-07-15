@@ -26,7 +26,7 @@
         #end
     #end
 
-    DECLARE @tablesToDelete nvarchar(MAX)= ''
+    DECLARE @tablesToDelete nvarchar(MAX)
 
     SELECT @tablesToDelete = COALESCE(@tablesToDelete + ', ','') + SCHEMAS.name, @tablesToDelete = COALESCE(@tablesToDelete + '.','') + TABLES.name
     FROM
@@ -37,9 +37,14 @@
     TABLES.schema_id = SCHEMAS.schema_id
     WHERE TABLES.name NOT IN ($tableNames)
 
-    IF LEN(@tablesToDelete) > 0
-        SET @tablesToDelete =  @tablesToDelete + ', ' + '$changedTables '
-    ELSE
+    SET @tablesToDelete = @tablesToDelete + ''
+
+    DECLARE @tablesToDeleteLength int = LEN(@tablesToDelete)
+    DECLARE @changedTablesLength int = LEN('$changedTables')
+
+    IF @tablesToDeleteLength > 0  AND @changedTablesLength > 0
+        SET @tablesToDelete =  @tablesToDelete + ', $changedTables '
+    ELSE IF @tablesToDeleteLength = 0  AND @changedTablesLength > 0
         SET @tablesToDelete =  '$changedTables '
 
     IF LEN(@tablesToDelete) > 0
@@ -66,7 +71,11 @@
                 CREATE TABLE $schema.$tableName
                 (
                     #foreach($field in $fields)
-                        $field.getColumnName() $field.getType().concat(',')
+                        #if($field.getIsPrimaryKey())
+                            $field.getColumnName() $field.getType() PRIMARY KEY,
+                        #else
+                            $field.getColumnName() $field.getType(),
+                        #end
                     #end
                 )'
             )

@@ -22,7 +22,7 @@ public class ProcedureGenerator
     {
         VelocityEngine velocityEngine = getVelocityEngine();
         velocityEngine.init();
-        Template templateCreate = velocityEngine.getTemplate("velocity.template/ProcedureCreator.vm");
+        Template templateCreate = velocityEngine.getTemplate("velocity.template/stored-procedure-template.vm");
         VelocityContext context = new VelocityContext();
 
         context.put("schema", DatabaseInitializationConfig.GENERATED_TABLES_SCHEMA);
@@ -40,7 +40,7 @@ public class ProcedureGenerator
     {
         VelocityEngine velocityEngine = getVelocityEngine();
         velocityEngine.init();
-        Template templateCreate = velocityEngine.getTemplate("velocity.template/ProcedureCreator.vm");
+        Template templateCreate = velocityEngine.getTemplate("velocity.template/stored-procedure-template.vm");
         VelocityContext context = new VelocityContext();
 
         context.put("schema", DatabaseInitializationConfig.GENERATED_TABLES_SCHEMA);
