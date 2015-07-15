@@ -59,9 +59,17 @@
                     (
                         #foreach($field in $fields)
                             #if($foreach.index != $field.size() - 1)
-                                $field.getColumnName() $field.getType().concat(',')
+                                #if($field.getIsPrimaryKey())
+                                    $field.getColumnName() $field.getType().concat(' PRIMARY KEY,')
+                                #else
+                                    $field.getColumnName() $field.getType().concat(',')
+                                #end
                             #else
-                                $field.getColumnName() $field.getType()
+                                #if($field.getIsPrimaryKey())
+                                    $field.getColumnName() $field.getType().concat(' PRIMARY KEY')
+                                 #else
+                                     $field.getColumnName() $field.getType()
+                                 #end
                             #end
                         #end
                     ) '

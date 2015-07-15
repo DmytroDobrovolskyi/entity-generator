@@ -20,9 +20,6 @@ public class Entity
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "Is_Processing_Needed")
-    private Boolean isProcessingNeeded;
-
     @OneToMany(mappedBy = "entity", cascade = {CascadeType.ALL} , orphanRemoval = true)
     private Set<Field> fields = new HashSet<Field>();
 
@@ -73,16 +70,6 @@ public class Entity
     public void setFields(Set<Field> fields)
     {
         this.fields = fields;
-    }
-
-    public Boolean getIsProcessingNeeded()
-    {
-        return isProcessingNeeded;
-    }
-
-    public void setIsProcessingNeeded(Boolean isProcessingNeeded)
-    {
-        this.isProcessingNeeded = isProcessingNeeded;
     }
 
     @Override
