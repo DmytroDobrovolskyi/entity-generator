@@ -1,7 +1,7 @@
 package com.softserve.entity.generator.service.salesforce;
 
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.service.salesforce.util.FieldsRegisterProcessor;
+import com.softserve.entity.generator.service.salesforce.util.ColumnsRegisterProcessor;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,7 +15,7 @@ public class ColumnsRegister
     );
 
     private static final List<String> EXCLUSIONS = Collections.unmodifiableList(
-            Arrays.<String>asList("state")
+            Arrays.<String>asList("isProcessingNeeded")
     );
 
     private static Map<Class<?>, String> customFieldsMap;
@@ -24,7 +24,7 @@ public class ColumnsRegister
     {
         if (customFieldsMap == null)
         {
-            customFieldsMap = FieldsRegisterProcessor.processRegistration(ENTITIES, EXCLUSIONS);
+            customFieldsMap = ColumnsRegisterProcessor.processRegistration(ENTITIES, EXCLUSIONS);
         }
         return customFieldsMap;
     }

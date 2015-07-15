@@ -28,11 +28,6 @@ public class App
 
     public static void main(String[] args)
     {
-        if (args.length == 1)
-        {
-            args = args[0].split(" ");
-        }
-
         CommandLineParser parser = new BasicParser();
 
         CommandLine commandLine = null;
@@ -85,16 +80,21 @@ public class App
         }
     }
 
-    public void saveEntities(List<Entity> entities)
+    public void saveEntities(List<Entity> receivedEntities)
     {
-        entityService.saveAndResolveDeleted(entities);
+        entityService.resolveDeleted(receivedEntities);
+        entityService.trackChanges(receivedEntities);
+        for (Entity receivedEntity : receivedEntities)
+        {
+            entityService.merge(receivedEntity);
+        }
     }
 
     public void executeProcedures()
     {
-            entityApplier.applyAll(
-                    entityService.findAll()
-            );
+        entityApplier.applyAll(
+                entityService.findAll()
+        );
     }
 
     private static void help(Options options)

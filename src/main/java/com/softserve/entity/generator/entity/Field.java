@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Table(name = "FIELD")
 public class Field
 {
-
     @Id
     @Column(name = "Field_Id")
     private String fieldId;
@@ -111,6 +110,9 @@ public class Field
 
         return new EqualsBuilder()
                 .append(fieldId, field.fieldId)
+                .append(columnName, field.columnName)
+                .append(type, field.type)
+                .append(isPrimaryKey, field.isPrimaryKey)
                 .isEquals();
     }
 

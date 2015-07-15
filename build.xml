@@ -118,7 +118,7 @@
     <target name="run-app">
         <java classname="com.softserve.entity.generator.App">
 
-            <arg value="${command.line.args}"/>
+            <arg line="${command.line.args}"/>
 
             <classpath refid="runtime.path"/>
 

@@ -8,5 +8,7 @@ import java.util.List;
 @Service
 public interface EntityService extends BaseService<Entity>
 {
-    void saveAndResolveDeleted(List<Entity> entities);
+    void resolveDeleted(List<Entity> entities);
+
+    void trackChanges(List<Entity> entities);
 }

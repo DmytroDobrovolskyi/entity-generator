@@ -20,11 +20,11 @@ public class Entity
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "Is_Processing_Needed")
-    private Boolean isProcessingNeeded;
-
     @OneToMany(mappedBy = "entity", cascade = {CascadeType.ALL} , orphanRemoval = true)
     private Set<Field> fields = new HashSet<Field>();
+
+    @Column(name = "Is_Processing_Needed")
+    private Boolean isProcessingNeeded;
 
     protected Entity() {}
 

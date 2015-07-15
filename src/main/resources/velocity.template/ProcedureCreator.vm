@@ -6,24 +6,27 @@
     )
     DROP PROCEDURE $procedureName
 
-    DECLARE @procedureQuery nvarchar(MAX);
-    DECLARE @initialProcedureQueryLength int;
-
-    SET @procedureQuery =
-    (
-        'CREATE PROCEDURE $procedureName
-        AS '
-    )
-
-    SET @initialProcedureQueryLength = LEN(@procedureQuery)
+    DECLARE @procedureQuery nvarchar(MAX) = 'CREATE PROCEDURE $procedureName AS '
+    DECLARE @initialProcedureQueryLength int = LEN(@procedureQuery)
 
     #set($tableNames = "'" + $entityClass.getSimpleName().toUpperCase() + "', '" + $fieldClass.getSimpleName().toUpperCase() + "'")
+    #set($changedTables = "")
 
     #foreach($entity in $entities)
-        #set($tableNames = $tableNames + ", '" + $entity.getTableName() + "'")
+        #set($tableName = $entity.getTableName())
+
+        #set($tableNames = $tableNames + ", '" + $tableName + "'")
+
+        #if($entity.getIsProcessingNeeded())
+            #if($changedTables.equals(""))
+                #set($changedTables = $schema + "." + $tableName)
+            #else
+                #set($changedTables = ", " + $schema + "." + $tableName)
+            #end
+        #end
     #end
 
-    DECLARE @tablesToDelete nvarchar(MAX);
+    DECLARE @tablesToDelete nvarchar(MAX)= ''
 
     SELECT @tablesToDelete = COALESCE(@tablesToDelete + ', ','') + SCHEMAS.name, @tablesToDelete = COALESCE(@tablesToDelete + '.','') + TABLES.name
     FROM
@@ -33,6 +36,11 @@
     ON
     TABLES.schema_id = SCHEMAS.schema_id
     WHERE TABLES.name NOT IN ($tableNames)
+
+    IF LEN(@tablesToDelete) > 0
+        SET @tablesToDelete =  @tablesToDelete + ', ' + '$changedTables '
+    ELSE
+        SET @tablesToDelete =  '$changedTables '
 
     IF LEN(@tablesToDelete) > 0
         SET @procedureQuery = @procedureQuery +
@@ -47,25 +55,21 @@
 
             #set($tableName = $entity.getTableName())
 
-            IF ('$tableName')
-            NOT IN
+            SET @procedureQuery = @procedureQuery +
             (
-                SELECT name
-                FROM sys.tables
-            )
-                SET @procedureQuery = @procedureQuery +
+                'IF (''$tableName'')
+                 NOT IN
                 (
-                    'CREATE TABLE $schema.$tableName
-                    (
-                        #foreach($field in $fields)
-                            #if($foreach.index != $field.size() - 1)
-                                $field.getColumnName() $field.getType().concat(',')
-                            #else
-                                $field.getColumnName() $field.getType()
-                            #end
-                        #end
-                    ) '
+                    SELECT name
+                    FROM sys.tables
                 )
+                CREATE TABLE $schema.$tableName
+                (
+                    #foreach($field in $fields)
+                        $field.getColumnName() $field.getType().concat(',')
+                    #end
+                )'
+            )
         #end
     #end
 

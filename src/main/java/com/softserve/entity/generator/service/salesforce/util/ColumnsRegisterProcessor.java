@@ -3,7 +3,7 @@ package com.softserve.entity.generator.service.salesforce.util;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class FieldsRegisterProcessor
+public class ColumnsRegisterProcessor
 {
     public static Map<Class<?>, String> processRegistration(List<Class<?>> registerMetadata, List<String> exclusions)
     {
