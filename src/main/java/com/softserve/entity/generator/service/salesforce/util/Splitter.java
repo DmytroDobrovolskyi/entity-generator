@@ -13,6 +13,10 @@ public class Splitter
                 .replaceAll("\\}\\n.*},\\s\\{", "%")
                 .replaceAll("__r\" : null\\n.*\\}, \\{", "__r\": \\[ \\] %");
 
+        System.out.println("//////////////////");
+        System.out.println(stringifiedJson);
+        System.out.println("//////////////////");
+
         Collections.addAll(sObjects, stringifiedJson.split("%"));
 
         return sObjects;
