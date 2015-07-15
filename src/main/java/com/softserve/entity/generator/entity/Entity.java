@@ -35,6 +35,16 @@ public class Entity
         this.tableName = tableName;
     }
 
+    public Boolean getIsProcessingNeeded()
+    {
+        return isProcessingNeeded;
+    }
+
+    public void setIsProcessingNeeded(Boolean isProcessingNeeded)
+    {
+        this.isProcessingNeeded = isProcessingNeeded;
+    }
+
     public String getEntityId()
     {
         return entityId;

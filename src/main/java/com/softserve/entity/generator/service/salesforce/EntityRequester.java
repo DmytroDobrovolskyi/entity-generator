@@ -72,10 +72,6 @@ public class EntityRequester
 
             List<Entity> entities = new ArrayList<Entity>();
 
-            logger.info("//////////////////");
-            logger.info(stringifiedResponse);
-            logger.info("//////////////////");
-
           if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
           {
               return entities;
