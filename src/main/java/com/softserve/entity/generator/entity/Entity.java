@@ -75,16 +75,6 @@ public class Entity
         this.fields = fields;
     }
 
-    public Boolean getIsProcessingNeeded()
-    {
-        return isProcessingNeeded;
-    }
-
-    public void setIsProcessingNeeded(Boolean isProcessingNeeded)
-    {
-        this.isProcessingNeeded = isProcessingNeeded;
-    }
-
     @Override
     public boolean equals(Object o)
     {

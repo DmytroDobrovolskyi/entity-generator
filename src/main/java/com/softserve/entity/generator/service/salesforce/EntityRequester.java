@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EntityRequester
@@ -71,6 +72,10 @@ public class EntityRequester
 
             List<Entity> entities = new ArrayList<Entity>();
 
+            logger.info("//////////////////");
+            logger.info(stringifiedResponse);
+            logger.info("//////////////////");
+
           if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
           {
               return entities;
@@ -100,6 +105,7 @@ public class EntityRequester
                     }
                 }
             }
+
             return entities;
         }
         catch (ClientProtocolException ex)
