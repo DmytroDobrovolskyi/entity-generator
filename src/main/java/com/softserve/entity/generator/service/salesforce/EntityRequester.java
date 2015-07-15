@@ -105,14 +105,7 @@ public class EntityRequester
                     }
                 }
             }
-            logger.info("++++++++++++++");
-            for(Entity entity:entities)
-            {
-                for(Field field:entity.getFields()){
-                    logger.info(field.getIsPrimaryKey());
-                }
-            }
-            logger.info("++++++++++++++");
+
             return entities;
         }
         catch (ClientProtocolException ex)
