@@ -38,6 +38,8 @@
                    serverurl="${sf.serverurl}"
                    maxPoll="${sf.maxPoll}"
                    deployRoot="${sf.metadata.dir}"/>
+
+        <delete file="${sf.static-resources}"/>
     </target>
 
     <target name="sf-clean">

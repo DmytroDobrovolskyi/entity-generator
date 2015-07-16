@@ -66,6 +66,14 @@
         <unique>true</unique>
     </fields>
     <fields>
+        <fullName>IsProcessingNeeded__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>IsProcessingNeeded</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>TableName__c</fullName>
         <caseSensitive>true</caseSensitive>
         <externalId>false</externalId>

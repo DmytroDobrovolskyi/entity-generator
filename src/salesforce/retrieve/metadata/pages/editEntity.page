@@ -92,7 +92,7 @@
                             </apex:commandLink>
                         </apex:column>
 
-                         <apex:column headerValue="PK" id = "checkbox" styleClass="text-center">
+                         <apex:column headerValue="PK" id="checkbox" styleClass="text-center">
                              <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" rendered="{!field.Type__c != 'date'}"
                                                  styleClass="pk-checkboxes" onchange="resolveCheckboxes(this), setWereChanges()">
                              </apex:inputCheckbox>

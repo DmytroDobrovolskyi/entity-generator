@@ -11,7 +11,7 @@ public class ApexExecutor
 {
     private static final Logger logger = Logger.getLogger(ApexExecutor.class);
 
-    public static void executeApex (LoginResult loginResult)
+    public static void executeApex(LoginResult loginResult, String apexCode)
     {
         try
         {
@@ -24,7 +24,7 @@ public class ApexExecutor
             connectorConfig.setSessionId(loginResult.getSessionId());
 
             SoapConnection conn = new SoapConnection(connectorConfig);
-            ExecuteAnonymousResult result = conn.executeAnonymous("EntityUtil.setIsProcessingNeeded(false);");
+            ExecuteAnonymousResult result = conn.executeAnonymous(apexCode);
             logger.info(result);
         }
         catch (ConnectionException ex)

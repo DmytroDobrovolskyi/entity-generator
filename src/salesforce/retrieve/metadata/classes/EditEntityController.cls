@@ -21,7 +21,7 @@ public class EditEntityController
 
         for (Field__c field :
         [
-            SELECT Id, Name, ColumnName__c, Type__c, isPrimaryKey__c
+            SELECT Id, Name, ColumnName__c, Type__c, IsPrimaryKey__c
             FROM Field__c
             WHERE Entity__c = :entity.Id
         ])
@@ -31,7 +31,7 @@ public class EditEntityController
 
         this.entity =
         [
-            SELECT Name, TableName__c
+            SELECT Name, TableName__c, IsProcessingNeeded__c
             FROM Entity__c
             WHERE Entity__c.id = :entity.Id
         ];

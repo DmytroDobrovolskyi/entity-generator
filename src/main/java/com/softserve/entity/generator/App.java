@@ -6,6 +6,7 @@ import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
 import com.softserve.entity.generator.service.salesforce.ApexExecutor;
 import com.softserve.entity.generator.service.salesforce.Authenticator;
+import com.softserve.entity.generator.service.salesforce.EntityRequester;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,15 @@ import java.util.List;
 public class App
 {
     private static final Logger logger = Logger.getLogger(App.class);
+    private static final String APEX_METHOD_TO_EXECUTE = "EntityUtil.resetIsProcessingNeeded();";
 
     @Autowired
     private EntityService entityService;
 
     @Autowired
     private EntityApplier entityApplier;
+
+    private static Authenticator authenticator;
 
     public static void main(String[] args)
     {
@@ -61,19 +65,17 @@ public class App
             ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
             App app = context.getBean(App.class);
 
-            Authenticator authenticator = new Authenticator(
+            authenticator = new Authenticator(
                     username,
                     password,
                     token
             );
 
-            ApexExecutor.executeApex(authenticator.getLoginResult());
+            EntityRequester entityRequester = new EntityRequester(authenticator);
 
-//            EntityRequester entityRequester = new EntityRequester(authenticator);
-//
-//            app.saveEntities(entityRequester.getAllEntities());
-//
-//            app.executeProcedures();
+            app.saveEntities(entityRequester.getAllEntities());
+
+            app.executeProcedures();
         }
         catch (ParseException ex)
         {
@@ -97,6 +99,7 @@ public class App
         entityApplier.applyAll(
                 entityService.findAll()
         );
+        ApexExecutor.executeApex(authenticator.getLoginResult(), APEX_METHOD_TO_EXECUTE);
     }
 
     private static void help(Options options)
