@@ -14,9 +14,8 @@ public class ParserTest
     private Parser parser;
 
     @Test
-    public void testApply()
+    public void testParseSObjectJson()
     {
-        System.out.println(parser.parseSObjectJson(this.getJson()));
         assertEquals
                 (
                         parser.parseSObjectJson(this.getJson()).trim(),
