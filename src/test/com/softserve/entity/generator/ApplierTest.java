@@ -48,9 +48,9 @@ public class ApplierTest
         assertEquals
                 (
                         this.generateProcedure()
-                                .replace(emptySpaceRegex,"").trim(),
+                                ,
                         createProcedureQuery
-                                .replaceAll(emptySpaceRegex, "").trim()
+
                 );
 
         /*assertEquals(columnQuantity, entity.getFields().size());*/

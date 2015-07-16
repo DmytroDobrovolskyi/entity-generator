@@ -98,7 +98,6 @@ public class Entity
                 .append(entityId, entity.entityId)
                 .isEquals();
     }
-
     @Override
     public int hashCode()
     {

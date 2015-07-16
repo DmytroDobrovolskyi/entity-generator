@@ -46,12 +46,11 @@
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5"
                     conf="compile->default;sources;javadoc"/>
 
-        <dependency org="org.json" name="json" rev="20090211"
+        <dependency org="com.google.code.gson" name="gson" rev="1.4"
                     conf="compile->default;sources;javadoc"/>
 
         <dependency org="commons-cli" name="commons-cli" rev="1.2"
                     conf="compile->default;sources;javadoc"/>
-
 
     </dependencies>
 

@@ -4,8 +4,8 @@ import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
+import com.softserve.entity.generator.service.salesforce.ApexExecutor;
 import com.softserve.entity.generator.service.salesforce.Authenticator;
-import com.softserve.entity.generator.service.salesforce.EntityRequester;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,11 +67,13 @@ public class App
                     token
             );
 
-            EntityRequester entityRequester = new EntityRequester(authenticator);
+            ApexExecutor.executeApex(authenticator.getLoginResult());
 
-            app.saveEntities(entityRequester.getAllEntities());
-
-            app.executeProcedures();
+//            EntityRequester entityRequester = new EntityRequester(authenticator);
+//
+//            app.saveEntities(entityRequester.getAllEntities());
+//
+//            app.executeProcedures();
         }
         catch (ParseException ex)
         {

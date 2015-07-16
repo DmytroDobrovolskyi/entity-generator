@@ -1,8 +1,8 @@
 package com.softserve.entity.generator.service.salesforce;
 
-import com.sforce.soap.enterprise.Connector;
-import com.sforce.soap.enterprise.EnterpriseConnection;
-import com.sforce.soap.enterprise.LoginResult;
+import com.sforce.soap.partner.Connector;
+import com.sforce.soap.partner.LoginResult;
+import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import org.apache.log4j.Logger;
@@ -15,7 +15,7 @@ public class Authenticator
     private String password;
     private String secToken;
 
-    private String sessionId;
+    private LoginResult loginResult;
 
     public Authenticator(String username, String password, String secToken)
     {
@@ -24,33 +24,31 @@ public class Authenticator
         this.secToken = secToken;
     }
 
-    public String getSessionId()
+    public LoginResult getLoginResult()
     {
-        if (sessionId == null)
+        if (loginResult == null)
         {
-            sessionId = login();
+            loginResult = login();
         }
-        return sessionId;
+        return loginResult;
     }
 
-    private String login()
+    private LoginResult login()
     {
         ConnectorConfig config = new ConnectorConfig();
         config.setUsername(username);
         config.setPassword(password + secToken);
 
-        LoginResult loginResult = null;
         try
         {
-            EnterpriseConnection connection = Connector.newConnection(config);
-            loginResult = connection.login(username, password + secToken);
-            System.out.println(loginResult.getSessionId());
+            PartnerConnection connection = Connector.newConnection(config);
+
+            return connection.login(username, password + secToken);
         }
         catch (ConnectionException ex)
         {
             logger.error("Failed to establish connection", ex);
-            System.exit(0);
+            throw new AssertionError(ex);
         }
-        return loginResult.getSessionId();
     }
 }

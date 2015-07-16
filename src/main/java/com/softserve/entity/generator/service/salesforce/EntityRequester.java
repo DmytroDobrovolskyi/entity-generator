@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class EntityRequester
@@ -24,7 +23,7 @@ public class EntityRequester
     private static final Logger logger = Logger.getLogger(EntityRequester.class);
 
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
-    private static final String API_VERSION = "v33.0/";
+    private static final String API_VERSION = "v34.0/";
 
     private Authenticator authenticator;
 
@@ -60,7 +59,7 @@ public class EntityRequester
                         "FROM+" + ENTITY_NAME;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getLoginResult().getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
@@ -121,7 +120,7 @@ public class EntityRequester
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "sobjects/Entity__c");
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getLoginResult().getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
@@ -157,7 +156,7 @@ public class EntityRequester
                         "WHERE+" + entityName + "Id__c" + "='" + id + "'";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getLoginResult().getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
