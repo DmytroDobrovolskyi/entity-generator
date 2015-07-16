@@ -54,7 +54,6 @@ public class ApplierTest
                                 .replaceAll(",", "")
                                 .replaceAll(emptySpaceRegex, "")
                 );*/
-
         assertEquals(columnQuantity, entity.getFields().size());
 
         Query procedureQueryMock = mockQuery(createProcedureQuery);
