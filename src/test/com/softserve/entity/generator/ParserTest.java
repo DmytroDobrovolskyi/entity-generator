@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class ParserTest
 {
@@ -19,7 +21,10 @@ public class ParserTest
                 (
                         parser.parseSObjectJson(this.getJson()).trim(),
                         this.parsedString().trim()
-                        );
+                );
+        parser = mock(Parser.class);
+        parser.parseSObjectJson(this.getJson());
+        verify(parser).parseSObjectJson(this.getJson());
     }
 
     private  String getJson()
