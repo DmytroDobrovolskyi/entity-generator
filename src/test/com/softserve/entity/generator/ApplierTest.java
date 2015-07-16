@@ -23,8 +23,8 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ApplierTest
 {
-    private static final int columnQuantity = 3;
-    private static final String emptySpaceRegex = "\\s";
+    private static final int COLUMN_QUANTITY = 3;
+    private static final String EMPTY_SPACE_REGEX = "\\s";
     @Autowired
     private Applier<Entity> applier;
 
@@ -53,10 +53,10 @@ public class ApplierTest
                                 .replaceAll("Second_Column int", "")
                                 .replaceAll("Third_Column int", "")
                                 .replaceAll(",", "")
-                                .replaceAll(emptySpaceRegex, "")
+                                .replaceAll(EMPTY_SPACE_REGEX, "")
                 );*/
 
-        /*assertEquals(columnQuantity, entity.getFields().size());*/
+        /*assertEquals(COLUMN_QUANTITY, entity.getFields().size());*/
 
         Query procedureQueryMock = mockQuery(createProcedureQuery);
 
@@ -103,6 +103,6 @@ public class ApplierTest
                         ")" +
                         "END";
 
-        return procedureQuery.replaceAll(emptySpaceRegex, "");
+        return procedureQuery.replaceAll(EMPTY_SPACE_REGEX, "");
     }
 }
