@@ -28,12 +28,12 @@ function resolveCheckboxes()
 {
     var allIsUnchecked = true;
 
-    $('.pk-checkboxes').each(function(index,element)
+    var checkboxes = $('.pk-checkboxes');
+
+    checkboxes.each(function (index, element)
     {
-        console.log(this);
-        if($(this).is(':checked'))
+        if ($(this).is(':checked'))
         {
-            console.log("Checkbox is checked.");
             $(this).removeAttr('disabled');
             allIsUnchecked = false;
         }
@@ -43,9 +43,9 @@ function resolveCheckboxes()
         }
     });
 
-    if(allIsUnchecked)
+    if (allIsUnchecked)
     {
-        $('.pk-checkboxes').removeAttr('disabled');
+        checkboxes.removeAttr('disabled');
     }
 }
 
@@ -70,8 +70,14 @@ function generateColumnName(context)
             .replace(/ /g, '_')
             .replace(/\d+/g, '')
             .replace(/\W/g, '')
-            .replace(/^[a-z]/, function(firstCharacter){ return firstCharacter.toUpperCase() })
-            .replace(/_[a-z]/, function(character){ return character.toUpperCase() });
+            .replace(/^[a-z]/, function (firstCharacter)
+            {
+                return firstCharacter.toUpperCase()
+            })
+            .replace(/_[a-z]/, function (character)
+            {
+                return character.toUpperCase()
+            });
     }
 }
 

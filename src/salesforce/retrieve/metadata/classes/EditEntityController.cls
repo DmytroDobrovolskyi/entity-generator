@@ -46,16 +46,16 @@ public class EditEntityController
     {
         List<SelectOption> options = new List<SelectOption>();
         options.add(new SelectOption('varchar(255)','varchar(255)'));
-        options.add(new SelectOption('int','int'));
-        options.add(new SelectOption('date','date'));
+        options.add(new SelectOption('int', 'int'));
+        options.add(new SelectOption('date', 'date'));
         return options;
     }
 
     public List<SelectOption> getRadioButtonOption()
     {
         List<SelectOption> options = new List<SelectOption>();
-        options.add(new SelectOption('',''));
-         options.add(new SelectOption('',''));
+        options.add(new SelectOption('', ''));
+         options.add(new SelectOption('', ''));
         return options;
     }
 
@@ -63,6 +63,7 @@ public class EditEntityController
     {
         Database.delete(fieldMap.get(columnName));
         fieldMap.remove(columnName);
+        setIsProcessingNeeded();
     }
 
     public void addRow()
@@ -70,7 +71,9 @@ public class EditEntityController
         newField = new Field__c();
         newField.Entity__c = entity.Id;
         fieldMap.put(null, newField);
-        wereChanges = true;
+
+        setWereChanges();
+        setIsProcessingNeeded();
     }
 
     public  Boolean containSpaces(String str)
@@ -116,6 +119,14 @@ public class EditEntityController
               if (!hasError)
               {
                   Database.SaveResult[] results = Database.update(new List<Field__c> (fieldsToUpdate), false);
+                  for (Database.SaveResult saveResult : results)
+                  {
+                      if(saveResult.isSuccess())
+                      {
+                          setIsProcessingNeeded();
+                          break;
+                      }
+                  }
               }
         }
 
@@ -128,7 +139,6 @@ public class EditEntityController
             else
             {
                 newFieldMap.put(newField.ColumnName__c, newField);
-
                 Database.insert(newField);
                 newField = null;
             }
@@ -157,6 +167,12 @@ public class EditEntityController
     public void setWereChanges()
     {
         wereChanges = true;
+    }
+
+    public void setIsProcessingNeeded()
+    {
+        entity.IsProcessingNeeded__c = true;
+        Database.update(entity);
     }
 
     private void showError()

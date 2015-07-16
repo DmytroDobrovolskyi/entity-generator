@@ -20,7 +20,7 @@ import java.util.List;
 public class App
 {
     private static final Logger logger = Logger.getLogger(App.class);
-    private static final String APEX_METHOD_TO_EXECUTE = "EntityUtil.resetIsProcessingNeeded();";
+    private static final String RESET_IS_PROCESSING_NEEDED = "EntityUtil.resetIsProcessingNeeded();";
 
     @Autowired
     private EntityService entityService;
@@ -87,7 +87,6 @@ public class App
     public void saveEntities(List<Entity> receivedEntities)
     {
         entityService.resolveDeleted(receivedEntities);
-        entityService.trackChanges(receivedEntities);
         for (Entity receivedEntity : receivedEntities)
         {
             entityService.merge(receivedEntity);
@@ -99,7 +98,7 @@ public class App
         entityApplier.applyAll(
                 entityService.findAll()
         );
-        ApexExecutor.executeApex(authenticator.getLoginResult(), APEX_METHOD_TO_EXECUTE);
+        ApexExecutor.executeApex(authenticator.getLoginResult(), RESET_IS_PROCESSING_NEEDED);
     }
 
     private static void help(Options options)

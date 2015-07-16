@@ -51,7 +51,6 @@
                         <apex:param name="tableName" value="" assignTo="{!tableName}"/>
                     </apex:actionFunction>
 
-
                     <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 
                     <apex:outputPanel id="apply-block">

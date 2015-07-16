@@ -10,6 +10,7 @@
     DECLARE @initialProcedureQueryLength int = LEN(@procedureQuery)
 
     #set($tableNames = "'" + $entityClass.getSimpleName().toUpperCase() + "', '" + $fieldClass.getSimpleName().toUpperCase() + "'")
+
     #set($changedTables = "")
 
     #foreach($entity in $entities)
@@ -18,7 +19,7 @@
         #set($tableNames = $tableNames + ", '" + $tableName + "'")
 
         #if($entity.getIsProcessingNeeded())
-            #if($changedTables.equals(""))
+            #if($changedTables.isEmpty())
                 #set($changedTables = $schema + "." + $tableName)
             #else
                 #set($changedTables = ", " + $schema + "." + $tableName)
@@ -37,7 +38,8 @@
     TABLES.schema_id = SCHEMAS.schema_id
     WHERE TABLES.name NOT IN ($tableNames)
 
-    SET @tablesToDelete = @tablesToDelete + ''
+    IF @tablesToDelete IS NULL
+        SET @tablesToDelete = ''
 
     DECLARE @tablesToDeleteLength int = LEN(@tablesToDelete)
     DECLARE @changedTablesLength int = LEN('$changedTables')
