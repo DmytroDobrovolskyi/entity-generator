@@ -1,6 +1,10 @@
-public class EntityUtil 
+import com.sforce.soap.enterprise.sobject.Entity__c;
+
+import java.util.List;
+
+public class EntityUtil
 {
-    public static void generateEntityTable(List<Entity__c>entities)
+    public static void generateEntityTable(List<Entity__c> entities)
     {
        for(Entity__c entity : entities)
    		{
@@ -18,5 +22,13 @@ public class EntityUtil
 
             entity.EntityId__c = tableName.toLowerCase();
     	}
+    }
+
+    public static void resetIsProcessingNeeded()
+    {
+        for (Entity__c :
+        [
+            SELECT
+        ])
     }
 }
