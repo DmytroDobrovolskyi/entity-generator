@@ -1,30 +1,35 @@
 package com.softserve.entity.generator;
 
+import com.softserve.entity.generator.config.MockConfig;
 import com.softserve.entity.generator.service.salesforce.util.Parser;
 import com.softserve.entity.generator.service.salesforce.util.Splitter;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@ContextConfiguration(classes = MockConfig.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SplitterTest
 {
     private static final int EXPECTED_SIZE_OF_OBJECTS_LIST = 2;
-    @Autowired
-    Splitter splitter;
+
     @Test
     public void testSplitSObjects()
     {
         assertEquals
                 (
-                        splitter.splitSObjects(this.getJson()).size(),
+                        Splitter.splitSObjects(this.getJson()).size(),
                         EXPECTED_SIZE_OF_OBJECTS_LIST
                 );
 
-        splitter = mock(Splitter.class);
-        splitter.splitSObjects(this.getJson());
+        Splitter splitter = mock(Splitter.class);
+        Splitter.splitSObjects(this.getJson());
         verify(splitter).splitSObjects(this.getJson());
     }
     private  String getJson()

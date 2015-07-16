@@ -1,28 +1,33 @@
 package com.softserve.entity.generator;
 
+import com.softserve.entity.generator.config.MockConfig;
 import com.softserve.entity.generator.service.salesforce.util.Parser;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@ContextConfiguration(classes = MockConfig.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ParserTest
 {
-    @Autowired
-    private Parser parser;
 
     @Test
     public void testParseSObjectJson()
     {
         assertEquals
                 (
-                        parser.parseSObjectJson(this.getJson()).trim(),
+                        Parser.parseSObjectJson(this.getJson()).trim(),
                         this.parsedString().trim()
                 );
-        parser = mock(Parser.class);
-        parser.parseSObjectJson(this.getJson());
+
+        Parser parser = mock(Parser.class);
+        Parser.parseSObjectJson(this.getJson());
         verify(parser).parseSObjectJson(this.getJson());
     }
 
