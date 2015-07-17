@@ -183,6 +183,19 @@ public class EditEntityController
         wereChanges = true;
     }
 
+    public void resetIsPrimaryKey()
+    {
+        Field__c field = fieldMap.get(null);
+
+        if(field != null)
+        {
+            if (field.Type__c != 'int' || field.Type__c != 'varchar(255)')
+            {
+                field.IsPrimaryKey__c = false;
+            }
+        }
+    }
+
     public void setIsProcessingNeeded()
     {
         entity.IsProcessingNeeded__c = true;
@@ -191,7 +204,7 @@ public class EditEntityController
 
     private void showError()
     {
-        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique and contain no spaces, digits, not word symbols except underscores. Type must be chosen');
+        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique and contain only alphabetic characters or underscores');
         ApexPages.addMessage(error);
     }
 }

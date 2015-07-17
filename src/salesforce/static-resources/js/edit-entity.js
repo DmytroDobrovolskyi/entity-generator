@@ -1,5 +1,6 @@
 $(function ()
 {
+    resolveCheckboxes(this);
     init();
     var input = $('.input').first();
     var times = 0;
@@ -135,4 +136,9 @@ function deleteField(columnName)
                 }
             }
         });
+}
+
+function resetIsPrimaryKey(columnName)
+{
+    callResetIsPrimaryKey(columnName);
 }

@@ -10,18 +10,6 @@
     <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/js/bootstrap.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'js/edit-entity.js')}"/>
 
-    <style scoped="scoped">
-
-    </style>
-
-    <script>
-
-        $( window ).load(function() {
-            resolveCheckboxes(this);
-        });
-
-    </script>
-
     <div class="container">
 
         <div class="col-md-2">
@@ -80,7 +68,7 @@
 
                         <apex:column headerValue="Type" styleClass="text-center">
                             <apex:commandLink reRender="checkbox" oncomplete="resolveCheckboxes(this)">
-                                <apex:selectList value="{!field.Type__c}" size="1" onchange="resolveCheckboxes(this), setWereChanges()" styleClass="typeList" required="true">
+                                <apex:selectList value="{!field.Type__c}" size="1" onchange="resolveCheckboxes(this), setWereChanges(), resetIsPrimaryKey()" styleClass="typeList" required="true">
                                     <apex:selectOptions value="{!types}"/>
                                 </apex:selectList>
                             </apex:commandLink>
@@ -107,6 +95,8 @@
                     </apex:actionFunction>
 
                     <apex:actionFunction action="{!setWereChanges}" name="setWereChanges" reRender="apply-block"/>
+
+                    <apex:actionFunction action="{!resetIsPrimaryKey}" name="callResetIsPrimaryKey" reRender="" immediate="true"/>
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" reRender="" value="Discard changes" styleClass="btn btn-warning pull-right"
