@@ -65,12 +65,20 @@ function generateColumnName(context)
 
     if (!context.value)
     {
-        context.value = name
+            name = name
             .replace(/ /g, '_')
             .replace(/\d+/g, '')
             .replace(/\W/g, '')
-            .replace(/^[a-z]/, function(firstCharacter){ return firstCharacter.toUpperCase() })
-            .replace(/_[a-z]/, function(character){ return character.toUpperCase() });
+            .replace(/^[a-z]/, function(firstCharacter){ return firstCharacter.toUpperCase() });
+
+        for (var i=0;i<name.length;i++)
+        {
+            if (name.charAt(i) == '_')
+            {
+                name =  name.replace(/_[a-z]/, function(character){ return character.toUpperCase() });
+            }
+        }
+        context.value = name;
     }
 }
 
