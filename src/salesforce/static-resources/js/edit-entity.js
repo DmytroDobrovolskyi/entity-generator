@@ -24,22 +24,21 @@ function setWereChanges()
     EditEntityController.setWereChanges();
 }
 
-function resolveCheckboxes()
+function resolveCheckboxes(context)
 {
     var allIsUnchecked = true;
 
     $('.pk-checkboxes').each(function(index,element)
     {
-        console.log(this);
-        if($(this).is(':checked'))
+        if($(element).is(':checked'))
         {
-            console.log("Checkbox is checked.");
-            $(this).removeAttr('disabled');
+            $(element).removeAttr('disabled');
             allIsUnchecked = false;
         }
         else
         {
-            $(this).attr("disabled", true);
+            console.log("Dima");
+            $(element).attr("disabled", true);
         }
     });
 
@@ -77,12 +76,24 @@ function generateColumnName(context)
 
 function fillForReset()
 {
-    var inputs = $('.requiredInput')
-        .children('input')
+    $('.input').filter(function (index, element)
+    {
+        console.log(element);
+        return !element.value;
+    })
+    .each(function (index, element)
+    {
+        element.value = 'resetting...';
+    });
+
+    $('.typeList')
+        .children()
         .filter(function (index, element)
         {
-            return !element.value;
-        }).each(function (index, element)
+            console.log(element.value);
+            return element === ' ';
+        })
+        .each(function (index, element)
         {
             element.value = 'resetting...';
         });

@@ -80,7 +80,7 @@
 
                         <apex:column headerValue="Type" styleClass="text-center">
                             <apex:commandLink reRender="checkbox" oncomplete="resolveCheckboxes(this)">
-                                <apex:selectList value="{!field.Type__c}" size="1" onchange="resolveCheckboxes(this), setWereChanges()">
+                                <apex:selectList value="{!field.Type__c}" size="1" onchange="resolveCheckboxes(this), setWereChanges()" styleClass="typeList" required="true">
                                     <apex:selectOptions value="{!types}"/>
                                 </apex:selectList>
                             </apex:commandLink>
@@ -93,8 +93,8 @@
                         </apex:column>
 
                          <apex:column headerValue="PK" id="checkbox" styleClass="text-center">
-                             <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" rendered="{!field.Type__c != 'date'}"
-                                                 styleClass="pk-checkboxes" onchange="resolveCheckboxes(this), setWereChanges()">
+                             <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" rendered="{!(field.Type__c == 'int') || (field.Type__c == 'varchar(255)')}"
+                               styleClass="pk-checkboxes" onchange="resolveCheckboxes(this), setWereChanges()">
                              </apex:inputCheckbox>
                          </apex:column>
 
@@ -109,7 +109,7 @@
                     <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
 
                     <apex:outputPanel id="apply-block">
-                        <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
+                        <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" reRender="" value="Discard changes" styleClass="btn btn-warning pull-right"
                                             onclick="fillForReset()"/>
                         <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
                                             styleClass="btn btn-info pull-right" oncomplete="initAndDeleteErrors()"/>

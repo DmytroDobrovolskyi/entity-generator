@@ -45,9 +45,11 @@ public class EditEntityController
     public List<SelectOption> getTypes()
     {
         List<SelectOption> options = new List<SelectOption>();
+
+        options.add(new SelectOption(' ',' '));
         options.add(new SelectOption('varchar(255)','varchar(255)'));
-        options.add(new SelectOption('int','int'));
         options.add(new SelectOption('date','date'));
+        options.add(new SelectOption('int','int'));
         return options;
     }
 
@@ -78,6 +80,11 @@ public class EditEntityController
         return str.containsAny(' ');
     }
 
+    public  Boolean containNumbers(String str)
+        {
+            return str.containsAny('0123456789');
+        }
+
     public void applyChanges()
     {
         Map<String, Field__c> newFieldMap = new Map<String, Field__c>();
@@ -107,7 +114,7 @@ public class EditEntityController
 
              for (Field__c field : fieldsToUpdate)
               {
-                 if (containSpaces(field.ColumnName__c))
+                 if (containSpaces(field.ColumnName__c) || containNumbers(field.ColumnName__c))
                      {
                         hasError = true;
                      }
@@ -121,7 +128,11 @@ public class EditEntityController
 
         if (newField != null)
         {
-            if (fieldMap.containsKey(newField.ColumnName__c) || containSpaces(newField.ColumnName__c))
+            if (
+                    fieldMap.containsKey(newField.ColumnName__c)
+                    || containSpaces(newField.ColumnName__c)
+                    || containNumbers(newField.ColumnName__c)
+                 )
             {
                 hasError = true;
             }
@@ -151,7 +162,7 @@ public class EditEntityController
 
     public PageReference discardChanges()
     {
-        return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
+     return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
 
     public void setWereChanges()
