@@ -24,7 +24,7 @@ function setWereChanges()
     EditEntityController.setWereChanges();
 }
 
-function resolveCheckboxes(context)
+function resolveCheckboxes()
 {
     var allIsUnchecked = true;
 
@@ -37,7 +37,6 @@ function resolveCheckboxes(context)
         }
         else
         {
-            console.log("Dima");
             $(element).attr("disabled", true);
         }
     });
