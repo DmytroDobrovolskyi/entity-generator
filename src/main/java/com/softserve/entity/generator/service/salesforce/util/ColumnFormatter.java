@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 
 import static java.lang.Character.*;
 
-public class FiledFormatter
+public class ColumnFormatter
 {
-    private static final Logger logger = Logger.getLogger(FiledFormatter.class);
+    private static final Logger logger = Logger.getLogger(ColumnFormatter.class);
 
     public static String toJavaStyle(String jsonToFormat)
     {

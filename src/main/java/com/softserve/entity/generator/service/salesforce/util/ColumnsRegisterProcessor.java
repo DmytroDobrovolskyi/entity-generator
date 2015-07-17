@@ -13,7 +13,7 @@ public class ColumnsRegisterProcessor
         {
             register.put(
                     entityClass,
-                    FiledFormatter.toSalesforceStyle(
+                    ColumnFormatter.toSalesforceStyle(
                             filterFields(entityClass.getDeclaredFields(), registerMetadata, exclusions), "__c"
                     )
             );

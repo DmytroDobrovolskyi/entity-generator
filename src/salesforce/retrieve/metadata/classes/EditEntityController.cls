@@ -68,12 +68,16 @@ public class EditEntityController
 
     public void addRow()
     {
+        if(fieldMap.values().size() != 0 )
+        {
+            setIsProcessingNeeded();
+        }
+
         newField = new Field__c();
         newField.Entity__c = entity.Id;
         fieldMap.put(null, newField);
 
         setWereChanges();
-        setIsProcessingNeeded();
     }
 
     public  Boolean containSpaces(String str)

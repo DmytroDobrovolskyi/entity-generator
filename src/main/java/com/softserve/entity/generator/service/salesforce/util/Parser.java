@@ -24,7 +24,7 @@ public class Parser
                 .replaceAll("\\}\\n.*} \\] \\}\\n.*\\}", "")
                 .replaceAll("\\{\\n.*\\n.*\\n.*\\{", "\\{");
 
-        sObjectJson = FiledFormatter.toJavaStyle(sObjectJson)
+        sObjectJson = ColumnFormatter.toJavaStyle(sObjectJson)
                 .replaceAll("\\{ null\\n.*\\} \\] \\}", "\\]");
 
         return "{ " + sObjectJson;
