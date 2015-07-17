@@ -86,12 +86,7 @@ public class EditEntityController
        Matcher matcher = Pattern.compile('(\\W)|(\\d)|(\\s)').matcher(str);
        boolean hasError = false;
 
-       if (matcher.find())
-       {
-        hasError = true;
-       }
-
-        return hasError;
+       return  matcher.find();
     }
 
     public void applyChanges()
@@ -146,7 +141,7 @@ public class EditEntityController
         if (newField != null)
         {
             if (fieldMap.containsKey(newField.ColumnName__c) ||
-            containNumbersOrNotCharacterWords(newField.ColumnName__c) || newField.Type__c ==' ')
+                    containNumbersOrNotCharacterWords(newField.ColumnName__c) || newField.Type__c ==' ')
             {
                 hasError = true;
             }

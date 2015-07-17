@@ -45,12 +45,7 @@ public class EntityListController
          Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
          boolean hasError = false;
 
-         if (matcher.find())
-         {
-            hasError = true;
-         }
-
-         return hasError;
+         return matcher.find();
     }
 
     public void applyChanges()
