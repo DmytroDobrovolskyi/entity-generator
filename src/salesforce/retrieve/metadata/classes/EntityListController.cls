@@ -40,14 +40,9 @@ public class EntityListController
         setWereChanges();
     }
 
-    public Boolean containSpaces(String str)
-    {
-        return str.containsAny(' ');
-    }
-
     public  Boolean containNumbersOrNotCharacterWords(String str)
     {
-         Matcher matcher = Pattern.compile('(\\W)|(\\d)').matcher(str);
+         Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
          boolean hasError = false;
 
          if (matcher.find())
@@ -69,7 +64,7 @@ public class EntityListController
 
         for (Entity__c entity : entitiesToUpdate)
         {
-            if(containSpaces(entity.TableName__c) || containNumbersOrNotCharacterWords(entity.TableName__c))
+            if(containNumbersOrNotCharacterWords(entity.TableName__c))
             {
                  hasError = true;
             }
@@ -89,7 +84,7 @@ public class EntityListController
 
             if (newEntity != null)
             {
-                if (containSpaces(newEntity.TableName__c) || entityMap.containsKey(newEntity.TableName__c) || containNumbersOrNotCharacterWords(newEntity.TableName__c))
+                if (entityMap.containsKey(newEntity.TableName__c) || containNumbersOrNotCharacterWords(newEntity.TableName__c))
                 {
                     hasError = true;
                 }
