@@ -45,19 +45,17 @@ public class EditEntityController
     public List<SelectOption> getTypes()
     {
         List<SelectOption> options = new List<SelectOption>();
-
-        options.add(new SelectOption(' ',' '));
         options.add(new SelectOption('varchar(255)','varchar(255)'));
-        options.add(new SelectOption('date','date'));
-        options.add(new SelectOption('int','int'));
+        options.add(new SelectOption('int', 'int'));
+        options.add(new SelectOption('date', 'date'));
         return options;
     }
 
     public List<SelectOption> getRadioButtonOption()
     {
         List<SelectOption> options = new List<SelectOption>();
-        options.add(new SelectOption('',''));
-         options.add(new SelectOption('',''));
+        options.add(new SelectOption('', ''));
+         options.add(new SelectOption('', ''));
         return options;
     }
 
@@ -65,25 +63,27 @@ public class EditEntityController
     {
         Database.delete(fieldMap.get(columnName));
         fieldMap.remove(columnName);
+        setIsProcessingNeeded();
     }
 
     public void addRow()
     {
+        if(fieldMap.values().size() != 0 )
+        {
+            setIsProcessingNeeded();
+        }
+
         newField = new Field__c();
         newField.Entity__c = entity.Id;
         fieldMap.put(null, newField);
-        wereChanges = true;
+
+        setWereChanges();
     }
 
     public  Boolean containSpaces(String str)
     {
         return str.containsAny(' ');
     }
-
-    public  Boolean containNumbers(String str)
-        {
-            return str.containsAny('0123456789');
-        }
 
     public void applyChanges()
     {
@@ -114,7 +114,7 @@ public class EditEntityController
 
              for (Field__c field : fieldsToUpdate)
               {
-                 if (containSpaces(field.ColumnName__c) || containNumbers(field.ColumnName__c))
+                 if (containSpaces(field.ColumnName__c))
                      {
                         hasError = true;
                      }
@@ -123,23 +123,26 @@ public class EditEntityController
               if (!hasError)
               {
                   Database.SaveResult[] results = Database.update(new List<Field__c> (fieldsToUpdate), false);
+                  for (Database.SaveResult saveResult : results)
+                  {
+                      if(saveResult.isSuccess())
+                      {
+                          setIsProcessingNeeded();
+                          break;
+                      }
+                  }
               }
         }
 
         if (newField != null)
         {
-            if (
-                    fieldMap.containsKey(newField.ColumnName__c)
-                    || containSpaces(newField.ColumnName__c)
-                    || containNumbers(newField.ColumnName__c)
-                 )
+            if (fieldMap.containsKey(newField.ColumnName__c) || containSpaces(newField.ColumnName__c))
             {
                 hasError = true;
             }
             else
             {
                 newFieldMap.put(newField.ColumnName__c, newField);
-
                 Database.insert(newField);
                 newField = null;
             }
@@ -162,12 +165,18 @@ public class EditEntityController
 
     public PageReference discardChanges()
     {
-     return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
+        return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
 
     public void setWereChanges()
     {
         wereChanges = true;
+    }
+
+    public void setIsProcessingNeeded()
+    {
+        entity.IsProcessingNeeded__c = true;
+        Database.update(entity);
     }
 
     private void showError()

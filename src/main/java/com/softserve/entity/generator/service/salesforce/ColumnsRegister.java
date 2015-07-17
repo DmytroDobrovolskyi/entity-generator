@@ -15,7 +15,7 @@ public class ColumnsRegister
     );
 
     private static final List<String> EXCLUSIONS = Collections.unmodifiableList(
-            Arrays.<String>asList("isProcessingNeeded")
+            Arrays.<String>asList("")
     );
 
     private static Map<Class<?>, String> customFieldsMap;

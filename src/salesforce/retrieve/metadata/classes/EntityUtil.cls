@@ -31,7 +31,7 @@ global class EntityUtil
         for (Entity__c entity : entities)
         {
             entity.IsProcessingNeeded__c = false;
-            entity.Name = entity.Name + 'XXX';
         }
+        Database.update(entities);
     }
 }

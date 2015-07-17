@@ -9,6 +9,4 @@ import java.util.List;
 public interface EntityService extends BaseService<Entity>
 {
     void resolveDeleted(List<Entity> entities);
-
-    void trackChanges(List<Entity> entities);
 }

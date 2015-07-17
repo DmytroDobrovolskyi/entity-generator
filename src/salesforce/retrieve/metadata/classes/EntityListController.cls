@@ -37,7 +37,7 @@ public class EntityListController
     {
         newEntity = new Entity__c();
         entityMap.put(null, newEntity);
-        wereChanges = true;
+        setWereChanges();
     }
 
     public Boolean containSpaces(String str)

@@ -106,7 +106,7 @@
                         <apex:param name="columnName" value="" assignTo="{!columnName}"/>
                     </apex:actionFunction>
 
-                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
+                    <apex:actionFunction action="{!setWereChanges}" name="setWereChanges" reRender="apply-block"/>
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" reRender="" value="Discard changes" styleClass="btn btn-warning pull-right"
