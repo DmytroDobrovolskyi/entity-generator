@@ -40,9 +40,17 @@ public class EntityListController
         setWereChanges();
     }
 
-    public Boolean containSpaces(String str)
+    public  Boolean containNumbersOrNotCharacterWords(String str)
     {
-        return str.containsAny(' ');
+         Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
+         boolean hasError = false;
+
+         if (matcher.find())
+         {
+            hasError = true;
+         }
+
+         return hasError;
     }
 
     public void applyChanges()
@@ -56,7 +64,7 @@ public class EntityListController
 
         for (Entity__c entity : entitiesToUpdate)
         {
-            if(containSpaces(entity.TableName__c))
+            if(containNumbersOrNotCharacterWords(entity.TableName__c))
             {
                  hasError = true;
             }
@@ -76,7 +84,7 @@ public class EntityListController
 
             if (newEntity != null)
             {
-                if (containSpaces(newEntity.TableName__c) || entityMap.containsKey(newEntity.TableName__c))
+                if (entityMap.containsKey(newEntity.TableName__c) || containNumbersOrNotCharacterWords(newEntity.TableName__c))
                 {
                     hasError = true;
                 }
@@ -92,7 +100,7 @@ public class EntityListController
 
         if (hasError)
         {
-            ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique and not contain spaces');
+            ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique and contain no spaces, digits, not word symbols except underscores');
             ApexPages.addMessage(error);
         }
         else

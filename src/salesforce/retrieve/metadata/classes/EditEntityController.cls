@@ -45,6 +45,7 @@ public class EditEntityController
     public List<SelectOption> getTypes()
     {
         List<SelectOption> options = new List<SelectOption>();
+         options.add(new SelectOption(' ',' '));
         options.add(new SelectOption('varchar(255)','varchar(255)'));
         options.add(new SelectOption('int', 'int'));
         options.add(new SelectOption('date', 'date'));
@@ -55,7 +56,7 @@ public class EditEntityController
     {
         List<SelectOption> options = new List<SelectOption>();
         options.add(new SelectOption('', ''));
-         options.add(new SelectOption('', ''));
+        options.add(new SelectOption('', ''));
         return options;
     }
 
@@ -80,9 +81,17 @@ public class EditEntityController
         setWereChanges();
     }
 
-    public  Boolean containSpaces(String str)
+    public  Boolean containNumbersOrNotCharacterWords(String str)
     {
-        return str.containsAny(' ');
+       Matcher matcher = Pattern.compile('(\\W)|(\\d)|(\\s)').matcher(str);
+       boolean hasError = false;
+
+       if (matcher.find())
+       {
+        hasError = true;
+       }
+
+        return hasError;
     }
 
     public void applyChanges()
@@ -114,7 +123,7 @@ public class EditEntityController
 
              for (Field__c field : fieldsToUpdate)
               {
-                 if (containSpaces(field.ColumnName__c))
+                 if (containNumbersOrNotCharacterWords(field.ColumnName__c) || field.Type__c ==' ')
                      {
                         hasError = true;
                      }
@@ -136,7 +145,8 @@ public class EditEntityController
 
         if (newField != null)
         {
-            if (fieldMap.containsKey(newField.ColumnName__c) || containSpaces(newField.ColumnName__c))
+            if (fieldMap.containsKey(newField.ColumnName__c) ||
+            containNumbersOrNotCharacterWords(newField.ColumnName__c) || newField.Type__c ==' ')
             {
                 hasError = true;
             }
@@ -181,7 +191,7 @@ public class EditEntityController
 
     private void showError()
     {
-        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique and not contain spaces');
+        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique and contain no spaces, digits, not word symbols except underscores. Type must be chosen');
         ApexPages.addMessage(error);
     }
 }
