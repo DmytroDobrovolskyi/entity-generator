@@ -5,7 +5,7 @@ import com.softserve.entity.generator.entity.Field;
 
 import java.util.*;
 
-public class EntityGenerator
+public class TestEntityGenerator
 {
     public static Entity generateEntity()
     {

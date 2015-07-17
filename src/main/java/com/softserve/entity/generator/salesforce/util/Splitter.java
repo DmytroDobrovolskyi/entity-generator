@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.service.salesforce.util;
+package com.softserve.entity.generator.salesforce.util;
 
 import java.util.ArrayList;
 import java.util.Collections;

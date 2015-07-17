@@ -15,8 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import static com.softserve.entity.generator.entity.util.EntityGenerator.generateEntity;
-import static org.junit.Assert.assertEquals;
+import static com.softserve.entity.generator.entity.util.TestEntityGenerator.generateEntity;
 import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = MockConfig.class)
@@ -78,30 +77,7 @@ public class ApplierTest
 
     private String generateProcedure()
     {
-        String procedureQuery =
-                "IF  EXISTS " +
-                        "(" +
-                            "SELECT * " +
-                            "FROM sys.procedures" +
-                            "WHERE name ='myProcedure'" +
-                        ")" +
-                        "DROP PROCEDURE myProcedure" +
-                        "BEGIN" +
-                        "EXEC " +
-                        "('" +
-                        "CREATE PROCEDURE myProcedure" +
-                        "AS" +
-                        "CREATE TABLE [core_schema].NEW_TABLE" +
-                        "(" +
-                        "    );" +
-                        "')" +
-                        "END" +
-                        "BEGIN" +
-                        "EXEC " +
-                        "(" +
-                            "'myProcedure'" +
-                        ")" +
-                        "END";
+        String procedureQuery = "";
 
         return procedureQuery.replaceAll(EMPTY_SPACE_REGEX, "");
     }

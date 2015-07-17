@@ -1,10 +1,10 @@
-package com.softserve.entity.generator.service.salesforce;
+package com.softserve.entity.generator.salesforce;
 
 import com.google.gson.Gson;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
-import com.softserve.entity.generator.service.salesforce.util.Parser;
-import com.softserve.entity.generator.service.salesforce.util.Splitter;
+import com.softserve.entity.generator.salesforce.util.Parser;
+import com.softserve.entity.generator.salesforce.util.Splitter;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -25,7 +25,7 @@ public class EntityRequester
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v34.0/";
 
-    private Authenticator authenticator;
+    private SalesforceAuthenticator salesforceAuthenticator;
 
     private static final String CUSTOM_FIELDS;
     private static final String RELATION;
@@ -41,9 +41,9 @@ public class EntityRequester
         RELATION_CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Field.class);
     }
 
-    public EntityRequester(Authenticator authenticator)
+    public EntityRequester(SalesforceAuthenticator salesforceAuthenticator)
     {
-        this.authenticator = authenticator;
+        this.salesforceAuthenticator = salesforceAuthenticator;
     }
 
     public List<Entity> getAllEntities()
@@ -59,7 +59,7 @@ public class EntityRequester
                         "FROM+" + ENTITY_NAME;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getLoginResult().getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
@@ -120,7 +120,7 @@ public class EntityRequester
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "sobjects/Entity__c");
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getLoginResult().getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
@@ -156,7 +156,7 @@ public class EntityRequester
                         "WHERE+" + entityName + "Id__c" + "='" + id + "'";
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + authenticator.getLoginResult().getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try

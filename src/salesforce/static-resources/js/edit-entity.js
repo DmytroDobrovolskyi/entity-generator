@@ -28,23 +28,24 @@ function resolveCheckboxes(context)
 {
     var allIsUnchecked = true;
 
-    $('.pk-checkboxes').each(function(index,element)
+    var checkboxes = $('.pk-checkboxes');
+
+    checkboxes.each(function (index, element)
     {
-        if($(element).is(':checked'))
+        if ($(element).is(':checked'))
         {
             $(element).removeAttr('disabled');
             allIsUnchecked = false;
         }
         else
         {
-            console.log("Dima");
             $(element).attr("disabled", true);
         }
     });
 
-    if(allIsUnchecked)
+    if (allIsUnchecked)
     {
-        $('.pk-checkboxes').removeAttr('disabled');
+        checkboxes.removeAttr('disabled');
     }
 }
 
@@ -69,22 +70,29 @@ function generateColumnName(context)
             .replace(/ /g, '_')
             .replace(/\d+/g, '')
             .replace(/\W/g, '')
-            .replace(/^[a-z]/, function(firstCharacter){ return firstCharacter.toUpperCase() })
-            .replace(/_[a-z]/, function(character){ return character.toUpperCase() });
+            .replace(/^[a-z]/, function (firstCharacter)
+            {
+                return firstCharacter.toUpperCase()
+            })
+            .replace(/_[a-z]/, function (character)
+            {
+                return character.toUpperCase()
+            });
     }
 }
 
 function fillForReset()
 {
-    $('.input').filter(function (index, element)
-    {
-        console.log(element);
-        return !element.value;
-    })
-    .each(function (index, element)
-    {
-        element.value = 'resetting...';
-    });
+    $('.input')
+        .filter(function (index, element)
+        {
+            console.log(element);
+            return !element.value;
+        })
+        .each(function (index, element)
+        {
+            element.value = 'resetting...';
+        });
 
     $('.typeList')
         .children()

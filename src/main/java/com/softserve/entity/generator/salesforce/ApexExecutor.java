@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.service.salesforce;
+package com.softserve.entity.generator.salesforce;
 
 import com.sforce.soap.apex.ExecuteAnonymousResult;
 import com.sforce.soap.apex.SoapConnection;

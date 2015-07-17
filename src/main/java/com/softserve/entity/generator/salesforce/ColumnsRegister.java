@@ -1,7 +1,7 @@
-package com.softserve.entity.generator.service.salesforce;
+package com.softserve.entity.generator.salesforce;
 
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.service.salesforce.util.ColumnsRegisterProcessor;
+import com.softserve.entity.generator.salesforce.util.ColumnsRegisterProcessor;
 
 import java.util.Arrays;
 import java.util.Collections;
