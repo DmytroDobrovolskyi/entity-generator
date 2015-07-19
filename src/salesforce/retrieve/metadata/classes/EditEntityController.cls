@@ -49,6 +49,9 @@ public class EditEntityController
         options.add(new SelectOption('varchar(255)','varchar(255)'));
         options.add(new SelectOption('int', 'int'));
         options.add(new SelectOption('date', 'date'));
+        options.add(new SelectOption('money', 'money'));
+        options.add(new SelectOption('bit', 'bit'));
+        options.add(new SelectOption('decimal', 'decimal'));
         return options;
     }
 

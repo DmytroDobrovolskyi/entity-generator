@@ -1,9 +1,12 @@
 package com.softserve.entity.generator.salesforce;
 
+import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProcedureExecutor
@@ -18,9 +21,15 @@ public class ProcedureExecutor
 
     public void generateAndExecute(SalesforceAuthenticator salesforceAuthenticator)
     {
-        entityApplier.applyAll(
-                entityService.findAll()
-        );
+        List<Entity> entitiesToProcess = entityService.findAll();
+
+        entityApplier.applyAll(entitiesToProcess);
+
+        for (Entity entity : entitiesToProcess)
+        {
+            entity.setIsProcessingNeeded(false);
+            entityService.merge(entity);
+        }
         ApexExecutor.executeApex(salesforceAuthenticator.getLoginResult(), RESET_IS_PROCESSING_NEEDED);
     }
 }

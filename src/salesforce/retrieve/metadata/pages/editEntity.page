@@ -67,7 +67,7 @@
                         </apex:column>
 
                         <apex:column headerValue="Type" styleClass="text-center">
-                            <apex:commandLink reRender="" oncomplete="resolveCheckboxes()">
+                            <apex:commandLink oncomplete="resolveCheckboxes()" reRender="apply-block">
                                 <apex:selectList value="{!field.Type__c}" size="1" multiselect="false" onchange="resolveCheckboxes(), setWereChanges(), resetIsPrimaryKey()" styleClass="typeList">
                                     <apex:selectOptions value="{!types}"/>
                                 </apex:selectList>
@@ -81,9 +81,7 @@
                         </apex:column>
 
                         <apex:column headerValue="PK" styleClass="text-center">
-                            <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" rendered="{!(field.Type__c == 'int') || (field.Type__c == 'varchar(255)')}"
-                                                styleClass="pk-checkboxes" onchange="resolveCheckboxes(), setWereChanges()">
-                            </apex:inputCheckbox>
+                            <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" styleClass="pk-checkboxes" onchange="resolveCheckboxes(), setWereChanges()" />
                         </apex:column>
 
                     </apex:dataTable>
@@ -105,7 +103,7 @@
                                             styleClass="btn btn-info pull-right" oncomplete="initAndDeleteErrors()"/>
                     </apex:outputPanel>
 
-                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="initAndDeleteErrors(), resolveCheckboxes()">
+                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="initAndDeleteErrors()">
                         <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
                            data-content="Add new field"></i>
                     </apex:commandLink>
