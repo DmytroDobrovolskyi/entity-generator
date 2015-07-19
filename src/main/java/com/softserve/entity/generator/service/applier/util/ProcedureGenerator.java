@@ -33,6 +33,7 @@ public class ProcedureGenerator
 
         StringWriter writer = new StringWriter();
         templateCreate.merge(context, writer);
+
         return writer.toString();
     }
 
