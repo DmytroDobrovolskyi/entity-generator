@@ -56,9 +56,9 @@ public class Authenticator
             }
             catch (ParseException ex)
             {
-                logger.error("Failed to parse command line properties", ex);
+                logger.error("Failed to parse command line parameters");
                 help(options);
-                System.exit(1);
+                System.exit(0);
             }
         }
         else

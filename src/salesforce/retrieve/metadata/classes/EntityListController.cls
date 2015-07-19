@@ -40,19 +40,6 @@ public class EntityListController
         setWereChanges();
     }
 
-    public  Boolean containNumbersOrNotCharacterWords(String str)
-    {
-         Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
-         boolean hasError = false;
-
-         if (matcher.find())
-         {
-            hasError = true;
-         }
-
-         return hasError;
-    }
-
     public void applyChanges()
     {
         Map<String, Entity__c> newEntityMap = new Map<String, Entity__c>();
@@ -64,7 +51,7 @@ public class EntityListController
 
         for (Entity__c entity : entitiesToUpdate)
         {
-            if(containNumbersOrNotCharacterWords(entity.TableName__c))
+            if(containsNumbersOrNonAlphabeticCharacters(entity.TableName__c))
             {
                  hasError = true;
             }
@@ -84,7 +71,7 @@ public class EntityListController
 
             if (newEntity != null)
             {
-                if (entityMap.containsKey(newEntity.TableName__c) || containNumbersOrNotCharacterWords(newEntity.TableName__c))
+                if (entityMap.containsKey(newEntity.TableName__c) || containsNumbersOrNonAlphabeticCharacters(newEntity.TableName__c))
                 {
                     hasError = true;
                 }
@@ -100,8 +87,7 @@ public class EntityListController
 
         if (hasError)
         {
-            ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique and contain no spaces, digits, not word symbols except underscores');
-            ApexPages.addMessage(error);
+            showError();
         }
         else
         {
@@ -114,6 +100,13 @@ public class EntityListController
         }
     }
 
+    private Boolean containsNumbersOrNonAlphabeticCharacters(String str)
+    {
+        Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
+        return matcher.find();
+
+    }
+
     public PageReference discardChanges()
     {
         return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
@@ -122,5 +115,11 @@ public class EntityListController
     public void setWereChanges()
     {
         wereChanges = true;
+    }
+
+    private void showError()
+    {
+        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Table name must be unique and contains only alphabetic characters or underscores');
+        ApexPages.addMessage(error);
     }
 }

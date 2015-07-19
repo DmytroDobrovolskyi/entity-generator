@@ -67,8 +67,8 @@
                         </apex:column>
 
                         <apex:column headerValue="Type" styleClass="text-center">
-                            <apex:commandLink reRender="checkbox" oncomplete="resolveCheckboxes(this)">
-                                <apex:selectList value="{!field.Type__c}" size="1" onchange="resolveCheckboxes(this), setWereChanges(), resetIsPrimaryKey()" styleClass="typeList" required="true">
+                            <apex:commandLink reRender="" oncomplete="resolveCheckboxes()">
+                                <apex:selectList value="{!field.Type__c}" size="1" multiselect="false" onchange="resolveCheckboxes(), setWereChanges(), resetIsPrimaryKey()" styleClass="typeList">
                                     <apex:selectOptions value="{!types}"/>
                                 </apex:selectList>
                             </apex:commandLink>
@@ -80,17 +80,17 @@
                             </apex:commandLink>
                         </apex:column>
 
-                         <apex:column headerValue="PK" id="checkbox" styleClass="text-center">
-                             <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" rendered="{!(field.Type__c == 'int') || (field.Type__c == 'varchar(255)')}"
-                               styleClass="pk-checkboxes" onchange="resolveCheckboxes(this), setWereChanges()">
-                             </apex:inputCheckbox>
-                         </apex:column>
+                        <apex:column headerValue="PK" styleClass="text-center">
+                            <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" rendered="{!(field.Type__c == 'int') || (field.Type__c == 'varchar(255)')}"
+                                                styleClass="pk-checkboxes" onchange="resolveCheckboxes(), setWereChanges()">
+                            </apex:inputCheckbox>
+                        </apex:column>
 
                     </apex:dataTable>
 
                     <apex:pageMessages />
 
-                    <apex:actionFunction action="{!deleteField}" name="callDeleteField" reRender="table-panel" oncomplete="init()" immediate="true" >
+                    <apex:actionFunction action="{!deleteField}" name="callDeleteField" reRender="table-panel" oncomplete="init()" immediate="true">
                         <apex:param name="columnName" value="" assignTo="{!columnName}"/>
                     </apex:actionFunction>
 
@@ -99,13 +99,13 @@
                     <apex:actionFunction action="{!resetIsPrimaryKey}" name="callResetIsPrimaryKey" reRender="" immediate="true"/>
 
                     <apex:outputPanel id="apply-block">
-                        <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" reRender="" value="Discard changes" styleClass="btn btn-warning pull-right"
+                        <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
                                             onclick="fillForReset()"/>
                         <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
                                             styleClass="btn btn-info pull-right" oncomplete="initAndDeleteErrors()"/>
                     </apex:outputPanel>
 
-                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="initAndDeleteErrors()">
+                    <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="initAndDeleteErrors(), resolveCheckboxes()">
                         <i class="fa fa-plus-square-o" data-toggle="popover" data-placement="right" data-trigger="hover"
                            data-content="Add new field"></i>
                     </apex:commandLink>

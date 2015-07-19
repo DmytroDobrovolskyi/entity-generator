@@ -1,6 +1,6 @@
 $(function ()
 {
-    resolveCheckboxes(this);
+    resolveCheckboxes();
     init();
     var input = $('.input').first();
     var times = 0;
@@ -25,11 +25,37 @@ function setWereChanges()
     EditEntityController.setWereChanges();
 }
 
-function resolveCheckboxes(context)
+function resolveCheckboxes()
 {
-    var allIsUnchecked = true;
+    $(".typeList")
+        .children()
+        .each(function (index, element)
+        {
+            var type = $(element);
+            var value = element.text;
+            if (type.is(':selected'))
+            {
+                var checkbox = type
+                    .closest('td')
+                    .next()
+                    .next()
+                    .children();
+                if (value === 'int' || value === 'varchar(255)')
+                {
+                    checkbox.css('display', 'block');
+                }
+                else
+                {
+                    checkbox
+                        .css('display', 'none')
+                        .prop( "checked", false );
+                }
+            }
+        });
 
     var checkboxes = $('.pk-checkboxes');
+
+    var allIsUnchecked = true;
 
     checkboxes.each(function (index, element)
     {
@@ -89,18 +115,6 @@ function fillForReset()
         {
             console.log(element);
             return !element.value;
-        })
-        .each(function (index, element)
-        {
-            element.value = 'resetting...';
-        });
-
-    $('.typeList')
-        .children()
-        .filter(function (index, element)
-        {
-            console.log(element.value);
-            return element === ' ';
         })
         .each(function (index, element)
         {

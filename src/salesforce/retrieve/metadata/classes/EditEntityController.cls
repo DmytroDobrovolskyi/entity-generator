@@ -45,7 +45,7 @@ public class EditEntityController
     public List<SelectOption> getTypes()
     {
         List<SelectOption> options = new List<SelectOption>();
-         options.add(new SelectOption(' ',' '));
+
         options.add(new SelectOption('varchar(255)','varchar(255)'));
         options.add(new SelectOption('int', 'int'));
         options.add(new SelectOption('date', 'date'));
@@ -76,22 +76,10 @@ public class EditEntityController
 
         newField = new Field__c();
         newField.Entity__c = entity.Id;
+        newField.Type__c = 'varchar(255)';
         fieldMap.put(null, newField);
 
         setWereChanges();
-    }
-
-    public  Boolean containNumbersOrNotCharacterWords(String str)
-    {
-       Matcher matcher = Pattern.compile('(\\W)|(\\d)|(\\s)').matcher(str);
-       boolean hasError = false;
-
-       if (matcher.find())
-       {
-        hasError = true;
-       }
-
-        return hasError;
     }
 
     public void applyChanges()
@@ -122,11 +110,11 @@ public class EditEntityController
             fieldsToUpdate.remove(newField);
 
              for (Field__c field : fieldsToUpdate)
-              {
-                 if (containNumbersOrNotCharacterWords(field.ColumnName__c) || field.Type__c ==' ')
-                     {
-                        hasError = true;
-                     }
+             {
+                 if (containsNumbersOrNonAlphabeticCharacters(field.ColumnName__c))
+                 {
+                     hasError = true;
+                 }
               }
 
               if (!hasError)
@@ -146,7 +134,7 @@ public class EditEntityController
         if (newField != null)
         {
             if (fieldMap.containsKey(newField.ColumnName__c) ||
-            containNumbersOrNotCharacterWords(newField.ColumnName__c) || newField.Type__c ==' ')
+                    containsNumbersOrNonAlphabeticCharacters(newField.ColumnName__c) || newField.Type__c == ' ')
             {
                 hasError = true;
             }
@@ -170,7 +158,6 @@ public class EditEntityController
             fieldMap = newFieldMap;
             wereChanges = false;
         }
-        System.debug(newFieldMap);
     }
 
     public PageReference discardChanges()
@@ -196,6 +183,13 @@ public class EditEntityController
         }
     }
 
+    private Boolean containsNumbersOrNonAlphabeticCharacters(String str)
+    {
+        Matcher matcher = Pattern.compile('(\\W)|(\\d)|(\\s)').matcher(str);
+
+        return matcher.find();
+    }
+
     public void setIsProcessingNeeded()
     {
         entity.IsProcessingNeeded__c = true;
@@ -204,7 +198,7 @@ public class EditEntityController
 
     private void showError()
     {
-        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique and contain only alphabetic characters or underscores');
+        ApexPages.Message error = new ApexPages.Message(ApexPages.Severity.ERROR, 'Column name must be unique and contains only alphabetic characters or underscores');
         ApexPages.addMessage(error);
     }
 }
