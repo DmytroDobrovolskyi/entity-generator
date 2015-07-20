@@ -63,6 +63,10 @@
                 <pathelement location="${main.classes.dir}"/>
                 <pathelement location="${resources.dir}"/>
                 <pathelement location="${jdbc.driver}"/>
+                <pathelement location="${soap.partner}"/>
+                <pathelement location="${soap.apex}"/>
+                <pathelement location="${soap.enterprise}"/>
+                <pathelement location="${soap.wsc}"/>
             </classpath>
 
             <formatter type="plain" usefile="false"/>

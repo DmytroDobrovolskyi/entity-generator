@@ -1,4 +1,4 @@
-package com.softserve.entity.generator;
+package com.softserve.entity.generator.salesforce.util;
 
 import com.softserve.entity.generator.config.MockConfig;
 import com.softserve.entity.generator.salesforce.util.Parser;

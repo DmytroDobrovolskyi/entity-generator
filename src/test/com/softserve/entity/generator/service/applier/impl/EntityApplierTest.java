@@ -1,4 +1,4 @@
-package com.softserve.entity.generator;
+package com.softserve.entity.generator.service.applier.impl;
 
 import com.softserve.entity.generator.config.MockConfig;
 import com.softserve.entity.generator.entity.Entity;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = MockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ApplierTest
+public class EntityApplierTest
 {
     private static final int COLUMN_QUANTITY = 3;
     private static final String EMPTY_SPACE_REGEX = "\\s";

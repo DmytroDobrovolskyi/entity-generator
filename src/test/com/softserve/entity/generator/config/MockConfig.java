@@ -1,6 +1,10 @@
 package com.softserve.entity.generator.config;
 
 import com.softserve.entity.generator.repository.impl.BaseRepositoryImpl;
+import com.softserve.entity.generator.salesforce.SalesforceAuthenticator;
+import com.softserve.entity.generator.service.BaseService;
+import com.softserve.entity.generator.service.EntityService;
+import com.softserve.entity.generator.service.applier.EntityApplier;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +16,8 @@ import javax.persistence.EntityManager;
 import static org.mockito.Mockito.mock;
 
 @Configuration
-@ComponentScan(basePackages = {"com.softserve.entity.generator.service", "com.softserve.entity.generator.repository"})
+@ComponentScan(basePackages = {"com.softserve.entity.generator.service", "com.softserve.entity.generator.repository",
+        "com.softserve.entity.generator.salesforce"})
 public class MockConfig
 {
     @Bean
@@ -31,5 +36,23 @@ public class MockConfig
     public EntityManager entityManagerMock()
     {
         return mock(EntityManager.class);
+    }
+
+    @Bean
+    public EntityApplier entityApplierMock()
+    {
+        return mock(EntityApplier.class);
+    }
+
+    @Bean
+    public EntityService entityServiceMock()
+    {
+        return mock(EntityService.class);
+    }
+
+    @Bean
+    public SalesforceAuthenticator salesforceAuthenticator()
+    {
+        return mock(SalesforceAuthenticator.class);
     }
 }
