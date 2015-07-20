@@ -171,6 +171,7 @@ public class EditEntityController
     public void setWereChanges()
     {
         wereChanges = true;
+        System.debug('setWereChanges!');
     }
 
     public void resetIsPrimaryKey()
