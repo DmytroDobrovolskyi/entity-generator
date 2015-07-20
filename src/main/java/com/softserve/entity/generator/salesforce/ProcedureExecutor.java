@@ -17,12 +17,9 @@ public class ProcedureExecutor
     private EntityApplier entityApplier;
 
     @Autowired
-    private ApexExecutor apexExecutor;
-
-    @Autowired
     private EntityService entityService;
 
-    public void generateAndExecute(SalesforceAuthenticator salesforceAuthenticator)
+    public void generateAndExecute(Credentials credentials)
     {
         List<Entity> entitiesToProcess = entityService.findAll();
 
@@ -33,6 +30,6 @@ public class ProcedureExecutor
             entity.setIsProcessingNeeded(false);
             entityService.merge(entity);
         }
-        apexExecutor.executeApex(salesforceAuthenticator.getLoginResult(), RESET_IS_PROCESSING_NEEDED);
+        WebServiceUtil.executeApex(credentials, RESET_IS_PROCESSING_NEEDED);
     }
 }

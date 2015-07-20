@@ -2,7 +2,6 @@ package com.softserve.entity.generator.service.applier;
 
 import com.softserve.entity.generator.config.MockConfig;
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.service.applier.Applier;
 import com.softserve.entity.generator.service.applier.util.ProcedureGenerator;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.softserve.entity.generator.entity.util.TestEntityGenerator.generateEntity;
@@ -73,9 +70,8 @@ public class EntityApplierTest
     {
         Query queryMock = mock(Query.class);
 
-        doReturn(queryMock)
-                .when(entityManager)
-                .createNativeQuery(query);
+        when(entityManager.createNativeQuery(query))
+                .thenReturn(queryMock);
 
         return queryMock;
     }

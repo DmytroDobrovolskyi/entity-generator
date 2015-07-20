@@ -25,13 +25,14 @@ public class EntityRequester
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v34.0/";
 
-    private SalesforceAuthenticator salesforceAuthenticator;
-
     private static final String CUSTOM_FIELDS;
     private static final String RELATION;
     private static final String RELATION_CUSTOM_FIELDS;
     private static final String ENTITY_NAME;
     private static final String TOTAL_SIZE_ZERO = "\"totalSize\" : 0";
+
+    private Credentials credentials;
+    private static final  HttpClient httpClient = HttpClientBuilder.create().build();
 
    static
    {
@@ -41,15 +42,13 @@ public class EntityRequester
         RELATION_CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Field.class);
     }
 
-    public EntityRequester(SalesforceAuthenticator salesforceAuthenticator)
+    public EntityRequester(Credentials credentials)
     {
-        this.salesforceAuthenticator = salesforceAuthenticator;
+        this.credentials = credentials;
     }
 
     public List<Entity> getAllEntities()
     {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
         String sqlQuery =
                         "SELECT+Name," + CUSTOM_FIELDS + "," +
                         "(" +
@@ -59,15 +58,13 @@ public class EntityRequester
                         "FROM+" + ENTITY_NAME;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + WebServiceUtil.getSessionId(credentials)));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
         {
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
-
-            logger.info(stringifiedResponse);
 
             List<Entity> entities = new ArrayList<Entity>();
 
@@ -102,83 +99,6 @@ public class EntityRequester
             }
 
             return entities;
-        }
-        catch (ClientProtocolException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-        catch (IOException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-    }
-
-    public String getFullInfo()
-    {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
-        HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "sobjects/Entity__c");
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
-        httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
-
-        try
-        {
-            HttpResponse response = httpClient.execute(httpGet);
-            return EntityUtils.toString(response.getEntity());
-        }
-        catch (ClientProtocolException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-        catch (IOException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-    }
-
-    public Entity getEntityByExternalId(String id)
-    {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
-        String entityName = Entity.class.getSimpleName();
-
-        String sqlQuery =
-                        "SELECT+Name," + CUSTOM_FIELDS + "," +
-                        "(" +
-                            "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
-                            "FROM+" + RELATION +
-                        ")+" +
-                        "FROM+" + entityName + "__c+" +
-                        "WHERE+" + entityName + "Id__c" + "='" + id + "'";
-
-        HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
-        httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
-
-        try
-        {
-            HttpResponse response = httpClient.execute(httpGet);
-            String stringifiedResponse = EntityUtils.toString(response.getEntity());
-
-            String parsableSObject = Parser.parseSObjectJson(stringifiedResponse);
-
-            Gson gson = new Gson();
-
-            Entity entity = gson.fromJson(parsableSObject, Entity.class);
-
-            if (entity.getFields() != null)
-            {
-                for (Field field : entity.getFields())
-                {
-                    field.setEntity(entity);
-                }
-            }
-
-            return entity;
         }
         catch (ClientProtocolException ex)
         {

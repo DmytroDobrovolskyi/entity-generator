@@ -27,7 +27,7 @@ function setWereChanges()
 
 function resolveCheckboxes()
 {
-    $(".typeList")
+    $(".typeList") //
         .children()
         .each(function (index, element)
         {

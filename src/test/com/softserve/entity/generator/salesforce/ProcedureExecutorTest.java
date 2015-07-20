@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = MockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,11 +36,7 @@ public class ProcedureExecutorTest
     private EntityApplier entityApplier;
 
     @Autowired
-    @Qualifier(value = "apexExecutorMock")
-    private ApexExecutor apexExecutor;
-
-    @Autowired
-    private SalesforceAuthenticator salesforceAuthenticator;
+    private WebServiceUtil webServiceUtil;
 
     @Before
     public void setUp()
@@ -51,15 +47,15 @@ public class ProcedureExecutorTest
     @Test
     public void generateAndExecuteTest()
     {
-        procedureExecutor.generateAndExecute(salesforceAuthenticator);
+        procedureExecutor.generateAndExecute(mock(Credentials.class));
+
+        List<Entity> entities = Arrays.asList(mock(Entity.class), mock(Entity.class), mock(Entity.class));
+
+        when(entityService.findAll())
+                .thenReturn(entities);
 
         verify(entityService).findAll();
 
-        @SuppressWarnings("unchecked")
-        List<Entity> listMock = mock(List.class);
-
-        verify(entityApplier).applyAll(listMock);
-
-
+        verify(entityApplier).applyAll(entities);
     }
 }

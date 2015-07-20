@@ -2,8 +2,8 @@ package com.softserve.entity.generator.app;
 
 import com.softserve.entity.generator.app.util.Authenticator;
 import com.softserve.entity.generator.config.AppConfig;
+import com.softserve.entity.generator.salesforce.Credentials;
 import com.softserve.entity.generator.salesforce.ProcedureExecutor;
-import com.softserve.entity.generator.salesforce.SalesforceAuthenticator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -20,17 +20,17 @@ public class EntityGenerator
 
     public static void main(String[] args)
     {
-        SalesforceAuthenticator salesforceAuthenticator = Authenticator.login(args);
+        Credentials credentials = Authenticator.login(args);
 
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
         EntityGenerator entityGenerator = applicationContext.getBean(EntityGenerator.class);
 
-        entityGenerator.generateEntities(salesforceAuthenticator);
+        entityGenerator.generateEntities(credentials);
     }
 
-    public void generateEntities(SalesforceAuthenticator salesforceAuthenticator)
+    public void generateEntities(Credentials credentials)
     {
-        procedureExecutor.generateAndExecute(salesforceAuthenticator);
+        procedureExecutor.generateAndExecute(credentials);
     }
 }

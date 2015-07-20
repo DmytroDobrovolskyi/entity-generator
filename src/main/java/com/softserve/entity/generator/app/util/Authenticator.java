@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.app.util;
 
-import com.softserve.entity.generator.salesforce.SalesforceAuthenticator;
+import com.softserve.entity.generator.salesforce.Credentials;
 import javassist.NotFoundException;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
@@ -12,9 +12,7 @@ public class Authenticator
 {
     private static final Logger logger = Logger.getLogger(Authenticator.class);
 
-    private static SalesforceAuthenticator salesforceAuthenticator;
-
-    public static SalesforceAuthenticator login(String[] credentials)
+    public static Credentials login(String[] credentials)
     {
         String username = null;
         String password = null;
@@ -70,32 +68,30 @@ public class Authenticator
                 username = credentialsScanner.next();
                 password = credentialsScanner.next();
                 token = credentialsScanner.next();
-
             }
             catch (NotFoundException ex)
             {
-                logger.error("User has not logged in yet");
-                help(options);
-                System.exit(0);
+                printUserNotFound(options);
             }
             catch (IOException ex)
             {
-                logger.error("User has not logged in yet");
-                help(options);
-                System.exit(0);
+               printUserNotFound(options);
             }
         }
 
-        return new SalesforceAuthenticator(
-                username,
-                password,
-                token
-        );
+        return new Credentials(username, password, token);
     }
 
     private static void help(Options options)
     {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Authenticator", options);
+    }
+
+    private static void printUserNotFound(Options options)
+    {
+        logger.error("User not found");
+        help(options);
+        System.exit(0);
     }
 }

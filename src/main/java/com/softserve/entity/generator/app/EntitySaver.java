@@ -3,9 +3,9 @@ package com.softserve.entity.generator.app;
 import com.softserve.entity.generator.app.util.Authenticator;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.service.EntityService;
+import com.softserve.entity.generator.salesforce.Credentials;
 import com.softserve.entity.generator.salesforce.EntityRequester;
-import com.softserve.entity.generator.salesforce.SalesforceAuthenticator;
+import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -24,9 +24,9 @@ public class EntitySaver
 
     public static void main(String[] args)
     {
-        SalesforceAuthenticator salesforceAuthenticator = Authenticator.login(args);
+        Credentials credentials = Authenticator.login(args);
 
-        EntityRequester entityRequester = new EntityRequester(salesforceAuthenticator);
+        EntityRequester entityRequester = new EntityRequester(credentials);
 
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
