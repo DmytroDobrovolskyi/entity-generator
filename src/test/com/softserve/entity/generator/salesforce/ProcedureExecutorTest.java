@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ContextConfiguration(classes = MockConfig.class)
@@ -22,18 +21,12 @@ public class ProcedureExecutorTest
 {
 
     @Autowired
-    @Qualifier(value = "entityServiceMock")
     private EntityService entityService;
-
-    @Autowired
-    @Qualifier(value = "entityApplierMock")
-    private EntityApplier entityApplier;
 
     @Autowired
     private SalesforceAuthenticator salesforceAuthenticator;
 
     @Autowired
-    @InjectMocks
     private ProcedureExecutor procedureExecutor;
 
     @Before
@@ -41,10 +34,10 @@ public class ProcedureExecutorTest
     {
         MockitoAnnotations.initMocks(this);
     }
-
     @Test
     public void generateAndExecuteTest()
     {
+
         procedureExecutor.generateAndExecute(salesforceAuthenticator);
 
         verify(entityService).findAll();
