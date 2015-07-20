@@ -6,12 +6,16 @@ import com.sforce.soap.partner.LoginResult;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
+@Component
+@Primary
 public class ApexExecutor
 {
     private static final Logger logger = Logger.getLogger(ApexExecutor.class);
 
-    public static void executeApex(LoginResult loginResult, String apexCode)
+    public void executeApex(LoginResult loginResult, String apexCode)
     {
         try
         {

@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.service.applier.impl;
+package com.softserve.entity.generator.service.applier;
 
 import com.softserve.entity.generator.config.MockConfig;
 import com.softserve.entity.generator.entity.Entity;

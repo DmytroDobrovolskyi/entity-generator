@@ -1,8 +1,8 @@
-package com.softserve.entity.generator.service.applier.impl;
+package com.softserve.entity.generator.service.applier;
 
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.service.applier.EntityApplier;
 import com.softserve.entity.generator.service.applier.util.ProcedureGenerator;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
+@Primary
 public class EntityApplierImpl implements EntityApplier
 {
     @PersistenceContext
