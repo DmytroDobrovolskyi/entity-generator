@@ -32,8 +32,8 @@
     </path>
 
     <path id="emma.path">
-        <fileset dir="${test.dir}">
-            <include name="emma*.jar"/>
+        <fileset dir="${lib.dir}">
+            <include name="**/emma*.jar"/>
         </fileset>
     </path>
 

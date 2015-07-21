@@ -30,7 +30,10 @@ public class DatabaseInitializationConfig
         dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url").split(";")[0]);
         dataSource.setUsername(env.getProperty("db.username"));
-        dataSource.setPassword(env.getProperty("db.password"));
+        dataSource.setPassword(env.getProperty("db.password"
+
+
+        ));
         return dataSource;
     }
 }
