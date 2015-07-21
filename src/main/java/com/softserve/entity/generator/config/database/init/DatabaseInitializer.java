@@ -40,15 +40,20 @@ public class DatabaseInitializer
 
     public void initDatabase()
     {
-        jdbcTemplate.execute("IF ( EXISTS(" +
-                "SELECT name " +
-                "FROM master.dbo.sysdatabases " +
-                "WHERE name='" + DATABASE_NAME + "')) " +
-                "DROP DATABASE " + DATABASE_NAME + "; " +
-                "CREATE DATABASE " + DATABASE_NAME + "; " +
-                "USE " + DATABASE_NAME + "; " +
-                "EXEC ('CREATE SCHEMA " + DEFAULT_SCHEMA + " ');" +
-                "EXEC ('CREATE SCHEMA " + GENERATED_TABLES_SCHEMA + " ');"
+        jdbcTemplate.execute(
+                "IF EXISTS" +
+                "(" +
+                    "SELECT name " +
+                    "FROM sys.databases " +
+                    "WHERE name='" + DATABASE_NAME + "'" +
+                ") " +
+                "DROP DATABASE " + DATABASE_NAME + " " +
+
+                "CREATE DATABASE " + DATABASE_NAME + " " +
+
+                "EXEC('USE " + DATABASE_NAME + "') " +
+                "EXEC('CREATE SCHEMA " + DEFAULT_SCHEMA + " ') " +
+                "EXEC('CREATE SCHEMA " + GENERATED_TABLES_SCHEMA + " ')"
         );
         logger.info("Database was successfully initialized");
     }
