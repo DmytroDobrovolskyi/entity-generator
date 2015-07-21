@@ -20,9 +20,15 @@ public class WebServiceUtil
 
     private LoginResult loginResult;
 
+    /**
+     * Returns session id after login process.
+     *
+     * @param credentials class-holder that contains username, password and security token
+     * @return session id
+     */
     public static String getSessionId(Credentials credentials)
     {
-       return getLoginResult(credentials).getSessionId();
+        return getLoginResult(credentials).getSessionId();
     }
 
     public static void executeApex(Credentials credentials, String apexCode)
@@ -49,6 +55,12 @@ public class WebServiceUtil
         }
     }
 
+    /**
+     * Returns previously saved LoginResult object or log in first if such user does not exist in credentialsMap instance.
+     *
+     * @param credentials class-holder that contains username, password and security token
+     * @return login result
+     */
     private static LoginResult getLoginResult(Credentials credentials)
     {
         String username = credentials.getUsername();
@@ -59,7 +71,6 @@ public class WebServiceUtil
         else
         {
             return login(username, credentials.getPassword(), credentials.getToken());
-
         }
     }
 

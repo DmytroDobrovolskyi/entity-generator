@@ -78,7 +78,7 @@ public class EntityApplierTest
 
     private String generateProcedure()
     {
-        String procedureQuery = " IF  EXISTS\n" +
+        return " IF  EXISTS\n" +
                 "         (\n" +
                 "             SELECT *\n" +
                 "             FROM sys.procedures\n" +
@@ -124,7 +124,5 @@ public class EntityApplierTest
                 "         EXEC sp_executesql @procedureQuery\n" +
                 "         IF LEN(@procedureQuery) > @initialProcedureQueryLength\n" +
                 "             EXEC ('generateTable')";
-
-        return procedureQuery;
     }
 }

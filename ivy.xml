@@ -10,48 +10,25 @@
     </configurations>
 
     <dependencies>
-        <dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.1-api" rev="1.0.0.Final"
-                    conf="compile->default;sources;javadoc"/>
 
-        <dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.3.10.Final"
-                    conf="compile->default;sources;javadoc"/>
+        <dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.1-api" rev="1.0.0.Final" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.3.10.Final" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.12" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.apache.commons" name="commons-lang3" rev="3.4" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.apache.velocity" name="velocity" rev="1.7" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.springframework" name="spring-core" rev="4.1.6.RELEASE" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.springframework" name="spring-orm" rev="4.1.6.RELEASE" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.springframework" name="spring-context" rev="4.1.6.RELEASE" conf="compile->default;sources;javadoc"/>
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5" conf="compile->default;sources;javadoc"/>
+        <dependency org="com.google.code.gson" name="gson" rev="1.4" conf="compile->default;sources;javadoc"/>
+        <dependency org="commons-cli" name="commons-cli" rev="1.2" conf="compile->default;sources;javadoc"/>
 
-        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.12"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="org.apache.commons" name="commons-lang3" rev="3.4"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="org.apache.velocity" name="velocity" rev="1.7"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="org.springframework" name="spring-core" rev="4.1.6.RELEASE"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="org.springframework" name="spring-orm" rev="4.1.6.RELEASE"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="org.springframework" name="spring-context" rev="4.1.6.RELEASE"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="org.mockito" name="mockito-core" rev="1.10.19"
-                    conf="test->default;sources;javadoc"/>
-
-        <dependency org="org.springframework" name="spring-test" rev="4.1.6.RELEASE"
-                    conf="test->default;sources;javadoc"/>
-
-        <dependency org="junit" name="junit" rev="4.12"
-                    conf="test->default;sources;javadoc"/>
-
-        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="com.google.code.gson" name="gson" rev="1.4"
-                    conf="compile->default;sources;javadoc"/>
-
-        <dependency org="commons-cli" name="commons-cli" rev="1.2"
-                    conf="compile->default;sources;javadoc"/>
-
+        <!--TEST DEPENDENCIES-->
+        <dependency org="emma" name="emma" rev="2.1.5320" conf="test->default;sources;javadoc"/>
+        <dependency org="org.mockito" name="mockito-core" rev="1.10.19" conf="test->default;sources;javadoc"/>
+        <dependency org="org.springframework" name="spring-test" rev="4.1.6.RELEASE" conf="test->default;sources;javadoc"/>
+        <dependency org="junit" name="junit" rev="4.12" conf="test->default;sources;javadoc"/>
+        <dependency org="emma" name="emma_ant" rev="2.1.5320" conf="test->default;sources;javadoc"/>
     </dependencies>
 
 </ivy-module>
