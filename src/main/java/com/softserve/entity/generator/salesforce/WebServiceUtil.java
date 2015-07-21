@@ -16,7 +16,7 @@ public class WebServiceUtil
 {
     private static final Logger logger = Logger.getLogger(WebServiceUtil.class);
 
-    private static final Map<String, WebServiceUtil> credentialsMap = new HashMap<String, WebServiceUtil>();
+    private static final Map<String, WebServiceUtil> credentialsMap = new HashMap<String, WebServiceUtil>(); //TODO instance
 
     private LoginResult loginResult;
 
@@ -31,7 +31,7 @@ public class WebServiceUtil
         return getLoginResult(credentials).getSessionId();
     }
 
-    public static void executeApex(Credentials credentials, String apexCode)
+    public  void executeApex(Credentials credentials, String apexCode)
     {
         LoginResult loginResult = getLoginResult(credentials);
         try
@@ -44,7 +44,7 @@ public class WebServiceUtil
             connectorConfig.setServiceEndpoint(serverUrl);
             connectorConfig.setSessionId(loginResult.getSessionId());
 
-            SoapConnection conn = new SoapConnection(connectorConfig);
+            SoapConnection conn = new SoapConnection(connectorConfig);  //TODO field
             ExecuteAnonymousResult result = conn.executeAnonymous(apexCode);
             logger.info(result);
         }
@@ -82,7 +82,7 @@ public class WebServiceUtil
 
         try
         {
-            PartnerConnection connection = Connector.newConnection(config);
+            PartnerConnection connection = Connector.newConnection(config); //TODO field
             LoginResult loginResult = connection.login(username, password + secToken);
 
             WebServiceUtil webServiceUtil = new WebServiceUtil();
