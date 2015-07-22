@@ -16,3 +16,4 @@ out/
 src/salesforce/resources/sf.credentials.properties
 src\salesforce\retrieve\metadata\staticresources\resources.resource
 .credentials
+/reports

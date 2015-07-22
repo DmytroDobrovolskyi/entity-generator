@@ -14,12 +14,4 @@ public class EntityRequesterTest
         entityRequester.getAllEntities();
         verify(entityRequester).getAllEntities();
     }
-
-    @Test
-    public void getFullInfoTest()
-    {
-        EntityRequester entityRequester = mock(EntityRequester.class);
-        entityRequester.getFullInfo();
-        verify(entityRequester).getFullInfo();
-    }
 }

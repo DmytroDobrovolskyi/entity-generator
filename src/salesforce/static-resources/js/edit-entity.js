@@ -27,6 +27,41 @@ function setWereChanges()
 
 function resolveCheckboxes()
 {
+    resolveNonPrimaryKeyTypes();
+
+    var checkboxes = $('.pk-checkboxes');
+
+    var allIsUnchecked = true;
+
+    checkboxes.each(function (index, element)
+    {
+        if ($(element).is(':checked'))
+        {
+            $(element).removeAttr('disabled');
+            allIsUnchecked = false;
+        }
+        else
+        {
+            $(element).attr("disabled", true);
+        }
+    });
+
+    if (allIsUnchecked)
+    {
+        checkboxes.removeAttr('disabled');
+    }
+}
+
+/**
+ * This methods controls visibility of checkboxes in table for every field.
+ * If for any field in the table non primary key type(date, money, decimal etc) was chosen then checkbox
+ * for choosing primary key will disappear and vice versa.
+ *
+ * Note: jquery was chosen over visualforce reRender feature for solving this issue because of unexpectable behaviour
+ * when adding new row to data table.
+ */
+function resolveNonPrimaryKeyTypes()
+{
     $(".typeList")
         .children()
         .each(function (index, element)
@@ -52,28 +87,6 @@ function resolveCheckboxes()
                 }
             }
         });
-
-    var checkboxes = $('.pk-checkboxes');
-
-    var allIsUnchecked = true;
-
-    checkboxes.each(function (index, element)
-    {
-        if ($(element).is(':checked'))
-        {
-            $(element).removeAttr('disabled');
-            allIsUnchecked = false;
-        }
-        else
-        {
-            $(element).attr("disabled", true);
-        }
-    });
-
-    if (allIsUnchecked)
-    {
-        checkboxes.removeAttr('disabled');
-    }
 }
 
 function generateColumnName(context)

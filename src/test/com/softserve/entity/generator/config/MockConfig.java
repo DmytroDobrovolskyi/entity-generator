@@ -1,8 +1,7 @@
 package com.softserve.entity.generator.config;
 
 import com.softserve.entity.generator.repository.impl.BaseRepositoryImpl;
-import com.softserve.entity.generator.salesforce.ApexExecutor;
-import com.softserve.entity.generator.salesforce.SalesforceAuthenticator;
+import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
 import org.mockito.Mockito;
@@ -33,15 +32,9 @@ public class MockConfig
     }
 
     @Bean
-    public SalesforceAuthenticator salesforceAuthenticator()
+    public WebServiceUtil salesforceAuthenticator()
     {
-        return mock(SalesforceAuthenticator.class);
-    }
-
-    @Bean
-    public ApexExecutor apexExecutorMock()
-    {
-        return mock(ApexExecutor.class);
+        return mock(WebServiceUtil.class);
     }
 
     @Bean
