@@ -1,10 +1,10 @@
 package com.softserve.entity.generator.salesforce;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.salesforce.util.Parser;
-import com.softserve.entity.generator.salesforce.util.Splitter;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -15,6 +15,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class EntityRequester
     private static final String API_VERSION = "v34.0/";
 
     private SalesforceAuthenticator salesforceAuthenticator;
+    private Gson gson;
 
     private static final String CUSTOM_FIELDS;
     private static final String RELATION;
@@ -33,8 +35,8 @@ public class EntityRequester
     private static final String ENTITY_NAME;
     private static final String TOTAL_SIZE_ZERO = "\"totalSize\" : 0";
 
-   static
-   {
+    static
+    {
         ENTITY_NAME = Entity.class.getSimpleName() + "__c";
         CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Entity.class);
         RELATION = Field.class.getSimpleName() + "s__r";
@@ -51,12 +53,12 @@ public class EntityRequester
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         String sqlQuery =
-                        "SELECT+Name," + CUSTOM_FIELDS + "," +
-                        "(" +
-                            "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
-                            "FROM+" + RELATION +
-                        ")+" +
-                        "FROM+" + ENTITY_NAME;
+                          "SELECT+Name," + CUSTOM_FIELDS + "," +
+                         "(" +
+                              "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
+                              "FROM+" + RELATION +
+                          ")+" +
+                          "FROM+" + ENTITY_NAME;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
         httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
@@ -66,119 +68,34 @@ public class EntityRequester
         {
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
-
-            logger.info(stringifiedResponse);
 
             List<Entity> entities = new ArrayList<Entity>();
 
-          if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
-          {
-              return entities;
-          }
-
-            List<String> parsableSObjects = new ArrayList<String>();
-
-            for (String parsableSObject : Splitter.splitSObjects(stringifiedResponse))
+            if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
             {
-                parsableSObjects.add(
-                        Parser.parseSObjectJson(parsableSObject)
-                );
+                return entities;
             }
 
-            Gson gson = new Gson();
+            String parsedJson = Parser.parseSObjectJson(stringifiedResponse, Entity.class, Field.class);
 
-            for (String parsableSObject : parsableSObjects)
+            gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Entity>>()
             {
-                Entity entity = gson.fromJson(parsableSObject, Entity.class);
-                entities.add(entity);
+            }.getType();
 
-                if (entity.getFields() != null)
-                {
-                    for (Field field : entity.getFields())
-                    {
-                        field.setEntity(entity);
-                    }
-                }
-            }
+            List<Entity> entityList = gson.fromJson(parsedJson, listType);
 
-            return entities;
-        }
-        catch (ClientProtocolException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-        catch (IOException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-    }
-
-    public String getFullInfo()
-    {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
-        HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "sobjects/Entity__c");
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
-        httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
-
-        try
-        {
-            HttpResponse response = httpClient.execute(httpGet);
-            return EntityUtils.toString(response.getEntity());
-        }
-        catch (ClientProtocolException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-        catch (IOException ex)
-        {
-            logger.error(ex);
-            throw new AssertionError(ex);
-        }
-    }
-
-    public Entity getEntityByExternalId(String id)
-    {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
-        String entityName = Entity.class.getSimpleName();
-
-        String sqlQuery =
-                        "SELECT+Name," + CUSTOM_FIELDS + "," +
-                        "(" +
-                            "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
-                            "FROM+" + RELATION +
-                        ")+" +
-                        "FROM+" + entityName + "__c+" +
-                        "WHERE+" + entityName + "Id__c" + "='" + id + "'";
-
-        HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
-        httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
-
-        try
-        {
-            HttpResponse response = httpClient.execute(httpGet);
-            String stringifiedResponse = EntityUtils.toString(response.getEntity());
-
-            String parsableSObject = Parser.parseSObjectJson(stringifiedResponse);
-
-            Gson gson = new Gson();
-
-            Entity entity = gson.fromJson(parsableSObject, Entity.class);
-
-            if (entity.getFields() != null)
+            for (Entity entity : entityList)
             {
-                for (Field field : entity.getFields())
+                for(Field field : entity.getFields())
                 {
                     field.setEntity(entity);
                 }
+                entities.add(entity);
             }
 
-            return entity;
+            return entities;
         }
         catch (ClientProtocolException ex)
         {

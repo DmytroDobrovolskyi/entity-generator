@@ -1,5 +1,7 @@
 package com.softserve.entity.generator.salesforce.util;
 
+import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.Field;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -13,18 +15,18 @@ public class ParserTest
     {
         assertEquals
                 (
-                        Parser.parseSObjectJson(this.getJson()).trim(),
+                        Parser.parseSObjectJson(this.getJson(), Entity.class, Field.class).trim(),
                         this.parsedString().trim()
                 );
 
         Parser parser = mock(Parser.class);
-        Parser.parseSObjectJson(this.getJson());
-        verify(parser).parseSObjectJson(this.getJson());
+        Parser.parseSObjectJson(this.getJson(),Entity.class, Field.class);
+        verify(parser).parseSObjectJson(this.getJson(), Entity.class, Field.class);
     }
 
-    private  String getJson()
+    private String getJson()
     {
-        return  "    \"attributes\" : {\n" +
+        return "    \"attributes\" : {\n" +
                 "      \"type\" : \"Entity__c\",\n" +
                 "      \"url\" : \"/services/data/v33.0/sobjects/Entity__c/a002000000fMOebAAG\"\n" +
                 "    },\n" +
