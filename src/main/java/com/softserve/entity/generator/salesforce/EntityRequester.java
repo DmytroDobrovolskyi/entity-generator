@@ -1,10 +1,10 @@
 package com.softserve.entity.generator.salesforce;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.salesforce.util.Parser;
-import com.softserve.entity.generator.salesforce.util.Splitter;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -15,6 +15,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,40 +26,42 @@ public class EntityRequester
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v34.0/";
 
+    private SalesforceAuthenticator salesforceAuthenticator;
+    private Gson gson;
+
     private static final String CUSTOM_FIELDS;
     private static final String RELATION;
     private static final String RELATION_CUSTOM_FIELDS;
     private static final String ENTITY_NAME;
     private static final String TOTAL_SIZE_ZERO = "\"totalSize\" : 0";
 
-    private Credentials credentials;
-    private static final  HttpClient httpClient = HttpClientBuilder.create().build();
-
-   static
-   {
+    static
+    {
         ENTITY_NAME = Entity.class.getSimpleName() + "__c";
         CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Entity.class);
         RELATION = Field.class.getSimpleName() + "s__r";
         RELATION_CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Field.class);
     }
 
-    public EntityRequester(Credentials credentials)
+    public EntityRequester(SalesforceAuthenticator salesforceAuthenticator)
     {
-        this.credentials = credentials;
+        this.salesforceAuthenticator = salesforceAuthenticator;
     }
 
     public List<Entity> getAllEntities()
     {
+        HttpClient httpClient = HttpClientBuilder.create().build();
+
         String sqlQuery =
-                        "SELECT+Name," + CUSTOM_FIELDS + "," +
-                        "(" +
-                            "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
-                            "FROM+" + RELATION +
-                        ")+" +
-                        "FROM+" + ENTITY_NAME;
+                          "SELECT+Name," + CUSTOM_FIELDS + "," +
+                         "(" +
+                              "SELECT+Name," + RELATION_CUSTOM_FIELDS + "+" +
+                              "FROM+" + RELATION +
+                          ")+" +
+                          "FROM+" + ENTITY_NAME;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + WebServiceUtil.getSessionId(credentials)));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
@@ -68,34 +71,28 @@ public class EntityRequester
 
             List<Entity> entities = new ArrayList<Entity>();
 
-          if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
-          {
-              return entities;
-          }
-
-            List<String> parsableSObjects = new ArrayList<String>();
-
-            for (String parsableSObject : Splitter.splitSObjects(stringifiedResponse))
+            if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
             {
-                parsableSObjects.add(
-                        Parser.parseSObjectJson(parsableSObject)
-                );
+                return entities;
             }
 
-            Gson gson = new Gson();
+            String parsedJson = Parser.parseSObjectJson(stringifiedResponse, Entity.class, Field.class);
 
-            for (String parsableSObject : parsableSObjects)
+            gson = new Gson();
+
+            Type listType = new TypeToken<ArrayList<Entity>>()
             {
-                Entity entity = gson.fromJson(parsableSObject, Entity.class);
-                entities.add(entity);
+            }.getType();
 
-                if (entity.getFields() != null)
+            List<Entity> entityList = gson.fromJson(parsedJson, listType);
+
+            for (Entity entity : entityList)
+            {
+                for(Field field : entity.getFields())
                 {
-                    for (Field field : entity.getFields())
-                    {
-                        field.setEntity(entity);
-                    }
+                    field.setEntity(entity);
                 }
+                entities.add(entity);
             }
 
             return entities;
