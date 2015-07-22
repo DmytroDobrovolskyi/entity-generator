@@ -26,8 +26,7 @@ public class EntityRequester
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v34.0/";
 
-    private SalesforceAuthenticator salesforceAuthenticator;
-    private Gson gson;
+    private Credentials credentials;
 
     private static final String CUSTOM_FIELDS;
     private static final String RELATION;
@@ -43,9 +42,9 @@ public class EntityRequester
         RELATION_CUSTOM_FIELDS = ColumnsRegister.getCustomFieldsMap().get(Field.class);
     }
 
-    public EntityRequester(SalesforceAuthenticator salesforceAuthenticator)
+    public EntityRequester(Credentials credentials)
     {
-        this.salesforceAuthenticator = salesforceAuthenticator;
+        this.credentials = credentials;
     }
 
     public List<Entity> getAllEntities()
@@ -61,7 +60,7 @@ public class EntityRequester
                           "FROM+" + ENTITY_NAME;
 
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + salesforceAuthenticator.getLoginResult().getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + WebServiceUtil.getSessionId(credentials)));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
 
         try
@@ -78,11 +77,9 @@ public class EntityRequester
 
             String parsedJson = Parser.parseSObjectJson(stringifiedResponse, Entity.class, Field.class);
 
-            gson = new Gson();
+            Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<Entity>>()
-            {
-            }.getType();
+            Type listType = new TypeToken<ArrayList<Entity>>() {}.getType();
 
             List<Entity> entityList = gson.fromJson(parsedJson, listType);
 
