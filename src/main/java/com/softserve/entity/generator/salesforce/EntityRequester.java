@@ -68,12 +68,6 @@ public class EntityRequester
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
 
-            System.out.println("-----------------------");
-            System.out.println("-----------------------");
-            System.out.println(stringifiedResponse);
-            System.out.println("-----------------------");
-            System.out.println("-----------------------");
-
             List<Entity> entities = new ArrayList<Entity>();
 
             if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
@@ -82,12 +76,6 @@ public class EntityRequester
             }
 
             String parsedJson = Parser.parseSObjectJson(stringifiedResponse, Entity.class, Field.class);
-
-            System.out.println("+++++++++++++++++++");
-            System.out.println("+++++++++++++++++++");
-            System.out.println(parsedJson);
-            System.out.println("+++++++++++++++++++");
-            System.out.println("+++++++++++++++++++");
 
             Gson gson = new Gson();
 
