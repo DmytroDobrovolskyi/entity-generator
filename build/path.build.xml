@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce">
+
+    <path id="runtime.dependencies">
+        <fileset dir="${lib.runtime.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <path id="compile.dependencies">
+        <fileset dir="${lib.compile.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <path id="test.dependencies">
+        <fileset dir="${lib.test.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <path id="other.dependencies">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+</project>

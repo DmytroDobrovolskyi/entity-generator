@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" basedir="../">
+
+    <property file="build.properties"/>
+
+    <import file="path.build.xml"/>
+
+    <target name="db-install">
+        <java classname="com.softserve.entity.generator.config.database.init.DatabaseInitializer">
+            <classpath path="${resources.dir}"/>
+            <classpath path="${main.classes.dir}"/>
+            <classpath refid="runtime.dependencies"/>
+            <classpath refid="other.dependencies"/>
+        </java>
+    </target>
+
+</project>

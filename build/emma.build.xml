@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce">
+
+   <target name="instr-classes">
+       <path id="classes.path" >
+           <pathelement location="${main.classes.dir}"/>
+           <pathelement location="${test.classes.dir}"/>
+       </path>
+
+       <emma enabled="${emma.enabled}" >
+           <instr instrpathref="classes.path"
+                  destdir="${emma.instr.dir}"
+                  metadatafile="${coverage.dir}/metadata.emma"
+                  merge="true">
+               <filter value="${emma.filter}"/>
+           </instr>
+       </emma>
+   </target>
+
+    <target name="report">
+        <emma enabled="${emma.enabled}" >
+            <report sourcepath="${src.dir}" >
+                <fileset dir="${coverage.dir}" >
+                    <include name="*.emma" />
+                </fileset>
+
+                <txt outfile="${coverage.dir}/coverage.txt" />
+                <html outfile="${coverage.dir}/coverage.html" />
+            </report>
+        </emma>
+    </target>
+
+    <target name="emma">
+        <property name="emma.enabled" value="true"/>
+        <property name="emma.filter" value=""/>
+        <mkdir dir="${emma.instr.dir}"/>
+    </target>
+
+</project>

@@ -3,54 +3,15 @@
 
     <property file="build.properties"/>
 
-    <property name="compile.dir" value="${lib.dir}/compile"/>
-    <property name="runtime.dir" value="${lib.dir}/runtime"/>
-    <property name="test.dir" value="${lib.dir}/test"/>
+    <import file="build/path.build.xml"/>
+    <import file="build/database.build.xml"/>
+    <import file="build/emma.build.xml"/>
+    <import file="exec/app.build.xml"/>
 
-    <property name="soap.partner" value="${lib.dir}/partner.jar"/>
-    <property name="soap.apex" value="${lib.dir}/apex.jar"/>
-    <property name="soap.enterprise" value="${lib.dir}/enterprise.jar"/>
-    <property name="soap.wsc" value="${lib.dir}/force-wsc-34.2.0-uber.jar"/>
-    <property name="jdbc.driver" value="${lib.dir}/sqljdbc4-4.0.jar"/>
+    <import file="build/salesforce/sf.build.xml"/>
+    <import file="build/salesforce/sf.purge.build.xml"/>
 
-    <import file="${resources.dir}/database.build.xml"/>
-    <import file="${sf.resources}/sf.build.xml"/>
-    <import file="${sf.resources}/sf.purge.build.xml"/>
-
-    <path id="runtime.path">
-        <fileset dir="${runtime.dir}">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
-    <path id="compile.path">
-        <fileset dir="${compile.dir}">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
-    <path id="emma.coverage.classes" >
-        <pathelement location="${classes.dir}" />
-    </path>
-
-    <path id="emma.path">
-        <fileset dir="${lib.dir}">
-            <include name="**/emma*.jar"/>
-        </fileset>
-    </path>
-
-    <taskdef resource="emma_ant.properties" classpathref="emma.path"/>
-
-    <target name="run">
-        <java classname="com.softserve.entity.generator.Main">
-            <classpath refid="runtime.path"/>
-            <classpath>
-                <pathelement location="${main.classes.dir}"/>
-                <pathelement location="${resources.dir}"/>
-                <pathelement location="${jdbc.driver}"/>
-                <pathelement location="${soap.partner}"/>
-                <pathelement location="${soap.wsc}"/>
-            </classpath>
-        </java>
-    </target>
+    <taskdef resource="emma_ant.properties" classpathref="test.dependencies"/>
 
     <target name="install" depends="test">
         <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
@@ -63,31 +24,14 @@
 
     <target name="test" depends="emma, compile">
 
-        <path id="classes.path" >
-            <pathelement location="${main.classes.dir}"/>
-            <pathelement location="${test.classes.dir}"/>
-        </path>
-
-        <emma enabled="${emma.enabled}" >
-            <instr instrpathref="classes.path"
-                   destdir="${instr.dir}"
-                   metadatafile="${coverage.dir}/metadata.emma"
-                   merge="true">
-                <filter value="${emma.filter}"/>
-            </instr>
-        </emma>
+        <antcall target="instr-classes"/>
 
         <junit printsummary="yes" haltonfailure="true">
-            <classpath refid="test.path"/>
-            <classpath>
-                <pathelement location="${instr.dir}"/>
-                <pathelement location="${main.classes.dir}"/>
-                <pathelement location="${resources.dir}"/>
-                <pathelement location="${soap.partner}"/>
-                <pathelement location="${soap.apex}"/>
-                <pathelement location="${soap.enterprise}"/>
-                <pathelement location="${soap.wsc}"/>
-            </classpath>
+            <classpath path="${emma.instr.dir}"/>
+            <classpath path="${main.classes.dir}"/>
+            <classpath path="${resources.dir}"/>
+            <classpath refid="test.dependencies"/>
+            <classpath refid="other.dependencies"/>
 
             <formatter type="plain" usefile="false"/>
 
@@ -101,98 +45,37 @@
             <jvmarg value="-Demma.coverage.out.merge=false"/>
         </junit>
 
-        <emma enabled="${emma.enabled}" >
-            <report sourcepath="${src.dir}" >
-                <fileset dir="${coverage.dir}" >
-                    <include name="*.emma" />
-                </fileset>
-
-                <txt outfile="${coverage.dir}/coverage.txt" />
-                <html outfile="${coverage.dir}/coverage.html" />
-            </report>
-        </emma>
+        <antcall target="report"/>
     </target>
 
     <target name="compile" depends="init, resolve">
         <javac srcdir="${main.src.dir}" destdir="${main.classes.dir}" includeantruntime="false" debug="true">
-            <classpath refid="compile.path"/>
-            <classpath path="${main.classes.dir}"/>
-            <classpath>
-                <pathelement location="${soap.partner}"/>
-                <pathelement location="${soap.apex}"/>
-                <pathelement location="${soap.enterprise}"/>
-                <pathelement location="${soap.wsc}"/>
-            </classpath>
+            <classpath refid="compile.dependencies"/>
+            <classpath refid="other.dependencies"/>
         </javac>
 
-        <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" includeantruntime="false">
-            <classpath refid="test.path"/>
-            <classpath path="${main.classes.dir}"/>
+        <javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" includeantruntime="false" debug="true">
+            <classpath refid="test.dependencies"/>
+            <classpath refid="other.dependencies"/>
+            <classpath location="${main.classes.dir}"/>
         </javac>
+    </target>
+
+
+    <target name="resolve">
+        <ivy:retrieve pattern="lib/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
     </target>
 
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${main.classes.dir}"/>
         <mkdir dir="${test.classes.dir}"/>
-    </target>
-
-    <target name="resolve">
-        <ivy:retrieve pattern="lib/[conf]/[artifact]-[revision](-[classifier]).[ext]"/>
-
-        <ivy:cachepath pathid="compile.path" conf="compile"/>
-        <ivy:cachepath pathid="runtime.path" conf="runtime"/>
-        <ivy:cachepath pathid="test.path" conf="test"/>
-    </target>
-
-    <target name="save-entities">
-        <java classname="com.softserve.entity.generator.app.EntitySaver">
-
-            <arg line="${command.line.args}"/>
-
-            <classpath refid="runtime.path"/>
-
-            <classpath>
-                <pathelement location="${main.classes.dir}"/>
-                <pathelement location="${resources.dir}"/>
-                <pathelement location="${jdbc.driver}"/>
-                <pathelement location="${soap.partner}"/>
-                <pathelement location="${soap.wsc}"/>
-            </classpath>
-        </java>
-    </target>
-
-    <target name="generate-entities">
-        <java classname="com.softserve.entity.generator.app.EntityGenerator">
-
-            <arg line="${command.line.args}"/>
-
-            <classpath refid="runtime.path"/>
-
-            <classpath>
-                <pathelement location="${main.classes.dir}"/>
-                <pathelement location="${resources.dir}"/>
-                <pathelement location="${jdbc.driver}"/>
-                <pathelement location="${soap.partner}"/>
-                <pathelement location="${soap.apex}"/>
-                <pathelement location="${soap.wsc}"/>
-            </classpath>
-        </java>
-    </target>
-
-    <target name="emma">
-        <property name="emma.enabled" value="true"/>
-        <mkdir dir="${instr.dir}"/>
-        <property name="emma.filter" value=""/>
+        <mkdir dir="${reports.dir}"/>
     </target>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
-        <delete>
-            <fileset dir=".">
-                <include name="*.log"/>
-            </fileset>
-        </delete>
-        <delete dir="${coverage.dir}"/>
+        <delete dir="${reports.dir}"/>
     </target>
+
 </project>

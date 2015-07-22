@@ -32,7 +32,7 @@ public class MockConfig
     }
 
     @Bean
-    public WebServiceUtil salesforceAuthenticator()
+    public WebServiceUtil webServiceUtil()
     {
         return mock(WebServiceUtil.class);
     }

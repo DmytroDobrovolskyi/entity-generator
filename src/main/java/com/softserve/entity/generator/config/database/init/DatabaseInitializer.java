@@ -36,6 +36,8 @@ public class DatabaseInitializer
         ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseInitializationConfig.class);
         DatabaseInitializer dbInitializer = context.getBean(DatabaseInitializer.class);
         dbInitializer.initDatabase();
+        dbInitializer.initSchemas();
+        logger.info("Database was successfully initialized");
     }
 
     public void initDatabase()
@@ -49,12 +51,16 @@ public class DatabaseInitializer
                 ") " +
                 "DROP DATABASE " + DATABASE_NAME + " " +
 
-                "CREATE DATABASE " + DATABASE_NAME + " " +
-
-                "EXEC('USE " + DATABASE_NAME + "') " +
-                "EXEC('CREATE SCHEMA " + DEFAULT_SCHEMA + " ') " +
-                "EXEC('CREATE SCHEMA " + GENERATED_TABLES_SCHEMA + " ')"
+                "EXEC('CREATE DATABASE " + DATABASE_NAME + "')"
         );
-        logger.info("Database was successfully initialized");
+    }
+
+    public void initSchemas()
+    {
+        jdbcTemplate.execute(
+                "USE " + DATABASE_NAME + " " +
+                "EXEC('CREATE SCHEMA " + DEFAULT_SCHEMA + " ') " +
+                "EXEC('CREATE SCHEMA " + GENERATED_TABLES_SCHEMA + "')"
+        );
     }
 }

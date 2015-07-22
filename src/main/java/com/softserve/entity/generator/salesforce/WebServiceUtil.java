@@ -31,7 +31,7 @@ public class WebServiceUtil
         return getLoginResult(credentials).getSessionId();
     }
 
-    public  void executeApex(Credentials credentials, String apexCode)
+    public static void executeApex(Credentials credentials, String apexCode)
     {
         LoginResult loginResult = getLoginResult(credentials);
         try
