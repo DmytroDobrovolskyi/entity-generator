@@ -8,7 +8,6 @@ import com.softserve.entity.generator.salesforce.EntityRequester;
 import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,10 @@ public class EntitySaver
 
         EntityRequester entityRequester = new EntityRequester(credentials);
 
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        applicationContext.getEnvironment().setActiveProfiles("console-app");
+        applicationContext.register(AppConfig.class);
+        applicationContext.refresh();
 
         EntitySaver entitySaver = applicationContext.getBean(EntitySaver.class);
 

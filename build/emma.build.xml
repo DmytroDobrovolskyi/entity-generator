@@ -31,6 +31,7 @@
     </target>
 
     <target name="emma">
+        <taskdef resource="emma_ant.properties" classpathref="test.dependencies"/>
         <property name="emma.enabled" value="true"/>
         <property name="emma.filter" value=""/>
         <mkdir dir="${emma.instr.dir}"/>

@@ -1,10 +1,7 @@
 package com.softserve.entity.generator.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -19,7 +16,8 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.softserve.entity.generator")
-@PropertySource(value = "/WEB-INF/database.properties")
+@PropertySource(value = "/META-INF/database.properties")
+@Profile("console-app")
 public class AppConfig
 {
     @Autowired

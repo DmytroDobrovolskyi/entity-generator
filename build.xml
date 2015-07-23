@@ -6,19 +6,52 @@
     <import file="build/path.build.xml"/>
     <import file="build/database.build.xml"/>
     <import file="build/emma.build.xml"/>
-    <import file="exec/app.build.xml"/>
+    <import file="bin/app.build.xml"/>
 
     <import file="build/salesforce/sf.build.xml"/>
     <import file="build/salesforce/sf.purge.build.xml"/>
 
-    <taskdef resource="emma_ant.properties" classpathref="test.dependencies"/>
+    <target name="main" depends="package"/>
 
-    <target name="install" depends="test">
-        <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+    <target name="package" depends="package-main">
+        <jar jarfile="${manifest.jar}">
+            <manifest>
+                <attribute name="Class-Path" value="../../../../../../entity-generator/dist/jar/main.jar"/>
+            </manifest>
+        </jar>
+        <war destfile="${war.dir}/${ant.project.name}.war" webxml="${resources.dir}/WEB-INF/web.xml">
+            <webinf dir="${resources.dir}/WEB-INF"/>
+            <lib file="${manifest.jar}"/>
+            <include name="${resources.dir}/WEB-INF/**"/>
+        </war>
+    </target>
+
+    <target name="package-main" depends="test">
+
+        <path id="main.dependencies">
+            <fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+                <include name="runtime/*.jar"/>
+            </fileset>
+        </path>
+
+        <manifestclasspath property="lib.classpath" jarfile="${main.jar}">
+            <classpath refid="main.dependencies"/>
+        </manifestclasspath>
+
+        <jar jarfile="${main.jar}" basedir=".">
             <manifest>
                 <attribute name="Main-Class" value="com.softserve.entity.generator.Main"/>
+                <attribute name="Class-Path" value="${lib.classpath}"/>
             </manifest>
-            <fileset dir="${resources.dir}"/>
+
+            <fileset dir="${classes.to.copy}">
+                <include name="**"/>
+            </fileset>
+            <fileset dir="${resources.dir}">
+                <exclude name="WEB-INF/**"/>
+            </fileset>
+            <include name=""/>
         </jar>
     </target>
 
@@ -41,7 +74,7 @@
                 </fileset>
             </batchtest>
 
-            <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+            <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma"/>
             <jvmarg value="-Demma.coverage.out.merge=false"/>
         </junit>
 
@@ -67,6 +100,9 @@
     </target>
 
     <target name="init">
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+        <mkdir dir="${war.dir}"/>
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${main.classes.dir}"/>
         <mkdir dir="${test.classes.dir}"/>
@@ -76,6 +112,12 @@
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${reports.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete>
+            <fileset dir=".">
+                <include name="*.log"/>
+            </fileset>
+        </delete>
     </target>
 
 </project>

@@ -51,6 +51,9 @@ public class EntityRequester
     {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
+        List<String> nonRelationFields = new ArrayList<String>();
+
+
         String sqlQuery =
                           "SELECT+Name," + CUSTOM_FIELDS + "," +
                          "(" +
