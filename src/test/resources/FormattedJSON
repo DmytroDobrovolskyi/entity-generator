@@ -1,0 +1,31 @@
+
+[{
+"name" : "EntitySecond",
+"entityId" : "entitysecond",
+"tableName" : "ENTITYSECOND",
+"isProcessingNeeded" : false,
+"fields" : [ {
+"name" : "FieldSecond",
+"fieldId" : "entitysecond.fieldsecond",
+"columnName" : "FieldSecond",
+"type" : "varchar(255)",
+"isPrimaryKey" : true
+}]},
+ {
+"name" : "EntityThird",
+"entityId" : "entitythird",
+"tableName" : "ENTITYTHIRD",
+"isProcessingNeeded" : false},
+ {
+"name" : "EntityFirst",
+"entityId" : "entityfirst",
+"tableName" : "ENTITYFIRST",
+"isProcessingNeeded" : false,
+"fields" : [ {
+"name" : "FirstField",
+"fieldId" : "entityfirst.firstfield",
+"columnName" : "FirstField",
+"type" : "varchar(255)",
+"isPrimaryKey" : false
+}]
+}]

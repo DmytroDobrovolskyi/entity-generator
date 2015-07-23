@@ -11,10 +11,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Primary
 public class EntityServiceImpl extends BaseServiceImpl<Entity> implements EntityService
 {
-
     @Autowired
     private EntityRepository entityRepository;
 

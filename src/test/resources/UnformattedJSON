@@ -1,0 +1,63 @@
+        {
+        "totalSize" : 3,
+        "done" : true,
+        "records" : [ {
+          "attributes" : {
+            "type" : "Entity__c",
+            "url" : "/services/data/v34.0/sobjects/Entity__c/a002000000fixdvAAA"
+          },
+          "Name" : "EntitySecond",
+          "EntityId__c" : "entitysecond",
+          "TableName__c" : "ENTITYSECOND",
+          "IsProcessingNeeded__c" : false,
+          "Fields__r" : {
+            "totalSize" : 1,
+            "done" : true,
+            "records" : [ {
+              "attributes" : {
+                "type" : "Field__c",
+                "url" : "/services/data/v34.0/sobjects/Field__c/a012000001ogP9hAAE"
+              },
+              "Name" : "FieldSecond",
+              "FieldId__c" : "entitysecond.fieldsecond",
+              "ColumnName__c" : "FieldSecond",
+              "Type__c" : "varchar(255)",
+              "IsPrimaryKey__c" : true
+            } ]
+          }
+        }, {
+          "attributes" : {
+            "type" : "Entity__c",
+            "url" : "/services/data/v34.0/sobjects/Entity__c/a002000000fixeKAAQ"
+          },
+          "Name" : "EntityThird",
+          "EntityId__c" : "entitythird",
+          "TableName__c" : "ENTITYTHIRD",
+          "IsProcessingNeeded__c" : false,
+          "Fields__r" : null
+        }, {
+          "attributes" : {
+            "type" : "Entity__c",
+            "url" : "/services/data/v34.0/sobjects/Entity__c/a002000000fixaEAAQ"
+          },
+          "Name" : "EntityFirst",
+          "EntityId__c" : "entityfirst",
+          "TableName__c" : "ENTITYFIRST",
+          "IsProcessingNeeded__c" : false,
+          "Fields__r" : {
+            "totalSize" : 1,
+            "done" : true,
+            "records" : [ {
+              "attributes" : {
+                "type" : "Field__c",
+                "url" : "/services/data/v34.0/sobjects/Field__c/a012000001ogP9wAAE"
+              },
+              "Name" : "FirstField",
+              "FieldId__c" : "entityfirst.firstfield",
+              "ColumnName__c" : "FirstField",
+              "Type__c" : "varchar(255)",
+              "IsPrimaryKey__c" : false
+            } ]
+          }
+        } ]
+      }
