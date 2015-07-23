@@ -19,18 +19,6 @@ public class EntityApplierImpl implements EntityApplier
 
     @Override
     @Transactional
-    public void apply(Entity entity)
-    {
-        if (entity.getFields().size() != 0)
-        {
-            String createProcedureQueryString = ProcedureGenerator.generateProcedure(entity);
-
-            entityManager.createNativeQuery(createProcedureQueryString).executeUpdate();
-        }
-    }
-
-    @Override
-    @Transactional
     public void applyAll(List<Entity> entities)
     {
         String createProcedureQueryString = ProcedureGenerator.generateProcedure(entities);

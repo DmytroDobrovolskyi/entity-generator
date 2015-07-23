@@ -1,11 +1,9 @@
-package com.softserve.entity.generator.salesforce;
+package com.softserve.entity.generator.app;
 
-import com.softserve.entity.generator.config.MockSalesforceConfig;
+import com.softserve.entity.generator.config.MockAppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
-import com.softserve.entity.generator.service.applier.EntityApplier;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,26 +13,25 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@ContextConfiguration(classes = MockSalesforceConfig.class)
+@ContextConfiguration(classes = MockAppConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ProcedureExecutorTest
+public class EntitySaverTest
 {
     @Autowired
     @InjectMocks
-    private ProcedureExecutor procedureExecutor;
+    private EntitySaver entitySaver;
 
     @Autowired
     @Qualifier(value = "entityServiceMock")
     private EntityService entityService;
-
-    @Autowired
-    @Qualifier(value = "entityApplierMock")
-    private EntityApplier entityApplier;
 
     @Before
     public void setUp()
@@ -43,16 +40,14 @@ public class ProcedureExecutorTest
     }
 
     @Test
-    @Ignore
-    public void generateAndExecuteTest()
+    public void saveEntitiesTest()
     {
-        procedureExecutor.generateAndExecute(mock(Credentials.class));
+        Entity entity = mock(Entity.class);
+        List<Entity>entities = new ArrayList<Entity>(Arrays.asList(entity,entity));
+        entitySaver.saveEntities(entities);
 
-        List<Entity> entities = Arrays.asList(mock(Entity.class), mock(Entity.class), mock(Entity.class));
+        verify(entityService).resolveDeleted(entities);
 
-        when(entityService.findAll())
-                .thenReturn(entities);
-
-        verify(entityService).findAll();
+        verify(entityService, times(2)).merge(entity);
     }
 }

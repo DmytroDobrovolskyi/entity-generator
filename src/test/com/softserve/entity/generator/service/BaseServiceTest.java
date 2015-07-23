@@ -1,9 +1,8 @@
 package com.softserve.entity.generator.service;
 
-import com.softserve.entity.generator.config.MockConfig;
+import com.softserve.entity.generator.config.MockServiceConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.repository.BaseRepository;
-import com.softserve.entity.generator.service.BaseService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,16 +20,16 @@ import static org.hamcrest.core.IsInstanceOf.any;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
-@ContextConfiguration(classes = MockConfig.class)
+@ContextConfiguration(classes = {MockServiceConfig.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseServiceTest
 {
     @Autowired
     @InjectMocks
+    @Qualifier("entityServiceImpl")
     private BaseService<Entity> service;
 
     @Autowired
-    @Qualifier(value = "baseRepositoryMock")
     private BaseRepository<Entity> repository;
 
     @Before

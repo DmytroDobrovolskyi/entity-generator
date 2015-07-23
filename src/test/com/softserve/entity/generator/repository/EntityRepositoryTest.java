@@ -19,16 +19,18 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.any;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @ContextConfiguration(classes = MockRepositoryConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class BaseRepositoryTest
+public class EntityRepositoryTest
 {
-    @Qualifier("entityRepositoryImpl")
     @Autowired
     @InjectMocks
-    private BaseRepository<Entity> repository;
+    @Qualifier("entityRepositoryImpl")
+    private EntityRepository repository;
 
     @Autowired
     private EntityManager entityManager;

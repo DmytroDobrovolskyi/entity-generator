@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service.applier;
 
-import com.softserve.entity.generator.config.MockConfig;
+import com.softserve.entity.generator.config.MockServiceConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.applier.util.ProcedureGenerator;
 import org.junit.Before;
@@ -20,12 +20,13 @@ import static com.softserve.entity.generator.entity.util.TestEntityGenerator.gen
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = MockConfig.class)
+@ContextConfiguration(classes = MockServiceConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityApplierTest
 {
     private static final int COLUMN_QUANTITY = 3;
     private static final String EMPTY_SPACE_REGEX = "\\s";
+
     @Autowired
     private Applier<Entity> applier;
 
@@ -39,7 +40,7 @@ public class EntityApplierTest
     }
 
     @Test
-    public void testApply()
+    public void testApplyAll()
     {
         Entity entity = generateEntity();
         List<Entity> entityList = new ArrayList<Entity>();

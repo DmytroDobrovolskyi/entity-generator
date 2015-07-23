@@ -18,25 +18,6 @@ public class ProcedureGenerator
 
     public static final String PROCEDURE_NAME = "generateTable";
 
-    public static String generateProcedure(Entity entity)
-    {
-        VelocityEngine velocityEngine = getVelocityEngine();
-        velocityEngine.init();
-        Template templateCreate = velocityEngine.getTemplate("velocity.template/stored-procedure-template.vm");
-        VelocityContext context = new VelocityContext();
-
-        context.put("schema", DatabaseInitializationConfig.GENERATED_TABLES_SCHEMA);
-        context.put("procedureName", PROCEDURE_NAME);
-        context.put("entity", entity);
-        context.put("entityClass", Entity.class);
-        context.put("fieldClass", Field.class);
-
-        StringWriter writer = new StringWriter();
-        templateCreate.merge(context, writer);
-
-        return writer.toString();
-    }
-
     public static String generateProcedure(List<Entity> entities)
     {
         VelocityEngine velocityEngine = getVelocityEngine();
