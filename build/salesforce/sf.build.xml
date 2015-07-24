@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" basedir="../../">
+
+    <property file="build/salesforce/sf.credentials.properties"/>
 
     <property name="static-resources.dir" value="src/salesforce/static-resources"/>
     <property name="sf.static-resources" value="${sf.metadata.dir}/staticresources/resources.resource"/>

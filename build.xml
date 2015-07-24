@@ -112,20 +112,15 @@
     </target>
 
     <target name="init">
-        <mkdir dir="${dist.dir}"/>
-        <mkdir dir="${jar.dir}"/>
-        <mkdir dir="${war.dir}"/>
         <mkdir dir="${target.dir}"/>
         <mkdir dir="${main.classes.dir}"/>
         <mkdir dir="${test.classes.dir}"/>
         <mkdir dir="${reports.dir}"/>
-        <mkdir dir="${production.dir}"/>
     </target>
 
     <target name="clean">
         <delete dir="${target.dir}"/>
         <delete dir="${reports.dir}"/>
-        <delete dir="${dist.dir}"/>
         <delete>
             <fileset dir=".">
                 <include name="*.log"/>

@@ -25,7 +25,7 @@ public class WelcomeController
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public String welcomeName(@PathVariable String name, ModelMap model) {
-        model.addAttribute("message", "Welcome " + name);
+        model.addAttribute("message", "Welcome dear excellent " + name);
         logger.info("[welcomeName] name : {}", name);
         return VIEW_INDEX;
 
