@@ -3,7 +3,6 @@ package com.softserve.entity.generator.service.impl;
 import com.softserve.entity.generator.repository.BaseRepository;
 import com.softserve.entity.generator.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Primary
 public class BaseServiceImpl<T> implements BaseService<T>
 {
     @Autowired

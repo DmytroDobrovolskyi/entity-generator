@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context antiJARLocking="true">
+    <Loader className="org.apache.catalina.loader.VirtualWebappLoader"
+            virtualClasspath="/softserve/entity-generator/lib/*.jar;
+            /softserve/entity-generator/lib/runtime/*.jar;
+            /softserve/entity-generator/dist/jar/main.jar"/>
+</Context>

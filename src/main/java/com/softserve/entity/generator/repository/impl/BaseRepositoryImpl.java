@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Primary
 public class BaseRepositoryImpl<T> implements BaseRepository<T>
 {
     private Class<T> entityClass;

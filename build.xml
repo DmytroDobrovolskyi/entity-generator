@@ -11,40 +11,52 @@
     <import file="build/salesforce/sf.build.xml"/>
     <import file="build/salesforce/sf.purge.build.xml"/>
 
-    <target name="main" depends="package"/>
+    <target name="deploy" depends="copy-war, tomcat-start"/>
+
+    <target name="copy-war">
+        <copy todir="${tomcat.home.dir}/webapps" file="${war.dir}/${ant.project.name}.war"/>
+    </target>
+
+    <target name="tomcat-start">
+        <exec executable="java" dir="${tomcat.home.dir}">
+            <arg line="-cp bin\bootstrap.jar;bin\tomcat-juli.jar"/>
+            <arg value="org.apache.catalina.startup.Bootstrap"/>
+        </exec>
+    </target>
+
+    <target name="main" depends="package, copy-to-prod"/>
+
+    <target name="copy-to-prod">
+        <copy todir="${production.dir}/${jar.dir}">
+            <fileset dir="${jar.dir}"/>
+        </copy>
+        <copy todir="${production.dir}/${war.dir}">
+            <fileset dir="${war.dir}"/>
+        </copy>
+        <copy todir="${production.dir}/lib">
+            <fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${production.dir}/lib">
+            <fileset dir="${lib.dir}/runtime">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${production.dir}/${bin.dir}">
+            <fileset dir="${bin.dir}"/>
+        </copy>
+    </target>
 
     <target name="package" depends="package-main">
-        <jar jarfile="${manifest.jar}">
-            <manifest>
-                <attribute name="Class-Path" value="../../../../../../entity-generator/dist/jar/main.jar"/>
-            </manifest>
-        </jar>
         <war destfile="${war.dir}/${ant.project.name}.war" webxml="${resources.dir}/WEB-INF/web.xml">
             <webinf dir="${resources.dir}/WEB-INF"/>
-            <lib file="${manifest.jar}"/>
-            <include name="${resources.dir}/WEB-INF/**"/>
+            <metainf file="${build.dir}/context.xml"/>
         </war>
     </target>
 
     <target name="package-main" depends="test">
-
-        <path id="main.dependencies">
-            <fileset dir="${lib.dir}">
-                <include name="*.jar"/>
-                <include name="runtime/*.jar"/>
-            </fileset>
-        </path>
-
-        <manifestclasspath property="lib.classpath" jarfile="${main.jar}">
-            <classpath refid="main.dependencies"/>
-        </manifestclasspath>
-
         <jar jarfile="${main.jar}" basedir=".">
-            <manifest>
-                <attribute name="Main-Class" value="com.softserve.entity.generator.Main"/>
-                <attribute name="Class-Path" value="${lib.classpath}"/>
-            </manifest>
-
             <fileset dir="${classes.to.copy}">
                 <include name="**"/>
             </fileset>
@@ -103,14 +115,15 @@
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${jar.dir}"/>
         <mkdir dir="${war.dir}"/>
-        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${target.dir}"/>
         <mkdir dir="${main.classes.dir}"/>
         <mkdir dir="${test.classes.dir}"/>
         <mkdir dir="${reports.dir}"/>
+        <mkdir dir="${production.dir}"/>
     </target>
 
     <target name="clean">
-        <delete dir="${build.dir}"/>
+        <delete dir="${target.dir}"/>
         <delete dir="${reports.dir}"/>
         <delete dir="${dist.dir}"/>
         <delete>
@@ -119,5 +132,4 @@
             </fileset>
         </delete>
     </target>
-
 </project>
