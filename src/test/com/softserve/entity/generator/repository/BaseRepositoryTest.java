@@ -25,9 +25,10 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseRepositoryTest
 {
-    @Qualifier("entityRepositoryImpl")
+
     @Autowired
     @InjectMocks
+    @Qualifier("entityRepositoryImpl")
     private BaseRepository<Entity> repository;
 
     @Autowired
