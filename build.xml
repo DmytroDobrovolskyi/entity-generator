@@ -113,6 +113,7 @@
 
     <target name="init">
         <mkdir dir="${target.dir}"/>
+        <mkdir dir="${dist.dir}"/>
         <mkdir dir="${main.classes.dir}"/>
         <mkdir dir="${test.classes.dir}"/>
         <mkdir dir="${reports.dir}"/>
