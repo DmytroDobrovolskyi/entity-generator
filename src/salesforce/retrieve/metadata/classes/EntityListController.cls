@@ -4,7 +4,8 @@ public class EntityListController
 
     public Boolean wereChanges { get; set; }
 
-    private Map<String, Entity__c> entityMap;
+    @TestVisible 
+    private Map<String, Entity__c> entityMap { get; set; }
 
     private Entity__c newEntity;
 
@@ -100,6 +101,7 @@ public class EntityListController
         }
     }
 
+    @TestVisible 
     private Boolean containsNumbersOrNonAlphabeticCharacters(String str)
     {
         Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);

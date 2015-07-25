@@ -26,10 +26,11 @@ public class BaseServiceTest
 {
     @Autowired
     @InjectMocks
-    @Qualifier("entityServiceImpl")
+    @Qualifier("baseServiceImpl")
     private BaseService<Entity> service;
 
     @Autowired
+    @Qualifier("baseRepositoryMock")
     private BaseRepository<Entity> repository;
 
     @Before
