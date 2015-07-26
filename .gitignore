@@ -6,12 +6,10 @@
 target/
 out/
 *.jar
+*.war
 /dist
-!lib/sqljdbc4-4.0.jar
-!lib/partner.jar
-!lib/force-wsc-34.2.0-uber.jar
-!lib/enterprise.jar
-!lib/apex.jar
+lib/*/
+!/lib/*.jar
 *.log
 build/salesforce/sf.credentials.properties
 src\salesforce\retrieve\metadata\staticresources\resources.resource
