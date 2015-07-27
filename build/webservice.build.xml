@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce">
+   <target name="generate-classes">
+
+   </target>
+
+</project>

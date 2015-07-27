@@ -17,7 +17,6 @@ import java.util.Map;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.softserve.entity.generator")
 @PropertySource(value = "/META-INF/database.properties")
-@Profile("console-app")
 public class AppConfig
 {
     @Autowired
