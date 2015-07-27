@@ -4,10 +4,14 @@ public class EntityListController
 
     public Boolean wereChanges { get; set; }
 
+    @TestVisible
+    private Map<String, Entity__c> newEntityMap { get; set; }
+
     @TestVisible 
     private Map<String, Entity__c> entityMap { get; set; }
 
-    private Entity__c newEntity;
+    @TestVisible
+    private Entity__c newEntity { get; set; }
 
     public EntityListController()
     {
@@ -43,7 +47,7 @@ public class EntityListController
 
     public void applyChanges()
     {
-        Map<String, Entity__c> newEntityMap = new Map<String, Entity__c>();
+        newEntityMap = new Map<String, Entity__c>();
 
         Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
@@ -106,7 +110,6 @@ public class EntityListController
     {
         Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
         return matcher.find();
-
     }
 
     public PageReference discardChanges()

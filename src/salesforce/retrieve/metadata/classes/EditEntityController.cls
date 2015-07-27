@@ -10,6 +10,9 @@ public class EditEntityController
 
     public Boolean isPrimaryKey { get; set; }
 
+    @TestVisible
+    private Map<String, Field__c> newFieldMap { get; set; }
+
     @TestVisible 
     private Map<String, Field__c> fieldMap { get; set; }
 
@@ -81,7 +84,7 @@ public class EditEntityController
 
     public void applyChanges()
     {
-        Map<String, Field__c> newFieldMap = new Map<String, Field__c>();
+        newFieldMap = new Map<String, Field__c>();
 
         Boolean hasError = false;
 

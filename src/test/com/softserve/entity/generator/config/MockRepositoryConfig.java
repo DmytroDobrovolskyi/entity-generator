@@ -26,12 +26,4 @@ public class MockRepositoryConfig
     {
         return new EntityManagerFactoryBeanMock(entityManagerMock());
     }
-
-    @Bean
-    @Primary
-    public BaseRepositoryImpl baseRepositoryMock()
-    {
-        return mock(BaseRepositoryImpl.class);
-    }
-
 }
