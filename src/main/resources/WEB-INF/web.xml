@@ -10,15 +10,15 @@ Inc.//DTD Web Application 2.3//EN"
         </listener-class>
     </listener>
     <servlet>
-        <servlet-name>hello</servlet-name>
+        <servlet-name>notification</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>hello</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <servlet-name>notification</servlet-name>
+        <url-pattern>/notification</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>
