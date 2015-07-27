@@ -4,14 +4,9 @@ public class EntityListController
 
     public Boolean wereChanges { get; set; }
 
-    @TestVisible
-    private Map<String, Entity__c> newEntityMap { get; set; }
+    private Map<String, Entity__c> entityMap;
 
-    @TestVisible 
-    private Map<String, Entity__c> entityMap { get; set; }
-
-    @TestVisible
-    private Entity__c newEntity { get; set; }
+    private Entity__c newEntity;
 
     public EntityListController()
     {
@@ -47,7 +42,7 @@ public class EntityListController
 
     public void applyChanges()
     {
-        newEntityMap = new Map<String, Entity__c>();
+        Map<String, Entity__c> newEntityMap = new Map<String, Entity__c>();
 
         Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
@@ -105,11 +100,11 @@ public class EntityListController
         }
     }
 
-    @TestVisible 
     private Boolean containsNumbersOrNonAlphabeticCharacters(String str)
     {
         Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
         return matcher.find();
+
     }
 
     public PageReference discardChanges()
