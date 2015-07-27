@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.app;
 
 import com.softserve.entity.generator.app.util.Authenticator;
+import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.salesforce.Credentials;
 import com.softserve.entity.generator.salesforce.EntityRequester;
@@ -26,7 +27,7 @@ public class EntitySaver
 
         EntityRequester entityRequester = new EntityRequester(credentials);
 
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
         EntitySaver entitySaver = applicationContext.getBean(EntitySaver.class);
 

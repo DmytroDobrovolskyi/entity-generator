@@ -10,11 +10,7 @@ public class EditEntityController
 
     public Boolean isPrimaryKey { get; set; }
 
-    @TestVisible
-    private Map<String, Field__c> newFieldMap { get; set; }
-
-    @TestVisible 
-    private Map<String, Field__c> fieldMap { get; set; }
+    private Map<String, Field__c> fieldMap;
 
     private Field__c newField;
 
@@ -22,7 +18,7 @@ public class EditEntityController
     {
         this.entity = (Entity__c) controller.getRecord();
         this.fieldMap = new Map<String, Field__c>();
-        System.debug('hello');
+
         for (Field__c field :
         [
             SELECT Id, Name, ColumnName__c, Type__c, IsPrimaryKey__c
@@ -59,7 +55,14 @@ public class EditEntityController
         return options;
     }
 
-  
+    public List<SelectOption> getRadioButtonOption()
+    {
+        List<SelectOption> options = new List<SelectOption>();
+        options.add(new SelectOption('', ''));
+        options.add(new SelectOption('', ''));
+        return options;
+    }
+
     public void deleteField()
     {
         Database.delete(fieldMap.get(columnName));
@@ -84,7 +87,7 @@ public class EditEntityController
 
     public void applyChanges()
     {
-        newFieldMap = new Map<String, Field__c>();
+        Map<String, Field__c> newFieldMap = new Map<String, Field__c>();
 
         Boolean hasError = false;
 
@@ -183,7 +186,6 @@ public class EditEntityController
         }
     }
 
-    @TestVisible 
     private Boolean containsNumbersOrNonAlphabeticCharacters(String str)
     {
         Matcher matcher = Pattern.compile('(\\W)|(\\d)|(\\s)').matcher(str);
