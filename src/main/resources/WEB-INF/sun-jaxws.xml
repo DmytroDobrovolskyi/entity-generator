@@ -3,7 +3,7 @@
         xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
         version="2.0">
     <endpoint
-            name="HelloWorld"
-            implementation="com.softserve.entity.generator.webservice.HelloWorldImpl"
-            url-pattern="/hello"/>
+            name="NotificationPort"
+            implementation="com.softserve.entity.generator.webservice.NotificationPortImpl"
+            url-pattern="/notification"/>
 </endpoints>
