@@ -13,15 +13,20 @@
 
     <target name="deploy" depends="copy-war, tomcat-start"/>
 
-    <target name="copy-war">
-        <copy todir="${tomcat.home.dir}/webapps" file="${war.dir}/${ant.project.name}.war"/>
-    </target>
-
     <target name="tomcat-start">
         <exec executable="java" dir="${tomcat.home.dir}">
             <arg line="-cp bin\bootstrap.jar;bin\tomcat-juli.jar"/>
             <arg value="org.apache.catalina.startup.Bootstrap"/>
         </exec>
+    </target>
+
+    <target name="copy-war" depends="undeploy">
+        <copy todir="${tomcat.home.dir}/webapps" file="${war.dir}/${ant.project.name}.war"/>
+    </target>
+
+    <target name="undeploy">
+        <delete dir="${tomcat.home.dir}/webapps/${ant.project.name}"/>
+        <delete file="${tomcat.home.dir}/webapps/${ant.project.name}.war"/>
     </target>
 
     <target name="main" depends="package, copy-to-prod"/>
@@ -93,7 +98,7 @@
         <antcall target="report"/>
     </target>
 
-    <target name="compile" depends="init, resolve">
+    <target name="compile" depends="init">
         <javac srcdir="${main.src.dir}" destdir="${main.classes.dir}" includeantruntime="false" debug="true">
             <classpath refid="compile.dependencies"/>
             <classpath refid="other.dependencies"/>

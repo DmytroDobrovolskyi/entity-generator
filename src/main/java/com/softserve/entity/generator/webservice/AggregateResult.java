@@ -1,126 +1,73 @@
-/**
- * AggregateResult.java
- *
- * This file was auto-generated from WSDL
- * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
- */
 
 package com.softserve.entity.generator.webservice;
 
-public class AggregateResult  extends SObject implements java.io.Serializable, org.apache.axis.encoding.AnyContentType {
-    private org.apache.axis.message.MessageElement [] _any;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlType;
+import org.w3c.dom.Element;
 
-    public AggregateResult() {
-    }
 
-    public AggregateResult(
-           java.lang.String[] fieldsToNull,
-           java.lang.String id,
-           org.apache.axis.message.MessageElement [] _any) {
-        super(
-            fieldsToNull,
-            id);
-        this._any = _any;
-    }
+/**
+ * <p>Java class for AggregateResult complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="AggregateResult">
+ *   &lt;complexContent>
+ *     &lt;extension base="{urn:sobject.enterprise.soap.sforce.com}sObject">
+ *       &lt;sequence>
+ *         &lt;any processContents='lax' namespace='urn:sobject.enterprise.soap.sforce.com' maxOccurs="unbounded" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/extension>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "AggregateResult", namespace = "urn:sobject.enterprise.soap.sforce.com", propOrder = {
+    "any"
+})
+public class AggregateResult
+    extends SObject
+{
 
+    @XmlAnyElement(lax = true)
+    protected List<Object> any;
 
     /**
-     * Gets the _any value for this AggregateResult.
+     * Gets the value of the any property.
      * 
-     * @return _any
-     */
-    public org.apache.axis.message.MessageElement [] get_any() {
-        return _any;
-    }
-
-
-    /**
-     * Sets the _any value for this AggregateResult.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the any property.
      * 
-     * @param _any
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getAny().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Element }
+     * {@link Object }
+     * 
+     * 
      */
-    public void set_any(org.apache.axis.message.MessageElement [] _any) {
-        this._any = _any;
-    }
-
-    private java.lang.Object __equalsCalc = null;
-    public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof AggregateResult)) return false;
-        AggregateResult other = (AggregateResult) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
-        if (__equalsCalc != null) {
-            return (__equalsCalc == obj);
+    public List<Object> getAny() {
+        if (any == null) {
+            any = new ArrayList<Object>();
         }
-        __equalsCalc = obj;
-        boolean _equals;
-        _equals = super.equals(obj) && 
-            ((this._any==null && other.get_any()==null) || 
-             (this._any!=null &&
-              java.util.Arrays.equals(this._any, other.get_any())));
-        __equalsCalc = null;
-        return _equals;
-    }
-
-    private boolean __hashCodeCalc = false;
-    public synchronized int hashCode() {
-        if (__hashCodeCalc) {
-            return 0;
-        }
-        __hashCodeCalc = true;
-        int _hashCode = super.hashCode();
-        if (get_any() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(get_any());
-                 i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(get_any(), i);
-                if (obj != null &&
-                    !obj.getClass().isArray()) {
-                    _hashCode += obj.hashCode();
-                }
-            }
-        }
-        __hashCodeCalc = false;
-        return _hashCode;
-    }
-
-    // Type metadata
-    private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(AggregateResult.class, true);
-
-    static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("urn:sobject.enterprise.soap.sforce.com", "AggregateResult"));
-    }
-
-    /**
-     * Return type metadata object
-     */
-    public static org.apache.axis.description.TypeDesc getTypeDesc() {
-        return typeDesc;
-    }
-
-    /**
-     * Get Custom Serializer
-     */
-    public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
-    }
-
-    /**
-     * Get Custom Deserializer
-     */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+        return this.any;
     }
 
 }

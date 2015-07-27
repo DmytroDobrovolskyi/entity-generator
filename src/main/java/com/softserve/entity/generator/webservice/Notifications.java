@@ -1,315 +1,211 @@
-/**
- * Notifications.java
- *
- * This file was auto-generated from WSDL
- * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
- */
 
 package com.softserve.entity.generator.webservice;
 
-public class Notifications  implements java.io.Serializable {
-    private java.lang.String organizationId;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-    private java.lang.String actionId;
 
-    private java.lang.String sessionId;
+/**
+ * <p>Java class for anonymous complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType>
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="OrganizationId" type="{urn:enterprise.soap.sforce.com}ID"/>
+ *         &lt;element name="ActionId" type="{urn:enterprise.soap.sforce.com}ID"/>
+ *         &lt;element name="SessionId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="EnterpriseUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="PartnerUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="Notification" type="{http://soap.sforce.com/2005/09/outbound}Entity__cNotification" maxOccurs="100"/>
+ *       &lt;/sequence>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "organizationId",
+    "actionId",
+    "sessionId",
+    "enterpriseUrl",
+    "partnerUrl",
+    "notification"
+})
+@XmlRootElement(name = "notifications")
+public class Notifications {
 
-    private java.lang.String enterpriseUrl;
-
-    private java.lang.String partnerUrl;
-
-    private Entity__cNotification[] notification;
-
-    public Notifications() {
-    }
-
-    public Notifications(
-           java.lang.String organizationId,
-           java.lang.String actionId,
-           java.lang.String sessionId,
-           java.lang.String enterpriseUrl,
-           java.lang.String partnerUrl,
-           Entity__cNotification[] notification) {
-           this.organizationId = organizationId;
-           this.actionId = actionId;
-           this.sessionId = sessionId;
-           this.enterpriseUrl = enterpriseUrl;
-           this.partnerUrl = partnerUrl;
-           this.notification = notification;
-    }
-
+    @XmlElement(name = "OrganizationId", required = true)
+    protected String organizationId;
+    @XmlElement(name = "ActionId", required = true)
+    protected String actionId;
+    @XmlElement(name = "SessionId", required = true, nillable = true)
+    protected String sessionId;
+    @XmlElement(name = "EnterpriseUrl", required = true)
+    protected String enterpriseUrl;
+    @XmlElement(name = "PartnerUrl", required = true)
+    protected String partnerUrl;
+    @XmlElement(name = "Notification", required = true)
+    protected List<EntityCNotification> notification;
 
     /**
-     * Gets the organizationId value for this Notifications.
+     * Gets the value of the organizationId property.
      * 
-     * @return organizationId
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public java.lang.String getOrganizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
-
     /**
-     * Sets the organizationId value for this Notifications.
+     * Sets the value of the organizationId property.
      * 
-     * @param organizationId
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setOrganizationId(java.lang.String organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganizationId(String value) {
+        this.organizationId = value;
     }
 
-
     /**
-     * Gets the actionId value for this Notifications.
+     * Gets the value of the actionId property.
      * 
-     * @return actionId
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public java.lang.String getActionId() {
+    public String getActionId() {
         return actionId;
     }
 
-
     /**
-     * Sets the actionId value for this Notifications.
+     * Sets the value of the actionId property.
      * 
-     * @param actionId
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setActionId(java.lang.String actionId) {
-        this.actionId = actionId;
+    public void setActionId(String value) {
+        this.actionId = value;
     }
 
-
     /**
-     * Gets the sessionId value for this Notifications.
+     * Gets the value of the sessionId property.
      * 
-     * @return sessionId
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public java.lang.String getSessionId() {
+    public String getSessionId() {
         return sessionId;
     }
 
-
     /**
-     * Sets the sessionId value for this Notifications.
+     * Sets the value of the sessionId property.
      * 
-     * @param sessionId
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setSessionId(java.lang.String sessionId) {
-        this.sessionId = sessionId;
+    public void setSessionId(String value) {
+        this.sessionId = value;
     }
 
-
     /**
-     * Gets the enterpriseUrl value for this Notifications.
+     * Gets the value of the enterpriseUrl property.
      * 
-     * @return enterpriseUrl
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public java.lang.String getEnterpriseUrl() {
+    public String getEnterpriseUrl() {
         return enterpriseUrl;
     }
 
-
     /**
-     * Sets the enterpriseUrl value for this Notifications.
+     * Sets the value of the enterpriseUrl property.
      * 
-     * @param enterpriseUrl
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setEnterpriseUrl(java.lang.String enterpriseUrl) {
-        this.enterpriseUrl = enterpriseUrl;
+    public void setEnterpriseUrl(String value) {
+        this.enterpriseUrl = value;
     }
 
-
     /**
-     * Gets the partnerUrl value for this Notifications.
+     * Gets the value of the partnerUrl property.
      * 
-     * @return partnerUrl
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public java.lang.String getPartnerUrl() {
+    public String getPartnerUrl() {
         return partnerUrl;
     }
 
-
     /**
-     * Sets the partnerUrl value for this Notifications.
+     * Sets the value of the partnerUrl property.
      * 
-     * @param partnerUrl
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setPartnerUrl(java.lang.String partnerUrl) {
-        this.partnerUrl = partnerUrl;
+    public void setPartnerUrl(String value) {
+        this.partnerUrl = value;
     }
 
-
     /**
-     * Gets the notification value for this Notifications.
+     * Gets the value of the notification property.
      * 
-     * @return notification
-     */
-    public Entity__cNotification[] getNotification() {
-        return notification;
-    }
-
-
-    /**
-     * Sets the notification value for this Notifications.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the notification property.
      * 
-     * @param notification
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getNotification().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link EntityCNotification }
+     * 
+     * 
      */
-    public void setNotification(Entity__cNotification[] notification) {
-        this.notification = notification;
-    }
-
-    public Entity__cNotification getNotification(int i) {
-        return this.notification[i];
-    }
-
-    public void setNotification(int i, Entity__cNotification _value) {
-        this.notification[i] = _value;
-    }
-
-    private java.lang.Object __equalsCalc = null;
-    public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Notifications)) return false;
-        Notifications other = (Notifications) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
-        if (__equalsCalc != null) {
-            return (__equalsCalc == obj);
+    public List<EntityCNotification> getNotification() {
+        if (notification == null) {
+            notification = new ArrayList<EntityCNotification>();
         }
-        __equalsCalc = obj;
-        boolean _equals;
-        _equals = true && 
-            ((this.organizationId==null && other.getOrganizationId()==null) || 
-             (this.organizationId!=null &&
-              this.organizationId.equals(other.getOrganizationId()))) &&
-            ((this.actionId==null && other.getActionId()==null) || 
-             (this.actionId!=null &&
-              this.actionId.equals(other.getActionId()))) &&
-            ((this.sessionId==null && other.getSessionId()==null) || 
-             (this.sessionId!=null &&
-              this.sessionId.equals(other.getSessionId()))) &&
-            ((this.enterpriseUrl==null && other.getEnterpriseUrl()==null) || 
-             (this.enterpriseUrl!=null &&
-              this.enterpriseUrl.equals(other.getEnterpriseUrl()))) &&
-            ((this.partnerUrl==null && other.getPartnerUrl()==null) || 
-             (this.partnerUrl!=null &&
-              this.partnerUrl.equals(other.getPartnerUrl()))) &&
-            ((this.notification==null && other.getNotification()==null) || 
-             (this.notification!=null &&
-              java.util.Arrays.equals(this.notification, other.getNotification())));
-        __equalsCalc = null;
-        return _equals;
-    }
-
-    private boolean __hashCodeCalc = false;
-    public synchronized int hashCode() {
-        if (__hashCodeCalc) {
-            return 0;
-        }
-        __hashCodeCalc = true;
-        int _hashCode = 1;
-        if (getOrganizationId() != null) {
-            _hashCode += getOrganizationId().hashCode();
-        }
-        if (getActionId() != null) {
-            _hashCode += getActionId().hashCode();
-        }
-        if (getSessionId() != null) {
-            _hashCode += getSessionId().hashCode();
-        }
-        if (getEnterpriseUrl() != null) {
-            _hashCode += getEnterpriseUrl().hashCode();
-        }
-        if (getPartnerUrl() != null) {
-            _hashCode += getPartnerUrl().hashCode();
-        }
-        if (getNotification() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getNotification());
-                 i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(getNotification(), i);
-                if (obj != null &&
-                    !obj.getClass().isArray()) {
-                    _hashCode += obj.hashCode();
-                }
-            }
-        }
-        __hashCodeCalc = false;
-        return _hashCode;
-    }
-
-    // Type metadata
-    private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Notifications.class, true);
-
-    static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", ">notifications"));
-        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("organizationId");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", "OrganizationId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("actionId");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", "ActionId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("sessionId");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", "SessionId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setNillable(true);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("enterpriseUrl");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", "EnterpriseUrl"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("partnerUrl");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", "PartnerUrl"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("notification");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", "Notification"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://soap.sforce.com/2005/09/outbound", "Entity__cNotification"));
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-    }
-
-    /**
-     * Return type metadata object
-     */
-    public static org.apache.axis.description.TypeDesc getTypeDesc() {
-        return typeDesc;
-    }
-
-    /**
-     * Get Custom Serializer
-     */
-    public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
-    }
-
-    /**
-     * Get Custom Deserializer
-     */
-    public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+        return this.notification;
     }
 
 }
