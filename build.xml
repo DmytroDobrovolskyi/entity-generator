@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce" name="entity-generator">
 
+    <!--TODO UNDEPLOY-->
+
     <property file="build.properties"/>
 
     <import file="build/path.build.xml"/>
@@ -93,7 +95,7 @@
         <antcall target="report"/>
     </target>
 
-    <target name="compile" depends="init, resolve">
+    <target name="compile" depends="init">
         <javac srcdir="${main.src.dir}" destdir="${main.classes.dir}" includeantruntime="false" debug="true">
             <classpath refid="compile.dependencies"/>
             <classpath refid="other.dependencies"/>
