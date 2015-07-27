@@ -1,5 +1,8 @@
 global class EntityUtil
 {
+    @TestVisible
+    private static List<Entity__c> entityList {get; set;}
+    
     public static void generateEntityTable(List<Entity__c> entities)
     {
         for(Entity__c entity : entities)
@@ -22,16 +25,16 @@ global class EntityUtil
 
     public static void resetIsProcessingNeeded()
     {
-        List<Entity__c> entities =
+        entityList =
         [
             SELECT IsProcessingNeeded__c, Name
             FROM Entity__c
         ];
 
-        for (Entity__c entity : entities)
+        for (Entity__c entity : entityList)
         {
             entity.IsProcessingNeeded__c = false;
         }
-        Database.update(entities);
+        Database.update(entityList);
     }
 }
