@@ -117,6 +117,7 @@
     </target>
 
     <target name="init">
+        <mkdir dir="${production.dir}"/>
         <mkdir dir="${target.dir}"/>
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${main.classes.dir}"/>
@@ -125,6 +126,8 @@
     </target>
 
     <target name="clean">
+        <delete dir="${production.dir}"/>
+        <delete dir="${dist.dir}"/>
         <delete dir="${target.dir}"/>
         <delete dir="${reports.dir}"/>
         <delete>

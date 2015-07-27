@@ -12,7 +12,7 @@
                   destdir="${emma.instr.dir}"
                   metadatafile="${coverage.dir}/metadata.emma"
                   merge="true">
-               <filter excludes="*com.softserve.entity.generator.entity.Entity"/>
+               <filter excludes="com.softserve.entity.generator.entity.Entity"/>
                <filter value="${emma.filter}"/>
            </instr>
        </emma>
