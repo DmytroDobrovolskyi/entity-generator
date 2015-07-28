@@ -51,30 +51,32 @@
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
     <fields>
-        <fullName>ExternalId__c</fullName>
-        <externalId>false</externalId>
-        <label>ExternalId</label>
-        <length>50</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>OperationType__c</fullName>
         <externalId>false</externalId>
         <label>OperationType</label>
-        <length>20</length>
-        <required>false</required>
+        <picklist>
+            <picklistValues>
+                <fullName>delete</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>insert</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>update</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>SObjectType__c</fullName>
+        <fullName>SalesforceId__c</fullName>
         <externalId>false</externalId>
-        <label>SObjectType</label>
-        <length>20</length>
+        <label>SalesforceId</label>
+        <length>50</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>

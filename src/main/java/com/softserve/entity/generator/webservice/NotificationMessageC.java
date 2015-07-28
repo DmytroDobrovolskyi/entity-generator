@@ -19,8 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;extension base="{urn:sobject.enterprise.soap.sforce.com}sObject">
  *       &lt;sequence>
  *         &lt;element name="OperationType__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="SObjectId__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="SObjectType__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="SalesforceId__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -32,8 +31,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "NotificationMessage__c", namespace = "urn:sobject.enterprise.soap.sforce.com", propOrder = {
     "operationTypeC",
-    "sObjectIdC",
-    "sObjectTypeC"
+    "salesforceIdC"
 })
 public class NotificationMessageC
     extends SObject
@@ -41,10 +39,8 @@ public class NotificationMessageC
 
     @XmlElementRef(name = "OperationType__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
     protected JAXBElement<String> operationTypeC;
-    @XmlElementRef(name = "SObjectId__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
-    protected JAXBElement<String> sObjectIdC;
-    @XmlElementRef(name = "SObjectType__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
-    protected JAXBElement<String> sObjectTypeC;
+    @XmlElementRef(name = "SalesforceId__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
+    protected JAXBElement<String> salesforceIdC;
 
     /**
      * Gets the value of the operationTypeC property.
@@ -71,51 +67,27 @@ public class NotificationMessageC
     }
 
     /**
-     * Gets the value of the sObjectIdC property.
+     * Gets the value of the salesforceIdC property.
      * 
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public JAXBElement<String> getSObjectIdC() {
-        return sObjectIdC;
+    public JAXBElement<String> getSalesforceIdC() {
+        return salesforceIdC;
     }
 
     /**
-     * Sets the value of the sObjectIdC property.
+     * Sets the value of the salesforceIdC property.
      * 
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setSObjectIdC(JAXBElement<String> value) {
-        this.sObjectIdC = ((JAXBElement<String> ) value);
-    }
-
-    /**
-     * Gets the value of the sObjectTypeC property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *     
-     */
-    public JAXBElement<String> getSObjectTypeC() {
-        return sObjectTypeC;
-    }
-
-    /**
-     * Sets the value of the sObjectTypeC property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *     
-     */
-    public void setSObjectTypeC(JAXBElement<String> value) {
-        this.sObjectTypeC = ((JAXBElement<String> ) value);
+    public void setSalesforceIdC(JAXBElement<String> value) {
+        this.salesforceIdC = ((JAXBElement<String> ) value);
     }
 
 }

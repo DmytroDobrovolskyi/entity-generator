@@ -36,11 +36,9 @@ public class NotificationPortImpl implements NotificationPort
     {
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
-            System.out.println(notificationMessage.getSObject().getSObjectIdC().getValue());
             System.out.println(notificationMessage.getSObject().getOperationTypeC().getValue());
-            System.out.println(notificationMessage.getSObject().getSObjectTypeC().getValue());
+            System.out.println(notificationMessage.getSObject().getSalesforceIdC().getValue());
         }
-        System.out.println("Hello");
         return true;
     }
 }
