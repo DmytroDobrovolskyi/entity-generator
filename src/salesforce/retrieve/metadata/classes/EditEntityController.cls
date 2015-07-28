@@ -2,7 +2,7 @@ public class EditEntityController
 {
     public Entity__c entity { get; set; }
 
-    public String columnName { get; set; }
+    public String fieldId { get; set; }
 
     public Boolean wereChanges { get; set; }
 
@@ -10,8 +10,7 @@ public class EditEntityController
 
     public Boolean isPrimaryKey { get; set; }
 
-    @TestVisible
-    private Map<String, Field__c> newFieldMap { get; set; }
+    private static String newFieldId = 'newFieldId';
 
     @TestVisible
     private Map<String, Field__c> fieldMap { get; set; }
@@ -21,17 +20,12 @@ public class EditEntityController
     public EditEntityController(ApexPages.StandardController controller)
     {
         this.entity = (Entity__c) controller.getRecord();
-        this.fieldMap = new Map<String, Field__c>();
-        System.debug('hello');
-        for (Field__c field :
-        [
+        this.fieldMap = new Map<String, Field__c>
+        ([
             SELECT Id, Name, ColumnName__c, Type__c, IsPrimaryKey__c, IsUpdateNeeded__c
             FROM Field__c
             WHERE Entity__c = :entity.Id
-        ])
-        {
-            fieldMap.put(field.ColumnName__c, field);
-        }
+        ]);
 
         this.entity =
         [
@@ -62,32 +56,23 @@ public class EditEntityController
   
     public void deleteField()
     {
-        Database.delete(fieldMap.get(columnName));
-        fieldMap.remove(columnName);
+        Database.delete(fieldId, true);
+        fieldMap.remove(fieldId);
         setIsProcessingNeeded();
     }
 
     public void addRow()
     {
-        if(fieldMap.values().size() != 0 )
-        {
-            setIsProcessingNeeded();
-        }
-
         newField = new Field__c();
         newField.Entity__c = entity.Id;
         newField.Type__c = 'varchar(255)';
-        fieldMap.put(null, newField);
+        fieldMap.put(newFieldId, newField);
 
-        setWereChanges();
+        wereChanges = true;
     }
 
     public void applyChanges()
     {
-        newFieldMap = new Map<String, Field__c>();
-
-        Boolean hasError = false;
-
         List<String> columnNames = new List<String>();
 
         for (Field__c field : fieldMap.values())
@@ -97,73 +82,77 @@ public class EditEntityController
 
         Set<String> uniqueColumnNames =  new Set<String>(columnNames);
 
-        Set<Field__c> fieldsToUpdate = null;
-
         if (columnNames.size() != uniqueColumnNames.size())
         {
             showError();
             return;
         }
-        else
+
+        Set<Field__c> fieldsToUpdate = new Set<Field__c>(fieldMap.values());
+        fieldsToUpdate.remove(newField);
+
+        for (Field__c field : fieldsToUpdate)
         {
-            fieldsToUpdate = new Set<Field__c>(fieldMap.values());
-            fieldsToUpdate.remove(newField);
-
-             for (Field__c field : fieldsToUpdate)
-             {
-                 if (containsNumbersOrNonAlphabeticCharacters(field.ColumnName__c))
-                 {
-                     hasError = true;
-                 }
-             }
-
-            if (!hasError)
+            if (containsNumbersOrNonAlphabeticCharacters(field.ColumnName__c))
             {
-                for (Field__c field : fieldsToUpdate)
+                showError();
+                return;
+            }
+        }
+
+        Boolean isProcessingNeeded = false;
+        for (Field__c field : fieldsToUpdate)
+        {
+            if(field.IsUpdateNeeded__c)
+            {
+                resolveIsPrimaryKey(field);
+                if(Database.update(field, false).isSuccess())
                 {
-                    if(field.IsUpdateNeeded__c)
-                    {
-                        if(Database.update(field, false).isSuccess())
-                        {
-                            setIsProcessingNeeded();
-                            field.IsUpdateNeeded__c = false;
-                        }
-                        else
-                        {
-                            hasError = true;
-                        }
-                    }
+                    isProcessingNeeded = true;
+                    field.IsUpdateNeeded__c = false;
+                }
+                else
+                {
+                    showError();
+                    return;
                 }
             }
         }
+        if (isProcessingNeeded)
+        {
+            setIsProcessingNeeded();
+        }
+
+        Map<String, Field__c>  newFieldMap = new Map<String, Field__c>();
 
         if (newField != null)
         {
-            if (fieldMap.containsKey(newField.ColumnName__c) ||
-                    containsNumbersOrNonAlphabeticCharacters(newField.ColumnName__c) || newField.Type__c == ' ')
+            if (isAlreadyExist(fieldsToUpdate, newField.ColumnName__c) ||
+                    containsNumbersOrNonAlphabeticCharacters(newField.ColumnName__c))
             {
-                hasError = true;
+                showError();
+                return;
             }
             else
             {
-                newFieldMap.put(newField.ColumnName__c, newField);
-                Database.insert(newField);
+                resolveIsPrimaryKey(newField);
+                Database.insert(newField, true);
+                newFieldMap.put(newField.Id, newField);
+                if (fieldMap.values().size() > 1)
+                {
+                    setIsProcessingNeeded();
+                }
                 newField = null;
             }
         }
-        if (hasError)
+
+        for (Field__c field : fieldsToUpdate)
         {
-            showError();
+            newFieldMap.put(field.Id, field);
         }
-        else
-        {
-            for (Field__c field : fieldsToUpdate)
-            {
-                newFieldMap.put(field.ColumnName__c, field);
-            }
-            fieldMap = newFieldMap;
-            wereChanges = false;
-        }
+        newFieldMap.values().sort();
+        fieldMap = newFieldMap;
+        wereChanges = false;
     }
 
     public PageReference discardChanges()
@@ -171,16 +160,23 @@ public class EditEntityController
         return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
 
-    public void resetIsPrimaryKey()
+    private boolean isAlreadyExist(Set<Field__c> fieldsToUpdate, String columnNameToCheck)
     {
-        Field__c field = fieldMap.get(null);
-
-        if(field != null)
+        for (Field__c field : fieldsToUpdate)
         {
-            if (field.Type__c != 'int' || field.Type__c != 'varchar(255)')
+            if (field.ColumnName__c == columnNameToCheck)
             {
-                field.IsPrimaryKey__c = false;
+                return true;
             }
+        }
+        return false;
+    }
+
+    private void resolveIsPrimaryKey(Field__c field)
+    {
+        if (field.Type__c != 'int' && field.Type__c != 'varchar(255)')
+        {
+            field.IsPrimaryKey__c = false;
         }
     }
 
@@ -192,25 +188,20 @@ public class EditEntityController
         return matcher.find();
     }
 
-    public void setWereChanges()
+    public void resolveChanges()
     {
+        Field__c fieldToUpdate = fieldMap.get(fieldId);
+        if (fieldToUpdate != null && String.valueOf(fieldToUpdate.Id) != newFieldId)
+        {
+            fieldToUpdate.IsUpdateNeeded__c = true;
+        }
         wereChanges = true;
     }
 
-    public void setIsProcessingNeeded()
+    private void setIsProcessingNeeded()
     {
         entity.IsProcessingNeeded__c = true;
         Database.update(entity);
-    }
-
-    public void setIsUpdateNeeded()
-    {
-        Field__c updatedField = fieldMap.get(columnName);
-        if(updatedField != null)
-        {
-            updatedField.IsUpdateNeeded__c = true;
-            columnName = null;
-        }
     }
 
     private void showError()

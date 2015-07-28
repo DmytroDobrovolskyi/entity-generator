@@ -5,9 +5,6 @@ public class EntityListController
     public Boolean wereChanges { get; set; }    
 
     @TestVisible
-    private Map<String, Entity__c> newEntityMap { get; set; }
-
-    @TestVisible
     private Map<String, Entity__c> entityMap { get; set; }
 
     @TestVisible
@@ -44,72 +41,62 @@ public class EntityListController
 
     public void applyChanges()
     {
-        newEntityMap = new Map<String, Entity__c>();
-
         Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
-
-        Boolean hasError = false;
 
         for (Entity__c entity : entitiesToUpdate)
         {
             if(containsNumbersOrNonAlphabeticCharacters(entity.TableName__c))
             {
-                 hasError = true;
+                showError();
+                return;
             }
         }
 
-        if (!hasError)
+        for(Entity__c entity : entitiesToUpdate)
         {
-            for(Entity__c entity : entitiesToUpdate)
+            if (entity.IsUpdateNeeded__c)
             {
-                if(entity.IsUpdateNeeded__c)
+                if (Database.update(entity, false).isSuccess())
                 {
-                    if(Database.update(entity, false).isSuccess())
-                    {
-                        entity.IsUpdateNeeded__c = false;
-                    }
-                    else
-                    {
-                        hasError = true;
-                    }
-                }
-            }
-
-            if (newEntity != null)
-            {
-                if (isAlreadyExist(entitiesToUpdate, newEntity.TableName__c) ||
-                        containsNumbersOrNonAlphabeticCharacters(newEntity.TableName__c))
-                {
-                    hasError = true;
+                    entity.IsUpdateNeeded__c = false;
                 }
                 else
                 {
-                    Database.insert(newEntity);
-                    newEntityMap.put(newEntity.Id, newEntity);
-                   
-                    newEntity = null;
+                    showError();
+                    return;
                 }
             }
         }
 
-        if (hasError)
+        Map<String, Entity__c> newEntityMap = new Map<String, Entity__c>();
+
+        if (newEntity != null)
         {
-            showError();
-        }
-        else
-        {
-            for (Entity__c entity : entitiesToUpdate)
+            if (isAlreadyExist(entitiesToUpdate, newEntity.TableName__c) ||
+                    containsNumbersOrNonAlphabeticCharacters(newEntity.TableName__c))
             {
-                newEntityMap.put(entity.Id, entity);
+                showError();
+                return;
             }
-            newEntityMap.values().sort();
-            entityMap = newEntityMap;
-            wereChanges = false;
+            else
+            {
+                Database.insert(newEntity);
+                newEntityMap.put(newEntity.Id, newEntity);
+                   
+                newEntity = null;
+            }
         }
+
+        for (Entity__c entity : entitiesToUpdate)
+        {
+            newEntityMap.put(entity.Id, entity);
+        }
+        newEntityMap.values().sort();
+        entityMap = newEntityMap;
+        wereChanges = false;
     }
 
-<<<<<<< HEAD
     private boolean isAlreadyExist(Set<Entity__c> entitiesToUpdate, String tableNameToCheck)
     {
         for (Entity__c entity : entitiesToUpdate)

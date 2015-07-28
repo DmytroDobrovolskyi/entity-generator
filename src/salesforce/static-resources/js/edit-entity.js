@@ -20,9 +20,9 @@ function init()
     $('[data-toggle="popover"]').popover();
 }
 
-function setWereChanges()
+function resolveChanges(fieldId)
 {
-    EditEntityController.setWereChanges();
+    callResolveChanges(fieldId);
 }
 
 function resolveCheckboxes()
@@ -155,14 +155,4 @@ function deleteField(columnName)
                 }
             }
         });
-}
-
-function resetIsPrimaryKey(columnName)
-{
-    callResetIsPrimaryKey(columnName);
-}
-
-function setIsUpdateNeeded(columnName)
-{
-    callSetIsUpdateNeeded(columnName);
 }

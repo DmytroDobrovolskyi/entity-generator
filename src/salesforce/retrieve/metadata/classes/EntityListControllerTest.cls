@@ -59,7 +59,6 @@ public class EntityListControllerTest
     	 EntityListController entityController = new EntityListController();
     	 entityController.applyChanges();
 
-    	 System.assertEquals(entityController.entityMap.size(),entityController.newEntityMap.size());
          test.stopTest();
     }
 }

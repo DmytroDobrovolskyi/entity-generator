@@ -104,8 +104,6 @@ public class EditEntityControllerTest
         editEntityController.applyChanges();
 
         test.stopTest();
-
-        System.assertEquals(editEntityController.fieldMap.size(),editEntityController.newFieldMap.size());
     }
     	
     public static Entity__c addEntitiesAndFieldsToTestDatabase()

@@ -59,33 +59,31 @@
 
                         <apex:column headerValue="Name">
                             <apex:inputField value="{!field.name}" styleClass="input text-center"
-                                             onchange="setIsUpdateNeeded('{!field.ColumnName__c}'), setWereChanges()" required="true"/>
+                                             onchange="resolveChanges('{!field.Id}')" required="true"/>
                         </apex:column>
 
                         <apex:column headerValue="Column name">
                             <apex:inputField value="{!field.ColumnName__c}" styleClass="input text-center"
-                                             onchange="setIsUpdateNeeded('{!field.ColumnName__c}'), setWereChanges()"
+                                             onchange="resolveChanges('{!field.Id}')"
                                              onfocus="generateColumnName(this)" required="true"/>
                         </apex:column>
 
                         <apex:column headerValue="Type" styleClass="text-center">
-                            <apex:commandLink oncomplete="resolveCheckboxes(), setWereChanges()">
-                                <apex:selectList value="{!field.Type__c}" size="1" multiselect="false"
-                                                 onchange="resetIsPrimaryKey(), setIsUpdateNeeded('{!field.ColumnName__c}')" styleClass="typeList">
-                                    <apex:selectOptions value="{!types}"/>
-                                </apex:selectList>
-                            </apex:commandLink>
+                            <apex:selectList value="{!field.Type__c}" size="1" multiselect="false"
+                                             onchange="resolveCheckboxes(), resolveChanges('{!field.Id}')" styleClass="typeList">
+                                <apex:selectOptions value="{!types}"/>
+                            </apex:selectList>
                         </apex:column>
 
                         <apex:column headerValue="Actions" styleClass="text-center">
-                            <apex:commandLink onclick="deleteField('{!field.ColumnName__c}')" rendered="{!field.Id != null}" oncomplete="init()">
+                            <apex:commandLink onclick="deleteField('{!field.Id}')" rendered="{!field.Id != null}" oncomplete="init()">
                                 <i class="fa fa-times" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Delete"></i>
                             </apex:commandLink>
                         </apex:column>
 
                         <apex:column headerValue="PK" styleClass="text-center">
                             <apex:inputCheckbox value="{!field.IsPrimaryKey__c}" styleClass="pk-checkboxes"
-                                                onchange="resolveCheckboxes(), setIsUpdateNeeded('{!field.ColumnName__c}'), setWereChanges()" />
+                                                onchange="resolveCheckboxes(), resolveChanges('{!field.Id}')" />
                         </apex:column>
 
                     </apex:dataTable>
@@ -93,21 +91,17 @@
                     <apex:pageMessages />
 
                     <apex:actionFunction action="{!deleteField}" name="callDeleteField" reRender="table-panel" oncomplete="init()" immediate="true">
-                        <apex:param name="columnName" value="" assignTo="{!columnName}"/>
+                        <apex:param name="fieldId" value="" assignTo="{!fieldId}"/>
                     </apex:actionFunction>
 
-                    <apex:actionFunction action="{!setIsUpdateNeeded}" name="callSetIsUpdateNeeded" reRender="" immediate="true">
-                        <apex:param name="columnName" value="" assignTo="{!columnName}"/>
+                    <apex:actionFunction action="{!resolveChanges}" name="callResolveChanges" reRender="apply-block" immediate="true">
+                        <apex:param name="fieldId" value="" assignTo="{!fieldId}"/>
                     </apex:actionFunction>
-
-                    <apex:actionFunction action="{!setWereChanges}" name="setWereChanges" reRender="apply-block" immediate="true"/>
-
-                    <apex:actionFunction action="{!resetIsPrimaryKey}" name="callResetIsPrimaryKey" reRender="" immediate="true"/>
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
                                             onclick="fillForReset()"/>
-                        <apex:commandButton action="{!applyChanges}" reRender="apply-block, table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
+                        <apex:commandButton action="{!applyChanges}" rendered="{!wereChanges}"  reRender="table-panel" value="Apply changes" style="margin-right:10px;"
                                             styleClass="btn btn-info pull-right" oncomplete="initAndDeleteErrors()"/>
                     </apex:outputPanel>
 
