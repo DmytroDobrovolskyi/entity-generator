@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 })
 @XmlSeeAlso({
     AggregateResult.class,
-    EntityC.class
+    NotificationMessageC.class
 })
 public class SObject {
 

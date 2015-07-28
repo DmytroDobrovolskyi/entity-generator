@@ -10,7 +10,11 @@ public class EditEntityController
 
     public Boolean isPrimaryKey { get; set; }
 
-    private Map<String, Field__c> fieldMap;
+    @TestVisible
+    private Map<String, Field__c> newFieldMap { get; set; }
+
+    @TestVisible
+    private Map<String, Field__c> fieldMap { get; set; }
 
     private Field__c newField;
 
@@ -21,7 +25,7 @@ public class EditEntityController
 
         for (Field__c field :
         [
-            SELECT Id, Name, ColumnName__c, Type__c, IsPrimaryKey__c
+            SELECT Id, Name, ColumnName__c, Type__c, IsPrimaryKey__c, IsUpdateNeeded__c
             FROM Field__c
             WHERE Entity__c = :entity.Id
         ])
@@ -118,20 +122,26 @@ public class EditEntityController
                  {
                      hasError = true;
                  }
-              }
+             }
 
-              if (!hasError)
-              {
-                  Database.SaveResult[] results = Database.update(new List<Field__c> (fieldsToUpdate), false);
-                  for (Database.SaveResult saveResult : results)
-                  {
-                      if(saveResult.isSuccess())
-                      {
-                          setIsProcessingNeeded();
-                          break;
-                      }
-                  }
-              }
+            if (!hasError)
+            {
+                for (Field__c field : fieldsToUpdate)
+                {
+                    if(field.IsUpdateNeeded__c)
+                    {
+                        if(Database.update(field, false).isSuccess())
+                        {
+                            setIsProcessingNeeded();
+                            field.IsUpdateNeeded__c = false;
+                        }
+                        else
+                        {
+                            hasError = true;
+                        }
+                    }
+                }
+            }
         }
 
         if (newField != null)
@@ -168,11 +178,6 @@ public class EditEntityController
         return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
 
-    public void setWereChanges()
-    {
-        wereChanges = true;
-    }
-
     public void resetIsPrimaryKey()
     {
         Field__c field = fieldMap.get(null);
@@ -186,6 +191,7 @@ public class EditEntityController
         }
     }
 
+    @TestVisible
     private Boolean containsNumbersOrNonAlphabeticCharacters(String str)
     {
         Matcher matcher = Pattern.compile('(\\W)|(\\d)|(\\s)').matcher(str);
@@ -193,10 +199,25 @@ public class EditEntityController
         return matcher.find();
     }
 
+    public void setWereChanges()
+    {
+        wereChanges = true;
+    }
+
     public void setIsProcessingNeeded()
     {
         entity.IsProcessingNeeded__c = true;
         Database.update(entity);
+    }
+
+    public void setIsUpdateNeeded()
+    {
+        Field__c updatedField = fieldMap.get(columnName);
+        if(updatedField != null)
+        {
+            updatedField.IsUpdateNeeded__c = true;
+            columnName = null;
+        }
     }
 
     private void showError()

@@ -1,25 +1,26 @@
 public class EntityListController
 {
-    public String tableName { get; set; }
+    public String entityId { get; set; }
 
-    public Boolean wereChanges { get; set; }
+    public Boolean wereChanges { get; set; }    
 
-    private Map<String, Entity__c> entityMap;
+    @TestVisible
+    private Map<String, Entity__c> newEntityMap { get; set; }
+
+    @TestVisible
+    private Map<String, Entity__c> entityMap { get; set; }
 
     private Entity__c newEntity;
 
+    private static String newEntityId = 'newEntityId';
+
     public EntityListController()
     {
-        this.entityMap = new Map<String, Entity__c>();
-
-        for (Entity__c entity :
-        [
-            SELECT Id, Name, TableName__c
+        this.entityMap = new Map<String, Entity__c>
+        ([
+            SELECT Id, Name, TableName__c, IsUpdateNeeded__c
             FROM Entity__c
-        ])
-        {
-            entityMap.put(entity.TableName__c, entity);
-        }
+        ]);
     }
 
     public List<Entity__c> getEntities()
@@ -29,15 +30,15 @@ public class EntityListController
 
     public void deleteEntity()
     {
-        Database.delete(entityMap.get(tableName));
-        entityMap.remove(tableName);
+        Database.delete(entityId, true);
+        entityMap.remove(entityId);
     }
 
     public void addRow()
     {
         newEntity = new Entity__c();
-        entityMap.put(null, newEntity);
-        setWereChanges();
+        entityMap.put(newEntityId, newEntity);
+        wereChanges = true;
     }
 
     public void applyChanges()
@@ -59,27 +60,33 @@ public class EntityListController
 
         if (!hasError)
         {
-            Database.SaveResult[] results = Database.update(new List<Entity__c>(entitiesToUpdate), false);
-
-            for(Database.SaveResult result : results)
+            for(Entity__c entity : entitiesToUpdate)
             {
-                if(!result.isSuccess())
+                if(entity.IsUpdateNeeded__c)
                 {
-                    hasError = true;
+                    if(Database.update(entity, false).isSuccess())
+                    {
+                        entity.IsUpdateNeeded__c = false;
+                    }
+                    else
+                    {
+                        hasError = true;
+                    }
                 }
             }
 
             if (newEntity != null)
             {
-                if (entityMap.containsKey(newEntity.TableName__c) || containsNumbersOrNonAlphabeticCharacters(newEntity.TableName__c))
+                if (isAlreadyExist(entitiesToUpdate, newEntity.TableName__c) ||
+                        containsNumbersOrNonAlphabeticCharacters(newEntity.TableName__c))
                 {
                     hasError = true;
                 }
                 else
                 {
-                    newEntityMap.put(newEntity.TableName__c, newEntity);
-
                     Database.insert(newEntity);
+                    newEntityMap.put(newEntity.Id, newEntity);
+                   
                     newEntity = null;
                 }
             }
@@ -93,18 +100,31 @@ public class EntityListController
         {
             for (Entity__c entity : entitiesToUpdate)
             {
-                newEntityMap.put(entity.TableName__c, entity);
+                newEntityMap.put(entity.Id, entity);
             }
+            newEntityMap.values().sort();
             entityMap = newEntityMap;
             wereChanges = false;
         }
     }
 
+    private boolean isAlreadyExist(Set<Entity__c> entitiesToUpdate, String tableNameToCheck)
+    {
+        for (Entity__c entity : entitiesToUpdate)
+        {
+            if (entity.TableName__c == tableNameToCheck)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @TestVisible
     private Boolean containsNumbersOrNonAlphabeticCharacters(String str)
     {
         Matcher matcher = Pattern.compile('(\\W)|(\\s)|(\\d)').matcher(str);
         return matcher.find();
-
     }
 
     public PageReference discardChanges()
@@ -112,9 +132,15 @@ public class EntityListController
         return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
 
-    public void setWereChanges()
+    public void resolveChanges()
     {
+        Entity__c entityToUpdate = entityMap.get(entityId);
+        if (entityToUpdate != null && String.valueOf(entityToUpdate.Id) != newEntityId)
+        {
+            entityToUpdate.IsUpdateNeeded__c = true;
+        }
         wereChanges = true;
+          
     }
 
     private void showError()

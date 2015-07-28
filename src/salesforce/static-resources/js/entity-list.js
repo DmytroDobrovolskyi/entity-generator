@@ -20,9 +20,9 @@ function init()
     $('[data-toggle="popover"]').popover();
 }
 
-function setWereChanges()
+function resolveChanges(entityId)
 {
-    EntityListController.setWereChanges();
+    callResolveChanges(entityId);
 }
 
 function generateTableName(context)

@@ -24,11 +24,11 @@
                         </apex:facet>
 
                         <apex:column headerValue="Name">
-                            <apex:inputField value="{!entity.Name}" styleClass="input text-center" onchange="setWereChanges()" required="true"/>
+                            <apex:inputField value="{!entity.Name}" styleClass="input text-center" onchange="resolveChanges('{!entity.Id}')" required="true"/>
                         </apex:column>
 
                         <apex:column headerValue="Table name">
-                            <apex:inputField value="{!entity.TableName__c}" styleClass="input text-center" onchange="setWereChanges()"
+                            <apex:inputField value="{!entity.TableName__c}" styleClass="input text-center" onchange="resolveChanges('{!entity.Id}')"
                                              onfocus="generateTableName(this)" required="true"/>
                         </apex:column>
 
@@ -38,7 +38,7 @@
                                    data-content="Edit"></i>
                             </apex:commandLink>
 
-                            <apex:commandLink onclick="deleteEntity('{!entity.TableName__c}')" rendered="{!entity.Id != null}" oncomplete="init()">
+                            <apex:commandLink onclick="deleteEntity('{!entity.Id}')" rendered="{!entity.Id != null}" oncomplete="init()">
                                 <i class="fa fa-times" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Delete"></i>
                             </apex:commandLink>
                         </apex:column>
@@ -48,10 +48,12 @@
                     <apex:pageMessages />
 
                     <apex:actionFunction action="{!deleteEntity}" name="callDeleteEntity" reRender="table-panel" oncomplete="init()" immediate="true">
-                        <apex:param name="tableName" value="" assignTo="{!tableName}"/>
+                        <apex:param name="entityId" value="" assignTo="{!entityId}"/>
                     </apex:actionFunction>
 
-                    <apex:actionFunction action="{!setWereChanges}" reRender="apply-block" name="setWereChanges"/>
+                    <apex:actionFunction action="{!resolveChanges}"  name="callResolveChanges" reRender="apply-block">
+                        <apex:param name="entityId" value="" assignTo="{!entityId}"/>
+                    </apex:actionFunction>
 
                     <apex:outputPanel id="apply-block">
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"

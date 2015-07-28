@@ -8,17 +8,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Entity__cNotification complex type.
+ * <p>Java class for NotificationMessage__cNotification complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Entity__cNotification">
+ * &lt;complexType name="NotificationMessage__cNotification">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="Id" type="{urn:enterprise.soap.sforce.com}ID"/>
- *         &lt;element name="sObject" type="{urn:sobject.enterprise.soap.sforce.com}Entity__c"/>
+ *         &lt;element name="sObject" type="{urn:sobject.enterprise.soap.sforce.com}NotificationMessage__c"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,16 +28,16 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Entity__cNotification", propOrder = {
+@XmlType(name = "NotificationMessage__cNotification", propOrder = {
     "id",
     "sObject"
 })
-public class EntityCNotification {
+public class NotificationMessageCNotification {
 
     @XmlElement(name = "Id", required = true)
     protected String id;
     @XmlElement(required = true)
-    protected EntityC sObject;
+    protected NotificationMessageC sObject;
 
     /**
      * Gets the value of the id property.
@@ -68,10 +68,10 @@ public class EntityCNotification {
      * 
      * @return
      *     possible object is
-     *     {@link EntityC }
+     *     {@link NotificationMessageC }
      *     
      */
-    public EntityC getSObject() {
+    public NotificationMessageC getSObject() {
         return sObject;
     }
 
@@ -80,10 +80,10 @@ public class EntityCNotification {
      * 
      * @param value
      *     allowed object is
-     *     {@link EntityC }
+     *     {@link NotificationMessageC }
      *     
      */
-    public void setSObject(EntityC value) {
+    public void setSObject(NotificationMessageC value) {
         this.sObject = value;
     }
 

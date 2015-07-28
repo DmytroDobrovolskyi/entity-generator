@@ -1,7 +1,10 @@
 
 package com.softserve.entity.generator.webservice;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -21,6 +24,9 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _NotificationMessageCOperationTypeC_QNAME = new QName("urn:sobject.enterprise.soap.sforce.com", "OperationType__c");
+    private final static QName _NotificationMessageCExternalIdC_QNAME = new QName("urn:sobject.enterprise.soap.sforce.com", "ExternalId__c");
+    private final static QName _NotificationMessageCSObjectTypeC_QNAME = new QName("urn:sobject.enterprise.soap.sforce.com", "SObjectType__c");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.softserve.entity.generator.webservice
@@ -30,19 +36,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Notifications }
+     * Create an instance of {@link NotificationMessageC }
      * 
      */
-    public Notifications createNotifications() {
-        return new Notifications();
-    }
-
-    /**
-     * Create an instance of {@link AggregateResult }
-     * 
-     */
-    public AggregateResult createAggregateResult() {
-        return new AggregateResult();
+    public NotificationMessageC createNotificationMessageC() {
+        return new NotificationMessageC();
     }
 
     /**
@@ -54,19 +52,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EntityC }
+     * Create an instance of {@link AggregateResult }
      * 
      */
-    public EntityC createEntityC() {
-        return new EntityC();
+    public AggregateResult createAggregateResult() {
+        return new AggregateResult();
     }
 
     /**
-     * Create an instance of {@link EntityCNotification }
+     * Create an instance of {@link NotificationMessageCNotification }
      * 
      */
-    public EntityCNotification createEntityCNotification() {
-        return new EntityCNotification();
+    public NotificationMessageCNotification createNotificationMessageCNotification() {
+        return new NotificationMessageCNotification();
     }
 
     /**
@@ -75,6 +73,41 @@ public class ObjectFactory {
      */
     public SObject createSObject() {
         return new SObject();
+    }
+
+    /**
+     * Create an instance of {@link Notifications }
+     * 
+     */
+    public Notifications createNotifications() {
+        return new Notifications();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "urn:sobject.enterprise.soap.sforce.com", name = "OperationType__c", scope = NotificationMessageC.class)
+    public JAXBElement<String> createNotificationMessageCOperationTypeC(String value) {
+        return new JAXBElement<String>(_NotificationMessageCOperationTypeC_QNAME, String.class, NotificationMessageC.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "urn:sobject.enterprise.soap.sforce.com", name = "ExternalId__c", scope = NotificationMessageC.class)
+    public JAXBElement<String> createNotificationMessageCExternalIdC(String value) {
+        return new JAXBElement<String>(_NotificationMessageCExternalIdC_QNAME, String.class, NotificationMessageC.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "urn:sobject.enterprise.soap.sforce.com", name = "SObjectType__c", scope = NotificationMessageC.class)
+    public JAXBElement<String> createNotificationMessageCSObjectTypeC(String value) {
+        return new JAXBElement<String>(_NotificationMessageCSObjectTypeC_QNAME, String.class, NotificationMessageC.class, value);
     }
 
 }

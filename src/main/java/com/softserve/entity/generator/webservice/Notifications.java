@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="SessionId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="EnterpriseUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="PartnerUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="Notification" type="{http://soap.sforce.com/2005/09/outbound}Entity__cNotification" maxOccurs="100"/>
+ *         &lt;element name="Notification" type="{http://soap.sforce.com/2005/09/outbound}NotificationMessage__cNotification" maxOccurs="100"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -57,7 +57,7 @@ public class Notifications {
     @XmlElement(name = "PartnerUrl", required = true)
     protected String partnerUrl;
     @XmlElement(name = "Notification", required = true)
-    protected List<EntityCNotification> notification;
+    protected List<NotificationMessageCNotification> notification;
 
     /**
      * Gets the value of the organizationId property.
@@ -197,13 +197,13 @@ public class Notifications {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link EntityCNotification }
+     * {@link NotificationMessageCNotification }
      * 
      * 
      */
-    public List<EntityCNotification> getNotification() {
+    public List<NotificationMessageCNotification> getNotification() {
         if (notification == null) {
-            notification = new ArrayList<EntityCNotification>();
+            notification = new ArrayList<NotificationMessageCNotification>();
         }
         return this.notification;
     }

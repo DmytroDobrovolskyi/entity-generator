@@ -161,3 +161,8 @@ function resetIsPrimaryKey(columnName)
 {
     callResetIsPrimaryKey(columnName);
 }
+
+function setIsUpdateNeeded(columnName)
+{
+    callSetIsUpdateNeeded(columnName);
+}
