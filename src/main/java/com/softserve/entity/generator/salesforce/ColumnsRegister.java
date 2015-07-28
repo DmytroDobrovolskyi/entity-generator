@@ -15,17 +15,29 @@ public class ColumnsRegister
     );
 
     private static final List<String> EXCLUSIONS = Collections.unmodifiableList(
-            Arrays.<String>asList("")
+            Arrays.<String>asList("name")
     );
 
-    private static Map<Class<?>, String> customFieldsMap;
+    private static Map<Class<?>, SObjectMetadata> register;
 
-    public static Map<Class<?>, String> getCustomFieldsMap()
+    public static SObjectMetadata getSObjectMetadata(Class<?> sObjectClass)
     {
-        if (customFieldsMap == null)
+        if (register == null)
         {
-            customFieldsMap = ColumnsRegisterProcessor.processRegistration(ENTITIES, EXCLUSIONS);
+            register = ColumnsRegisterProcessor.processRegistration(ENTITIES, EXCLUSIONS);
         }
-        return customFieldsMap;
+        return register.get(sObjectClass);
+    }
+
+    public static String getFullName(String className) throws ClassNotFoundException
+    {
+        for (Class<?> aClass : ENTITIES)
+        {
+            if (aClass.getSimpleName().equals(className))
+            {
+                return aClass.getName();
+            }
+        }
+        throw new ClassNotFoundException();
     }
 }

@@ -1,42 +1,49 @@
 package com.softserve.entity.generator.salesforce.util;
 
+import com.softserve.entity.generator.salesforce.SObjectMetadata;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
 public class ColumnsRegisterProcessor
 {
-    public static Map<Class<?>, String> processRegistration(List<Class<?>> registerMetadata, List<String> exclusions)
+    public static Map<Class<?>, SObjectMetadata> processRegistration(List<Class<?>> registerMetadata, List<String> exclusions)
     {
-        Map<Class<?>, String> register = new HashMap<Class<?>, String>();
+        Map<Class<?>, SObjectMetadata> register = new HashMap<Class<?>, SObjectMetadata>();
 
         for (Class<?> entityClass : registerMetadata)
         {
             register.put(
                     entityClass,
-                    ColumnFormatter.toSalesforceStyle(
-                            filterFields(entityClass.getDeclaredFields(), registerMetadata, exclusions), "__c"
-                    )
+                    processFields(entityClass.getDeclaredFields(), registerMetadata, exclusions)
             );
         }
         return register;
     }
 
-    private static List<Field> filterFields(Field[] fields, List<Class<?>> registerMetadata, List<String> exclusions)
+    private static SObjectMetadata processFields(Field[] fieldsToProcess, List<Class<?>> registerMetadata, List<String> exclusions)
     {
-        List<Field> filteredFields = new ArrayList<Field>();
-        for (Field field : fields)
-        {
-            if (!field.getName().equals("name"))
-            {
-                Class<?> filedType = field.getType();
-                boolean isRelation = Collection.class.isAssignableFrom(filedType) || registerMetadata.contains(filedType);
+        List<String> nonRelationalFields = new ArrayList<String>();
+        List<String> relationalFields = new ArrayList<String>();
 
-                if (!isRelation && !exclusions.contains(field.getName()))
-                {
-                    filteredFields.add(field);
-                }
+        for (Field field : fieldsToProcess)
+        {
+            if (exclusions.contains(field.getName()))
+            {
+                continue;
+            }
+            Class<?> filedType = field.getType();
+            boolean isRelational = Collection.class.isAssignableFrom(filedType) || registerMetadata.contains(filedType);
+
+            if (isRelational)
+            {
+                relationalFields.add(ColumnFormatter.toSalesforceStyle(field, "__r"));
+            }
+            else
+            {
+                nonRelationalFields.add(ColumnFormatter.toSalesforceStyle(field, "__c"));
             }
         }
-        return filteredFields;
+        return new SObjectMetadata(nonRelationalFields, relationalFields);
     }
 }

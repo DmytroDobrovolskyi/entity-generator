@@ -1,6 +1,5 @@
 package com.softserve.entity.generator.salesforce.util;
 
-import com.softserve.entity.generator.salesforce.ColumnsRegister;
 import org.apache.log4j.Logger;
 
 import java.util.regex.Matcher;
@@ -82,9 +81,9 @@ public class Parser
 
     private static StringBuilder fieldsRegexFinder(Class entityClass, Class relationClass)
     {
-        StringBuilder customAndRelationCustomFieldFinder = new StringBuilder();
+        /*StringBuilder customAndRelationCustomFieldFinder = new StringBuilder();
 
-        for (String customFields : ColumnsRegister.getCustomFieldsMap().get(entityClass).split(","))
+        for (String customFields : ColumnsRegister.getRegister().get(entityClass).split(","))
         {
             customAndRelationCustomFieldFinder
                     .append("(\"")
@@ -92,7 +91,7 @@ public class Parser
                     .append("\".*\\n)|");
         }
 
-        for (String relationCustomFields : ColumnsRegister.getCustomFieldsMap().get(relationClass).split(","))
+        for (String relationCustomFields : ColumnsRegister.getRegister().get(relationClass).split(","))
         {
             customAndRelationCustomFieldFinder
                     .append("(\"")
@@ -108,14 +107,15 @@ public class Parser
                 .append("|(\\}, \\{)")
                 .append("|(\"[A-Z].*__r\" : null\\n)|(\\}, \\{)");
 
-        return customAndRelationCustomFieldFinder;
+        return customAndRelationCustomFieldFinder;*/
+        return null;
     }
 
     private static StringBuilder fieldsRegexFinder(Class entityClass)
     {
-        StringBuilder customAndRelationCustomFieldFinder = new StringBuilder();
+       /* StringBuilder customAndRelationCustomFieldFinder = new StringBuilder();
 
-        for (String customFields : ColumnsRegister.getCustomFieldsMap().get(entityClass).split(","))
+        for (String customFields : ColumnsRegister.getRegister().get(entityClass).split(","))
         {
             customAndRelationCustomFieldFinder
                     .append("(\"")
@@ -130,6 +130,7 @@ public class Parser
                 .append("|(\"[A-Z].*__r\" : \\{\\n)").append("|(\\}, \\{)")
                 .append("|(\"[A-Z].*__r\" : null\\n)|(\\}, \\{)");
 
-        return customAndRelationCustomFieldFinder;
+        return customAndRelationCustomFieldFinder;*/
+        return null;
     }
 }
