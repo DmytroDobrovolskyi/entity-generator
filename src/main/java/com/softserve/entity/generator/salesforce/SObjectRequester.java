@@ -1,13 +1,20 @@
 package com.softserve.entity.generator.salesforce;
 
+import com.google.gson.Gson;
+import com.softserve.entity.generator.salesforce.util.ParsingUtil;
+import com.softserve.entity.generator.salesforce.util.SObjectJsonParser;
 import com.softserve.entity.generator.salesforce.util.SooqlQueryBuilder;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public class SObjectRequester<T>
@@ -16,7 +23,7 @@ public class SObjectRequester<T>
 
     private static final String BASE_URL = "https://emea.salesforce.com/services/data/";
     private static final String API_VERSION = "v34.0/";
-    private static final String TOTAL_SIZE_ZERO = "\"totalSize\" : 0";
+    private static final String NONE_OBJECTS = "\"totalSize\" : 0";
 
     private Credentials credentials;
     private Class<T> sObjectClass;
@@ -31,48 +38,23 @@ public class SObjectRequester<T>
 
     public List<T> getAll()
     {
-
-        List<String> nonRelationFields = new ArrayList<String>();
-
-        String sqlQuery = SooqlQueryBuilder.buildQuery(sObjectClass);
-
-        System.out.println(sqlQuery);
-
-
-        HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sqlQuery);
+        HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" +  SooqlQueryBuilder.buildQuery(sObjectClass));
         httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + WebServiceUtil.getSessionId(credentials)));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
-
-       /* try
+        try
         {
             HttpResponse response = httpClient.execute(httpGet);
             String stringifiedResponse = EntityUtils.toString(response.getEntity());
 
-            List<T> entities = new ArrayList<T>();
-
-            if (stringifiedResponse.contains(TOTAL_SIZE_ZERO))
+            if (stringifiedResponse.contains(NONE_OBJECTS))
             {
-                return entities;
+                return Collections.emptyList();
             }
-
-            String parsedJson = Parser.parseSObjectJson(stringifiedResponse, Entity.class, Field.class);
+            String javaStyleJson = SObjectJsonParser.parseSObjectJson(stringifiedResponse, sObjectClass);
 
             Gson gson = new Gson();
 
-            Type listType = new TypeToken<ArrayList<Entity>>() {}.getType();
-
-            List<Entity> entityList = gson.fromJson(parsedJson, listType);
-
-            for (Entity entity : entityList)
-            {
-                for(Field field : entity.getFields())
-                {
-                    field.setEntity(entity);
-                }
-                entities.add(entity);
-            }
-
-            return entities;
+            return gson.fromJson(javaStyleJson, ParsingUtil.createParametrizedListType(sObjectClass));
         }
         catch (ClientProtocolException ex)
         {
@@ -83,7 +65,6 @@ public class SObjectRequester<T>
         {
             logger.error(ex);
             throw new AssertionError(ex);
-        }*/
-        return null;
+        }
     }
 }

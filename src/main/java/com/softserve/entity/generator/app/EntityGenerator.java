@@ -23,7 +23,6 @@ public class EntityGenerator
         Credentials credentials = Authenticator.login(args);
 
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
-
         EntityGenerator entityGenerator = applicationContext.getBean(EntityGenerator.class);
 
         entityGenerator.generateEntities(credentials);

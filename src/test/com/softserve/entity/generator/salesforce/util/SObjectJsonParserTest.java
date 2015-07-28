@@ -1,7 +1,6 @@
 package com.softserve.entity.generator.salesforce.util;
 
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.entity.Field;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,7 +9,7 @@ import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 
-public class ParserTest
+public class SObjectJsonParserTest
 {
     private static final String PATH_TO_RESOURCES = System.getProperty("user.dir") + "\\src\\test\\resources\\";
     private File file;
@@ -22,7 +21,7 @@ public class ParserTest
         assertEquals
                 (
                         this.getformattedJsonFromFile().toString().trim(),
-                        Parser.parseSObjectJson(getUnformattedJsonFromFile().toString(), Entity.class, Field.class).trim()
+                        SObjectJsonParser.parseSObjectJson(getUnformattedJsonFromFile().toString(), Entity.class).trim()
                 );
     }
 
@@ -62,7 +61,9 @@ public class ParserTest
 
             while (scanner.hasNextLine())
             {
-                stringBuilder.append(scanner.nextLine() + "\n");
+                stringBuilder
+                        .append(scanner.nextLine())
+                        .append("\n");
             }
             scanner.close();
         }

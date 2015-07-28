@@ -37,11 +37,11 @@ public class ColumnsRegisterProcessor
 
             if (isRelational)
             {
-                relationalFields.add(ColumnFormatter.toSalesforceStyle(field, "__r"));
+                relationalFields.add(ParsingUtil.toSalesforceStyle(field, "__r"));
             }
             else
             {
-                nonRelationalFields.add(ColumnFormatter.toSalesforceStyle(field, "__c"));
+                nonRelationalFields.add(ParsingUtil.toSalesforceStyle(field, "__c"));
             }
         }
         return new SObjectMetadata(nonRelationalFields, relationalFields);

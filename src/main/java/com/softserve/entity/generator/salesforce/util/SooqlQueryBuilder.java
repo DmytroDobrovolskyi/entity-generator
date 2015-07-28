@@ -15,24 +15,24 @@ public class SooqlQueryBuilder
         queryBuilder
                 .append("SELECT+Name,")
                 .append(
-                        ColumnFormatter.stringifyFieldsList(
+                        ParsingUtil.stringifyFieldsList(
                                 objectMetadata.getNonRelationalFields()
                         )
                 );
 
         for (String relation : objectMetadata.getRelationalFields())
         {
-            if(isParent(relation))
+            if(ParsingUtil.isChild(relation))
             {
-                SObjectMetadata relatedObjectMetadata = ColumnsRegister.getSObjectMetadata(toJavaClass(relation));
+                SObjectMetadata relatedObjectMetadata = ColumnsRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relation));
                 queryBuilder
                         .append(",(SELECT+Name,")
                         .append(
-                                ColumnFormatter.stringifyFieldsList(
+                                ParsingUtil.stringifyFieldsList(
                                         relatedObjectMetadata.getNonRelationalFields()
                                 )
                         )
-                        .append("FROM+")
+                        .append("+FROM+")
                         .append(relation)
                         .append(")");
             }
@@ -44,24 +44,5 @@ public class SooqlQueryBuilder
                 .append("__c");
 
          return queryBuilder.toString();
-    }
-
-    private static boolean isParent(String relation)
-    {
-        return relation.endsWith("s__r");
-    }
-
-    private static Class<?> toJavaClass(String sObjectName)
-    {
-        String javaStyleClassName = sObjectName.replace("s__r", "");
-        try
-        {
-            return Class.forName(ColumnsRegister.getFullName(javaStyleClassName));
-        }
-        catch (ClassNotFoundException ex)
-        {
-            logger.error("Class not found: " + javaStyleClassName, ex);
-            throw new AssertionError(ex);
-        }
     }
 }
