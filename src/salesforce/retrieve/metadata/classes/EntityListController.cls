@@ -10,7 +10,8 @@ public class EntityListController
     @TestVisible
     private Map<String, Entity__c> entityMap { get; set; }
 
-    private Entity__c newEntity;
+    @TestVisible
+    private Entity__c newEntity { get; set; }
 
     private static String newEntityId = 'newEntityId';
 
@@ -43,7 +44,7 @@ public class EntityListController
 
     public void applyChanges()
     {
-        Map<String, Entity__c> newEntityMap = new Map<String, Entity__c>();
+        newEntityMap = new Map<String, Entity__c>();
 
         Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
@@ -108,6 +109,7 @@ public class EntityListController
         }
     }
 
+<<<<<<< HEAD
     private boolean isAlreadyExist(Set<Entity__c> entitiesToUpdate, String tableNameToCheck)
     {
         for (Entity__c entity : entitiesToUpdate)

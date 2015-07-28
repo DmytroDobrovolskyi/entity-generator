@@ -28,6 +28,12 @@ public class InsertTableNameTest
 
         EntityUtil.resetIsProcessingNeeded();
 
+        test.startTest();
+        
+        Database.insert(entityTest);
+        
+        EntityUtil.resetIsProcessingNeeded();
+
         test.stopTest();
         for(Entity__c entity : EntityUtil.entityList)
         {
