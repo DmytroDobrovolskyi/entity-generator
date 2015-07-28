@@ -2,13 +2,37 @@ public class NotificationMessageUtil
 {
 	public static void setNotificationMessageMetadata()
     {
-        for (SObject sObjectToProcess : Trigger.new)
+        if (Trigger.isDelete)
+        {
+            processSObjects(Trigger.old, 'delete');
+        }
+        else
+        {
+            String operationType = Trigger.isInsert ? 'insert' : 'update';
+            processSObjects(Trigger.new, operationType);
+        }
+    }
+
+    private static void processSObjects(List<SObject> sObjectsToProcess, String operationType)
+    {
+        for (SObject sObjectToProcess : sObjectsToProcess)
         {
             NotificationMessage__c notificationMessage = new NotificationMessage__c();
-            String sObjectType = String.valueOf(sObjectToProcess.getSObjectType());
-            notificationMessage.SObjectType__c = sObjectType;
-            notificationMessage.ExternalId__c = 'test';
-            notificationMessage.OperationType__c  = 'insert';
+
+            notificationMessage.OperationType__c = operationType;
+
+            String type = String.valueOf(sObjectToProcess.getSObjectType());
+            if (type == 'Entity__c')
+            {
+                notificationMessage.SObjectId__c = ((Entity__c) sObjectToProcess).Id;
+            }
+            else
+            {
+                notificationMessage.SObjectId__c = ((Field__c) sObjectToProcess).Id;
+            }
+
+            notificationMessage.SObjectType__c = type;
+
             Database.insert(notificationMessage);
         }
     }

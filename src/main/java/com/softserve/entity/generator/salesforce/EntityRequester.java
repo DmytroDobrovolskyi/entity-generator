@@ -53,7 +53,6 @@ public class EntityRequester
 
         List<String> nonRelationFields = new ArrayList<String>();
 
-
         String sqlQuery =
                           "SELECT+Name," + CUSTOM_FIELDS + "," +
                          "(" +

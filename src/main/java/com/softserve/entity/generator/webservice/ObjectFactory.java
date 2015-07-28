@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _NotificationMessageCOperationTypeC_QNAME = new QName("urn:sobject.enterprise.soap.sforce.com", "OperationType__c");
-    private final static QName _NotificationMessageCExternalIdC_QNAME = new QName("urn:sobject.enterprise.soap.sforce.com", "ExternalId__c");
+    private final static QName _NotificationMessageCSObjectIdC_QNAME = new QName("urn:sobject.enterprise.soap.sforce.com", "SObjectId__c");
     private final static QName _NotificationMessageCSObjectTypeC_QNAME = new QName("urn:sobject.enterprise.soap.sforce.com", "SObjectType__c");
 
     /**
@@ -36,11 +36,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NotificationMessageC }
+     * Create an instance of {@link NotificationMessageCNotification }
      * 
      */
-    public NotificationMessageC createNotificationMessageC() {
-        return new NotificationMessageC();
+    public NotificationMessageCNotification createNotificationMessageCNotification() {
+        return new NotificationMessageCNotification();
     }
 
     /**
@@ -52,19 +52,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link NotificationMessageC }
+     * 
+     */
+    public NotificationMessageC createNotificationMessageC() {
+        return new NotificationMessageC();
+    }
+
+    /**
      * Create an instance of {@link AggregateResult }
      * 
      */
     public AggregateResult createAggregateResult() {
         return new AggregateResult();
-    }
-
-    /**
-     * Create an instance of {@link NotificationMessageCNotification }
-     * 
-     */
-    public NotificationMessageCNotification createNotificationMessageCNotification() {
-        return new NotificationMessageCNotification();
     }
 
     /**
@@ -96,9 +96,9 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "urn:sobject.enterprise.soap.sforce.com", name = "ExternalId__c", scope = NotificationMessageC.class)
-    public JAXBElement<String> createNotificationMessageCExternalIdC(String value) {
-        return new JAXBElement<String>(_NotificationMessageCExternalIdC_QNAME, String.class, NotificationMessageC.class, value);
+    @XmlElementDecl(namespace = "urn:sobject.enterprise.soap.sforce.com", name = "SObjectId__c", scope = NotificationMessageC.class)
+    public JAXBElement<String> createNotificationMessageCSObjectIdC(String value) {
+        return new JAXBElement<String>(_NotificationMessageCSObjectIdC_QNAME, String.class, NotificationMessageC.class, value);
     }
 
     /**

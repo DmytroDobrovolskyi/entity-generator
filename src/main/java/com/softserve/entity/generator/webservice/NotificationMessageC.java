@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;extension base="{urn:sobject.enterprise.soap.sforce.com}sObject">
  *       &lt;sequence>
- *         &lt;element name="ExternalId__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="OperationType__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="SObjectId__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="SObjectType__c" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -31,44 +31,20 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "NotificationMessage__c", namespace = "urn:sobject.enterprise.soap.sforce.com", propOrder = {
-    "externalIdC",
     "operationTypeC",
+    "sObjectIdC",
     "sObjectTypeC"
 })
 public class NotificationMessageC
     extends SObject
 {
 
-    @XmlElementRef(name = "ExternalId__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
-    protected JAXBElement<String> externalIdC;
     @XmlElementRef(name = "OperationType__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
     protected JAXBElement<String> operationTypeC;
+    @XmlElementRef(name = "SObjectId__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
+    protected JAXBElement<String> sObjectIdC;
     @XmlElementRef(name = "SObjectType__c", namespace = "urn:sobject.enterprise.soap.sforce.com", type = JAXBElement.class)
     protected JAXBElement<String> sObjectTypeC;
-
-    /**
-     * Gets the value of the externalIdC property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *     
-     */
-    public JAXBElement<String> getExternalIdC() {
-        return externalIdC;
-    }
-
-    /**
-     * Sets the value of the externalIdC property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *     
-     */
-    public void setExternalIdC(JAXBElement<String> value) {
-        this.externalIdC = ((JAXBElement<String> ) value);
-    }
 
     /**
      * Gets the value of the operationTypeC property.
@@ -92,6 +68,30 @@ public class NotificationMessageC
      */
     public void setOperationTypeC(JAXBElement<String> value) {
         this.operationTypeC = ((JAXBElement<String> ) value);
+    }
+
+    /**
+     * Gets the value of the sObjectIdC property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     
+     */
+    public JAXBElement<String> getSObjectIdC() {
+        return sObjectIdC;
+    }
+
+    /**
+     * Sets the value of the sObjectIdC property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     
+     */
+    public void setSObjectIdC(JAXBElement<String> value) {
+        this.sObjectIdC = ((JAXBElement<String> ) value);
     }
 
     /**
