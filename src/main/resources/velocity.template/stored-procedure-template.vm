@@ -18,7 +18,7 @@
 
         #set($tableNames = $tableNames + ", '" + $tableName + "'")
 
-        #if($entity.getIsProcessingNeeded())
+        #if($entity.getIsProcessingNeeded() && $entity.getFields().size() > 1)
             #if($changedTables.isEmpty())
                 #set($changedTables = $schema + "." + $tableName)
             #else

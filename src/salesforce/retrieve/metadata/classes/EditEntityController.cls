@@ -138,10 +138,7 @@ public class EditEntityController
                 resolveIsPrimaryKey(newField);
                 Database.insert(newField, true);
                 newFieldMap.put(newField.Id, newField);
-                if (fieldMap.values().size() > 1)
-                {
-                    setIsProcessingNeeded();
-                }
+                setIsProcessingNeeded();
                 newField = null;
             }
         }
