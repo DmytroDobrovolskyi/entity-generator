@@ -11,15 +11,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class SObjectRequesterTest
+public class SObjectProcessorTest
 {
     @Test
     @Ignore
     public void getAllEntitiesTest()
     {
-        SObjectRequester<Entity> SObjectRequester = new SObjectRequester<Entity>(mock(Credentials.class), Entity.class);
+        SObjectProcessor<Entity> SObjectProcessor = new SObjectProcessor<Entity>(mock(Credentials.class), Entity.class);
         List<Entity> entities = new ArrayList<Entity>();
-        when(SObjectRequester.getAll()).thenReturn(entities);
+        when(SObjectProcessor.getAll()).thenReturn(entities);
 
     }
 }

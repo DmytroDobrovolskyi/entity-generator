@@ -81,9 +81,9 @@ public class ParsingUtil
     /**
      * Converts java.lang.reflect.Field to salesforce-like stringified field
      *
-     * @param field   field to convert
+     * @param field field to convert
      * @param postfix extension like __c or __r
-     * @return formatted stringified field in salesforce style
+     * @return formatted stringified {@literal field} in salesforce style
      */
     public static String toSalesforceStyle(Field field, String postfix)
     {
@@ -98,7 +98,7 @@ public class ParsingUtil
      * Converts List of stringified salesforce-style fields to single comma-separated stringified fields.
      *
      * @param fields stringified salesforce-style fields to process
-     * @return single comma-separated salesforce-style stringified fields
+     * @return single comma-separated salesforce-style stringified {@literal fields}
      */
     public static String stringifyFieldsList(List<String> fields)
     {
@@ -120,7 +120,7 @@ public class ParsingUtil
      * See usage in SObjectRequester.getAll method.
      *
      * @param genericType genericType for parameterized list
-     * @return parameterized list with specific genericType
+     * @return parameterized list with specific {@literal genericType}
      */
     public static ParameterizedType createParametrizedListType(final Class<?> genericType)
     {

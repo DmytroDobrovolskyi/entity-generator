@@ -13,9 +13,16 @@ public class SObjectJsonParser
 {
     private static final Logger logger = Logger.getLogger(SObjectJsonParser.class);
 
-    public static String parseSObjectJson(String sObjectJson, Class<?> sObjectClass)
+    public static String parseSObjectJsonArray(String sObjectJson, Class<?> sObjectClass)
     {
         return doParse(sObjectJson, sObjectClass, buildRegex(sObjectClass));
+    }
+
+    public static String parseSObjectJson(String sObjectJson, Class<?> sObjectClass)
+    {
+        return toSingleJson(
+                doParse(sObjectJson, sObjectClass, buildRegex(sObjectClass))
+        );
     }
 
     private static String doParse(String sObjectJson, Class<?> sObjectClass, String parsingRegex)
@@ -112,5 +119,22 @@ public class SObjectJsonParser
                 .append("|(\"[A-Z].*__r\" : null\\n)|(\\}, \\{)");
 
         return regexBuilder.toString();
+    }
+
+    /**
+     * Formats JSON array String to single SON string.
+     *
+     * @param jsonArrayString JSON array String to format
+     * @return formatted single JSON String
+     */
+    private static String toSingleJson(String jsonArrayString)
+    {
+        int openingBracket = jsonArrayString.indexOf("[");
+        int closingBracket = jsonArrayString.lastIndexOf("]");
+        logger.info(closingBracket);
+        return new StringBuilder(jsonArrayString)
+                .delete(openingBracket, openingBracket + 1)
+                .delete(closingBracket - 1, closingBracket) //after first deleting index will shift left by one character
+                .toString();
     }
 }
