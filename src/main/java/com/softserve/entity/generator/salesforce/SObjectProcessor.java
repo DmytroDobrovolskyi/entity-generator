@@ -1,7 +1,6 @@
 package com.softserve.entity.generator.salesforce;
 
 import com.google.gson.Gson;
-import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.salesforce.util.SObjectJsonParser;
 import com.softserve.entity.generator.salesforce.util.SooqlQueryBuilder;
 import org.apache.http.HttpResponse;
@@ -12,6 +11,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import com.softserve.entity.generator.util.ReflectionUtil;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -30,13 +30,13 @@ public class SObjectProcessor<T>
     private static final String API_VERSION = "v34.0/";
     private static final String NONE_OBJECTS = "\"totalSize\" : 0";
 
-    private Credentials credentials;
+    private WebServiceUtil webServiceUtil;
     private Class<T> sObjectClass;
     private final HttpClient httpClient = HttpClientBuilder.create().build();
 
     public SObjectProcessor(Credentials credentials, Class<T> sObjectClass)
     {
-        this.credentials = credentials;
+        this.webServiceUtil = WebServiceUtil.getInstance(credentials);
         this.sObjectClass = sObjectClass;
     }
 
@@ -57,7 +57,7 @@ public class SObjectProcessor<T>
 
         return new Gson().fromJson(
                 SObjectJsonParser.parseSObjectJsonArray(sObjectJson, sObjectClass),
-                ParsingUtil.createParametrizedListType(sObjectClass)
+                ReflectionUtil.getParametrizedType(sObjectClass, List.class)
         );
     }
 
@@ -82,7 +82,7 @@ public class SObjectProcessor<T>
     private String getPureSObjectJson(String sooqlQuery)
     {
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sooqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + WebServiceUtil.getSessionId(credentials)));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + webServiceUtil.getSessionId()));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
         try
         {

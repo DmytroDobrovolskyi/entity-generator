@@ -51,6 +51,7 @@
         </copy>
         <copy todir="${production.dir}/${bin.dir}">
             <fileset dir="${bin.dir}"/>
+            <file name=".credentials"/>
         </copy>
     </target>
 
@@ -69,6 +70,7 @@
             <fileset dir="${resources.dir}">
                 <exclude name="WEB-INF/**"/>
             </fileset>
+            <file name=".credentials"/>
             <include name=""/>
         </jar>
     </target>

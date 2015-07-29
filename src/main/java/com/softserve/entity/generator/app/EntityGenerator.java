@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.app;
 
-import com.softserve.entity.generator.app.util.Authenticator;
+import com.softserve.entity.generator.app.util.LoginUtil;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.salesforce.Credentials;
 import com.softserve.entity.generator.salesforce.ProcedureExecutor;
@@ -20,7 +20,7 @@ public class EntityGenerator
 
     public static void main(String[] args)
     {
-        Credentials credentials = Authenticator.login(args);
+        Credentials credentials = LoginUtil.parseCredentials(args);
 
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
         EntityGenerator entityGenerator = applicationContext.getBean(EntityGenerator.class);

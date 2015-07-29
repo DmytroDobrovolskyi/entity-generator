@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 public class SObjectJsonParserTest
 {
-    private static final String PATH_TO_RESOURCES = System.getProperty("user.dir") + "\\src\\test\\resources\\";
+    private static final String PATH_TO_RESOURCES = System.getProperty("user.dir") + "/src/test/resources/";
     private File file;
     private Scanner scanner;
 
@@ -20,7 +20,7 @@ public class SObjectJsonParserTest
     {
         assertEquals
                 (
-                        this.getformattedJsonFromFile().toString().trim(),
+                        this.getFormattedJsonFromFile().toString().trim(),
                         SObjectJsonParser.parseSObjectJsonArray(getUnformattedJsonFromFile().toString(), Entity.class).trim()
                 );
     }
@@ -49,7 +49,7 @@ public class SObjectJsonParserTest
         return stringBuilder;
     }
 
-    private StringBuilder getformattedJsonFromFile()
+    private StringBuilder getFormattedJsonFromFile()
     {
         file = new File(PATH_TO_RESOURCES + "FormattedJSON");
         StringBuilder stringBuilder = new StringBuilder();

@@ -1,24 +1,24 @@
 package com.softserve.entity.generator.app.util;
 
+import com.softserve.entity.generator.salesforce.Credentials;
 import javassist.NotFoundException;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class CredentialsUtil
 {
-    private static final Logger logger = Logger.getLogger(Authenticator.class);
-    private static final String FILE_NAME = ".credentials";
+    private static final Logger logger = Logger.getLogger(LoginUtil.class);
+    private static final String FILE_NAME = System.getProperty("user.dir") + "/.credentials";
 
-    public static void saveUserData(String username, String password, String token)
+    public static void saveCredentials(Credentials credentials)
     {
         try
         {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILE_NAME));
-            out.writeObject(username);
-            out.writeObject(password);
-            out.writeObject(token);
+            out.writeObject(credentials.getUsername());
+            out.writeObject(credentials.getPassword());
+            out.writeObject(credentials.getToken());
 
             out.close();
     }
@@ -29,14 +29,15 @@ public class CredentialsUtil
         }
     }
 
-    public static Scanner loadUserData() throws NotFoundException, IOException
+    public static Credentials loadCredentials() throws NotFoundException
     {
+        logger.info(FILE_NAME);
         try
         {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILE_NAME));
-            return new Scanner(
-                    in.readObject().toString() + " " +
-                    in.readObject().toString() + " " +
+            return new Credentials(
+                    in.readObject().toString(),
+                    in.readObject().toString(),
                     in.readObject().toString()
             );
         }

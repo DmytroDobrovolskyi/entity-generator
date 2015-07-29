@@ -4,8 +4,6 @@ import com.softserve.entity.generator.salesforce.ColumnsRegister;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,7 +11,7 @@ import java.util.regex.Pattern;
 import static java.lang.Character.toLowerCase;
 
 /**
- * Class that helps in parsing different data in classes like SooqlQueryBuilder, Parser, ColumnsRegisterProcessor, SObjectRequester.
+ * Class that helps in parsing different data in classes like SooqlQueryBuilder, Parser, ColumnsRegisterProcessor.
  */
 public class ParsingUtil
 {
@@ -113,36 +111,5 @@ public class ParsingUtil
         return fieldStringBuilder
                 .delete(lastCommaIndex, lastCommaIndex + 1)
                 .toString();
-    }
-
-    /**
-     * This method serves the parsing purpose for Gson library, that requires additional information about generic type in runtime.
-     * See usage in SObjectRequester.getAll method.
-     *
-     * @param genericType genericType for parameterized list
-     * @return parameterized list with specific {@literal genericType}
-     */
-    public static ParameterizedType createParametrizedListType(final Class<?> genericType)
-    {
-        return new ParameterizedType()
-        {
-            @Override
-            public Type[] getActualTypeArguments()
-            {
-                return new Type[]{genericType};
-            }
-
-            @Override
-            public Type getRawType()
-            {
-                return List.class;
-            }
-
-            @Override
-            public Type getOwnerType()
-            {
-                return null;
-            }
-        };
     }
 }

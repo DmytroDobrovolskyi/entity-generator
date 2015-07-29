@@ -30,6 +30,6 @@ public class ProcedureExecutor
             entity.setIsProcessingNeeded(false);
             entityService.merge(entity);
         }
-        WebServiceUtil.executeApex(credentials, RESET_IS_PROCESSING_NEEDED);
+        WebServiceUtil.getInstance(credentials).executeApex(RESET_IS_PROCESSING_NEEDED);
     }
 }
