@@ -13,5 +13,4 @@ lib/*/
 *.log
 build/salesforce/sf.credentials.properties
 src\salesforce\retrieve\metadata\staticresources\resources.resource
-.credentials
 /reports
