@@ -131,7 +131,6 @@ public class SObjectJsonParser
     {
         int openingBracket = jsonArrayString.indexOf("[");
         int closingBracket = jsonArrayString.lastIndexOf("]");
-        logger.info(closingBracket);
         return new StringBuilder(jsonArrayString)
                 .delete(openingBracket, openingBracket + 1)
                 .delete(closingBracket - 1, closingBracket) //after first deleting index will shift left by one character
