@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.webservice.impl;
+package com.softserve.entity.generator.webservice;
 
 import com.sforce.soap._2005._09.outbound.NotificationMessageCNotification;
 import com.sforce.soap._2005._09.outbound.NotificationPort;
@@ -6,9 +6,7 @@ import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.service.EntityService;
-import com.softserve.entity.generator.webservice.util.OperationType;
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.jws.WebMethod;
@@ -44,37 +42,39 @@ public class NotificationPortImpl implements NotificationPort
             @WebParam(name = "Notification", targetNamespace = TARGET_NAMESPACE)
             List<NotificationMessageCNotification> notifications)
     {
-        List<Entity> entitiesToInsert = new ArrayList<Entity>();
-        List<Entity> entitiesToUpdate = new ArrayList<Entity>();
-        List<Entity> entitiesToDelete = new ArrayList<Entity>();
+        List<Entity> entitiesToInsertOrUpdate = new ArrayList<Entity>();
+        List<String> idsOfEntitiesToDelete = new ArrayList<String>();
+
         SObjectProcessor<Entity> objectProcessor = new SObjectProcessor<Entity>(sessionId, Entity.class);
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
-            String sObjectId = notificationMessage.getSObject().getSalesforceIdC().getValue();
-            Entity entityToSync = objectProcessor.getBySalesforceId(sObjectId);
+            String objectId = notificationMessage.getSObject().getExternalIdC().getValue();
 
             OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
             switch (operationType)
             {
-                case INSERT_OPERATION : entitiesToInsert.add(entityToSync);
+                case INSERT_OPERATION:
+                case UPDATE_OPERATION:
+                    entitiesToInsertOrUpdate.add(
+                            objectProcessor.getByExternalId(objectId)
+                    );
                     break;
-                case UPDATE_OPERATION : entitiesToUpdate.add(entityToSync);
-                    break;
-                case DELETE_OPERATION : entitiesToDelete.add(entityToSync);
+
+                case DELETE_OPERATION:
+                    idsOfEntitiesToDelete.add(objectId);
                     break;
             }
         }
-        syncData(entitiesToInsert, OperationType.INSERT_OPERATION);
-        syncData(entitiesToUpdate, OperationType.UPDATE_OPERATION);
-        syncData(entitiesToDelete, OperationType.DELETE_OPERATION);
+        syncData(entitiesToInsertOrUpdate, idsOfEntitiesToDelete);
         return true;
     }
 
-    private void syncData(List<Entity> entitiesToSync, OperationType operationType)
+    private void syncData(List<Entity> entitiesToSync, List<String> idsOfEntitiesToDelete)
     {
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        EntityService entityService = context.getBean(EntityService.class);
-        entityService.processBatchOperation(entitiesToSync, operationType);
+        EntityService entityService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(EntityService.class);
+
+        entityService.batchMerge(entitiesToSync);
+        entityService.batchDelete(idsOfEntitiesToDelete);
     }
 }

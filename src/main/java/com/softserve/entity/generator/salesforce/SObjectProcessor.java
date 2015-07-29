@@ -68,9 +68,9 @@ public class SObjectProcessor<T>
      * @param salesforceId id of object in Salesforce database
      * @return Java representation of Salesforce database object with {@literal salesforceId}
      */
-    public T getBySalesforceId(String salesforceId)
+    public T getByExternalId(String salesforceId)
     {
-        String sooqlQuery = SooqlQueryBuilder.buildQuery(sObjectClass) + "+WHERE+Id='" + salesforceId + "'";
+        String sooqlQuery = SooqlQueryBuilder.buildQuery(sObjectClass) + "+WHERE+EntityId__c='" + salesforceId + "'";
         String sObjectJson = getPureSObjectJson(sooqlQuery);
         if (sObjectJson.contains(NONE_OBJECTS))
         {

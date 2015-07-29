@@ -6,7 +6,6 @@ import com.softserve.entity.generator.salesforce.Credentials;
 import com.softserve.entity.generator.salesforce.ProcedureExecutor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +21,7 @@ public class EntityGenerator
     {
         Credentials credentials = LoginUtil.parseCredentials(args);
 
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
-        EntityGenerator entityGenerator = applicationContext.getBean(EntityGenerator.class);
+        EntityGenerator entityGenerator = new AnnotationConfigApplicationContext(AppConfig.class).getBean(EntityGenerator.class);
 
         entityGenerator.generateEntities(credentials);
     }

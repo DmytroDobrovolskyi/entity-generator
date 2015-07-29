@@ -51,6 +51,16 @@
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
     <fields>
+        <fullName>ExternalId__c</fullName>
+        <externalId>false</externalId>
+        <label>ExternalId</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>OperationType__c</fullName>
         <externalId>false</externalId>
         <label>OperationType</label>
@@ -71,16 +81,6 @@
         </picklist>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>SalesforceId__c</fullName>
-        <externalId>false</externalId>
-        <label>SalesforceId</label>
-        <length>50</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <label>NotificationMessage</label>
     <nameField>

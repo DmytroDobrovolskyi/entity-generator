@@ -4,6 +4,6 @@
         version="2.0">
     <endpoint
             name="NotificationPort"
-            implementation="com.softserve.entity.generator.webservice.impl.NotificationPortImpl"
+            implementation="com.softserve.entity.generator.webservice.NotificationPortImpl"
             url-pattern="/notification/sync-data"/>
 </endpoints>

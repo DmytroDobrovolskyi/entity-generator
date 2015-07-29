@@ -3,6 +3,7 @@
 
     <property name="wsdl.file" value="build/salesforce/wfoutbound.wsdl"/>
     <property name="generated.ws.classes.dir" value="build/salesforce/generated.ws.classes"/>
+    <property name="dest.jar.file" value="lib/sf-webservice-api.jar"/>
 
     <target name="wsimport">
         <mkdir dir="${generated.ws.classes.dir}"/>
@@ -13,7 +14,8 @@
     </target>
 
     <target name="ws-pack-jar">
-            <jar jarfile="lib/sf-webservice-api.jar" basedir="${generated.ws.classes.dir}"/>
+        <delete file="${dest.jar.file}"/>
+        <jar jarfile="${dest.jar.file}" basedir="${generated.ws.classes.dir}"/>
     </target>
 
     <target name="ws-generate-classes" depends="wsimport, ws-pack-jar">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 Salesforce.com Outbound Notification Web Services API Version 1.0 
-Generated on 2015-07-29 12:21:26 +0000.
+Generated on 2015-07-29 13:26:51 +0000.
 
 Copyright 2005-2015 Salesforce.com, Inc.
 All Rights Reserved
@@ -49,8 +49,8 @@ All Rights Reserved
                 <complexContent>
                     <extension base="ens:sObject">
                         <sequence>
+                        <element name="ExternalId__c" nillable="true" minOccurs="0" type="xsd:string"/>
                         <element name="OperationType__c" nillable="true" minOccurs="0" type="xsd:string"/>
-                        <element name="SalesforceId__c" nillable="true" minOccurs="0" type="xsd:string"/>
                         </sequence>
                     </extension>
                 </complexContent>

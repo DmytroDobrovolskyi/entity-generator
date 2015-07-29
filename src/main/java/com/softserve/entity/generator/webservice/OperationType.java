@@ -1,4 +1,4 @@
-package com.softserve.entity.generator.webservice.util;
+package com.softserve.entity.generator.webservice;
 
 public enum OperationType
 {

@@ -1,4 +1,4 @@
-public class NotificationMessageUtil 
+public class NotificationMessageUtil
 {
 	public static void setNotificationMessageMetadata()
     {
@@ -11,7 +11,6 @@ public class NotificationMessageUtil
             processSObjects(Trigger.new, Trigger.isInsert ? OperationType.INSERT_OPERATION : OperationType.UPDATE_OPERATION);
         }
     }
-
     private static void processSObjects(List<SObject> sObjectsToProcess, OperationType operationType)
     {
         for (SObject sObjectToProcess : sObjectsToProcess)
@@ -19,7 +18,7 @@ public class NotificationMessageUtil
             NotificationMessage__c notificationMessage = new NotificationMessage__c();
 
             notificationMessage.OperationType__c = operationType.name();
-            notificationMessage.SalesforceId__c = ((Entity__c) sObjectToProcess).Id;
+            notificationMessage.ExternalId__c = ((Entity__c) sObjectToProcess).EntityId__c;
 
             Database.insert(notificationMessage);
         }

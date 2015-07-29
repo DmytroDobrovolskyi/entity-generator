@@ -4,7 +4,6 @@ import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.EntityService;
-import com.softserve.entity.generator.webservice.util.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
 
     @Override
     @Transactional
-    public void processBatchOperation(List<Entity> entities, OperationType operationType)
+    public void batchMerge(List<Entity> entities)
     {
         for (Entity entity : entities)
         {
@@ -40,11 +39,19 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
             {
                 field.setEntity(entity);
             }
-            Entity managedEntity = entityRepository.merge(entity);
-            if (operationType.equals(OperationType.DELETE_OPERATION))
-            {
-                entityRepository.delete(managedEntity);
-            }
+            entityRepository.merge(entity);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void batchDelete(List<String> entityIdList)
+    {
+        for (String id : entityIdList)
+        {
+            entityRepository.delete(
+                    entityRepository.findById(id)
+            );
         }
     }
 }

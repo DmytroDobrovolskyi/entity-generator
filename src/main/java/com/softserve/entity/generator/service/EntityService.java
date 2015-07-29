@@ -1,7 +1,6 @@
 package com.softserve.entity.generator.service;
 
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.webservice.util.OperationType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +15,11 @@ public interface EntityService extends BaseService<Entity>
      * Deletes entities from database that was in turn deleted form Salesforce side.
      *
      * @param entities new entities list that come form Salesforce side
-    */
+     */
     void resolveDeleted(List<Entity> entities);
 
     /**
-     * Performs batch operation based on {@literal operationType} argument on newly come entities from Salesforce database.
+     * Performs batch merge operation based on newly come entities from Salesforce database.
      * Also makes parent-to-child assignment, for instance:
      * {@code
      *  Entity entity = any();
@@ -32,5 +31,12 @@ public interface EntityService extends BaseService<Entity>
      *
      * @param entities new entities list that come form Salesforce side
      */
-    void processBatchOperation(List<Entity> entities, OperationType operationType);
+    void batchMerge(List<Entity> entities);
+
+    /**
+     * Deletes all entities from database whose ids matches ids in {@literal entityIdList}.
+     *
+     * @param entityIdList ids of entities that will be deleted
+     */
+    void batchDelete(List<String> entityIdList);
 }

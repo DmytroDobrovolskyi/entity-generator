@@ -16,7 +16,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>SalesforceId__c</field>
+                <field>ExternalId__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
