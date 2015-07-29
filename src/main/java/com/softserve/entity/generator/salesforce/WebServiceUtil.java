@@ -66,7 +66,8 @@ public class WebServiceUtil
                 connectorConfig.setServiceEndpoint(serverUrl);
                 connectorConfig.setSessionId(loginResult.getSessionId());
 
-                connections.put(soapConnectionClass, new SoapConnection(connectorConfig));
+                connection = new SoapConnection(connectorConfig);
+                connections.put(soapConnectionClass, connection);
             }
 
             ExecuteAnonymousResult result = connection.executeAnonymous(apexCode);

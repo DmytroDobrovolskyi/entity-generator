@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -17,7 +17,7 @@ public class SObjectProcessorTest
     @Ignore
     public void getAllEntitiesTest()
     {
-        SObjectProcessor<Entity> SObjectProcessor = new SObjectProcessor<Entity>(mock(Credentials.class), Entity.class);
+        SObjectProcessor<Entity> SObjectProcessor = new SObjectProcessor<Entity>(anyString(), Entity.class);
         List<Entity> entities = new ArrayList<Entity>();
         when(SObjectProcessor.getAll()).thenReturn(entities);
 

@@ -1,6 +1,5 @@
 package com.softserve.entity.generator.webservice.impl;
 
-import com.softserve.entity.generator.app.util.LoginUtil;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
@@ -45,7 +44,7 @@ public class NotificationPortImpl implements NotificationPort
             List<NotificationMessageCNotification> notifications)
     {
         List<Entity> entitiesToSync = new ArrayList<Entity>();
-        SObjectProcessor<Entity> objectProcessor = new SObjectProcessor<Entity>(LoginUtil.getPersistedCredentials(), Entity.class);
+        SObjectProcessor<Entity> objectProcessor = new SObjectProcessor<Entity>(sessionId, Entity.class);
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
@@ -54,7 +53,6 @@ public class NotificationPortImpl implements NotificationPort
                     objectProcessor.getBySalesforceId(sObjectId)
             );
         }
-
         return true;
     }
 

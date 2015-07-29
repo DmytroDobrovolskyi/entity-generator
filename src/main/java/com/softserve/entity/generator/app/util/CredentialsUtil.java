@@ -9,7 +9,7 @@ import java.io.*;
 public class CredentialsUtil
 {
     private static final Logger logger = Logger.getLogger(LoginUtil.class);
-    private static final String FILE_NAME = System.getProperty("user.dir") + "/.credentials";
+    private static final String FILE_NAME = ".credentials";
 
     public static void saveCredentials(Credentials credentials)
     {
@@ -31,7 +31,6 @@ public class CredentialsUtil
 
     public static Credentials loadCredentials() throws NotFoundException
     {
-        logger.info(FILE_NAME);
         try
         {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILE_NAME));

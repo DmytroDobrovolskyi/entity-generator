@@ -30,13 +30,13 @@ public class SObjectProcessor<T>
     private static final String API_VERSION = "v34.0/";
     private static final String NONE_OBJECTS = "\"totalSize\" : 0";
 
-    private WebServiceUtil webServiceUtil;
-    private Class<T> sObjectClass;
+    private final String sessionId;
+    private final Class<T> sObjectClass;
     private final HttpClient httpClient = HttpClientBuilder.create().build();
 
-    public SObjectProcessor(Credentials credentials, Class<T> sObjectClass)
+    public SObjectProcessor(String sessionId, Class<T> sObjectClass)
     {
-        this.webServiceUtil = WebServiceUtil.getInstance(credentials);
+        this.sessionId = sessionId;
         this.sObjectClass = sObjectClass;
     }
 
@@ -82,7 +82,7 @@ public class SObjectProcessor<T>
     private String getPureSObjectJson(String sooqlQuery)
     {
         HttpGet httpGet = new HttpGet(BASE_URL + API_VERSION + "query/?q=" + sooqlQuery);
-        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + webServiceUtil.getSessionId()));
+        httpGet.addHeader(new BasicHeader("Authorization", "OAuth " + sessionId));
         httpGet.addHeader(new BasicHeader("X-PrettyPrint", "1"));
         try
         {

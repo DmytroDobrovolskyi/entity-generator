@@ -3,8 +3,8 @@ package com.softserve.entity.generator.app;
 import com.softserve.entity.generator.app.util.LoginUtil;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.salesforce.Credentials;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
+import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class EntitySaver
 
     public static void main(String[] args)
     {
-        Credentials credentials = LoginUtil.parseCredentials(args);
-        SObjectProcessor<Entity> SObjectProcessor = new SObjectProcessor<Entity>(credentials, Entity.class);
+        WebServiceUtil webServiceUtil = WebServiceUtil.getInstance(LoginUtil.parseCredentials(args));
+        SObjectProcessor<Entity> SObjectProcessor = new SObjectProcessor<Entity>(webServiceUtil.getSessionId(), Entity.class);
 
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
         EntitySaver entitySaver = applicationContext.getBean(EntitySaver.class);
