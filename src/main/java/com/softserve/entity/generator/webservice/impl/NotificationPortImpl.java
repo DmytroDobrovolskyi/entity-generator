@@ -1,8 +1,15 @@
 package com.softserve.entity.generator.webservice.impl;
 
+import com.softserve.entity.generator.app.util.LoginUtil;
+import com.softserve.entity.generator.config.AppConfig;
+import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.salesforce.SObjectProcessor;
+import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.webservice.NotificationMessageCNotification;
 import com.softserve.entity.generator.webservice.NotificationPort;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -10,6 +17,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebService(name = "NotificationPort", targetNamespace = "http://soap.sforce.com/2005/09/outbound")
@@ -36,12 +44,24 @@ public class NotificationPortImpl implements NotificationPort
             @WebParam(name = "Notification", targetNamespace = TARGET_NAMESPACE)
             List<NotificationMessageCNotification> notifications)
     {
+        List<Entity> entitiesToSync = new ArrayList<Entity>();
+        SObjectProcessor<Entity> objectProcessor = new SObjectProcessor<Entity>(LoginUtil.getPersistedCredentials(), Entity.class);
+
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
-            logger.info(notificationMessage.getSObject().getOperationTypeC().getValue());
-            logger.info(notificationMessage.getSObject().getSalesforceIdC().getValue());
-
+            String sObjectId = notificationMessage.getSObject().getSalesforceIdC().getValue();
+            entitiesToSync.add(
+                    objectProcessor.getBySalesforceId(sObjectId)
+            );
         }
+
         return true;
+    }
+
+    private void syncData(List<Entity> entitiesToSync)
+    {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        EntityService entityService = context.getBean(EntityService.class);
+        entityService.batchMerge(entitiesToSync);
     }
 }

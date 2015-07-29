@@ -11,7 +11,7 @@ public class LoginUtil
 
     private static Credentials credentials;
 
-    public static Credentials getCredentials()
+    public static Credentials getPersistedCredentials()
     {
         if (credentials == null)
         {
@@ -72,7 +72,7 @@ public class LoginUtil
                 System.exit(1);
             }
         }
-        return getCredentials();
+        return getPersistedCredentials();
     }
 
     private static void help(Options options)
