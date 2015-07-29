@@ -29,7 +29,7 @@ public class NotificationPortImpl implements NotificationPort
     @WebMethod
     @WebResult(name = "Ack", targetNamespace = TARGET_NAMESPACE)
     @RequestWrapper(localName = "notifications", targetNamespace = TARGET_NAMESPACE, className = "com.softserve.entity.generator.webservice.Notifications")
-    @ResponseWrapper(localName = TARGET_NAMESPACE, targetNamespace = TARGET_NAMESPACE, className = "com.softserve.entity.generator.webservice.NotificationsResponse")
+    @ResponseWrapper(localName = "notificationsResponse", targetNamespace = TARGET_NAMESPACE, className = "com.softserve.entity.generator.webservice.NotificationsResponse")
     public boolean notifications(
             @WebParam(name = "OrganizationId", targetNamespace = TARGET_NAMESPACE)
             String organizationId,
