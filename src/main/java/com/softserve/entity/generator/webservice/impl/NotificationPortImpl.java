@@ -6,6 +6,7 @@ import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.webservice.NotificationMessageCNotification;
 import com.softserve.entity.generator.webservice.NotificationPort;
+import com.softserve.entity.generator.webservice.util.OperationType;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,8 +17,9 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebService(name = "NotificationPort", targetNamespace = "http://soap.sforce.com/2005/09/outbound")
 public class NotificationPortImpl implements NotificationPort
@@ -43,23 +45,25 @@ public class NotificationPortImpl implements NotificationPort
             @WebParam(name = "Notification", targetNamespace = TARGET_NAMESPACE)
             List<NotificationMessageCNotification> notifications)
     {
-        List<Entity> entitiesToSync = new ArrayList<Entity>();
+        Map<Entity, OperationType> entitiesToSync = new HashMap<Entity, OperationType>();
         SObjectProcessor<Entity> objectProcessor = new SObjectProcessor<Entity>(sessionId, Entity.class);
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
             String sObjectId = notificationMessage.getSObject().getSalesforceIdC().getValue();
-            entitiesToSync.add(
-                    objectProcessor.getBySalesforceId(sObjectId)
-            );
+            OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
+
+            entitiesToSync.put(objectProcessor.getBySalesforceId(sObjectId), operationType);
         }
+
+        syncData(entitiesToSync);
         return true;
     }
 
-    private void syncData(List<Entity> entitiesToSync)
+    private void syncData(Map<Entity, OperationType> entitiesToSync)
     {
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         EntityService entityService = context.getBean(EntityService.class);
-        entityService.batchMerge(entitiesToSync);
+        entityService.processBatchOperation(entitiesToSync);
     }
 }

@@ -34,6 +34,6 @@ public class EntitySaver
 
     public void saveEntities(List<Entity> receivedEntities)
     {
-        entityService.batchMerge(receivedEntities);
+        entityService.processBatchOperation(receivedEntities);
     }
 }

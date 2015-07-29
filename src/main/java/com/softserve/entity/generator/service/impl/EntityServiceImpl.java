@@ -4,11 +4,13 @@ import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.EntityService;
+import com.softserve.entity.generator.webservice.util.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EntityServiceImpl extends BaseServiceImpl<Entity> implements EntityService
@@ -31,15 +33,20 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
 
     @Override
     @Transactional
-    public void batchMerge(List<Entity> entities)
+    public void processBatchOperation(Map<Entity, OperationType> entitiesToSync)
     {
-        for (Entity entity : entities)
+        for (Map.Entry<Entity, OperationType> entry : entitiesToSync.entrySet())
         {
-            for (Field field : entity.getFields())
+            Entity entityToSync = entry.getKey();
+            for (Field field : entityToSync.getFields())
             {
-                field.setEntity(entity);
+                field.setEntity(entityToSync);
             }
-            entityRepository.merge(entity);
+            Entity managedEntity = entityRepository.merge(entityToSync);
+            if (entry.getValue().equals(OperationType.DELETE_OPERATION))
+            {
+                entityRepository.delete(managedEntity);
+            }
         }
     }
 }
