@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sf="antlib:com.salesforce">
+
+    <property name="wsdl.file" value="build/salesforce/wfoutbound.wsdl"/>
+    <property name="generated.ws.classes.dir" value="build/salesforce/generated.ws.classes"/>
+
+    <target name="wsimport">
+        <mkdir dir="${generated.ws.classes.dir}"/>
+        <exec executable="wsimport">
+            <arg value="${wsdl.file}"/>
+            <arg line="-d ${generated.ws.classes.dir}"/>
+        </exec>
+    </target>
+
+    <target name="ws-pack-jar">
+            <jar jarfile="lib/sf-webservice-api.jar" basedir="${generated.ws.classes.dir}"/>
+    </target>
+
+    <target name="ws-generate-classes" depends="wsimport, ws-pack-jar">
+        <delete dir="${generated.ws.classes.dir}"/>
+    </target>
+
+</project>

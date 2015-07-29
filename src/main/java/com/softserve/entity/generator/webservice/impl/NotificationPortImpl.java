@@ -1,11 +1,11 @@
 package com.softserve.entity.generator.webservice.impl;
 
+import com.sforce.soap._2005._09.outbound.NotificationMessageCNotification;
+import com.sforce.soap._2005._09.outbound.NotificationPort;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.service.EntityService;
-import com.softserve.entity.generator.webservice.NotificationMessageCNotification;
-import com.softserve.entity.generator.webservice.NotificationPort;
 import com.softserve.entity.generator.webservice.util.OperationType;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;

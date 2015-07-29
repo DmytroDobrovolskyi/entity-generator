@@ -10,6 +10,7 @@
 
     <import file="build/salesforce/sf.build.xml"/>
     <import file="build/salesforce/sf.purge.build.xml"/>
+    <import file="build/salesforce/webservice.build.xml"/>
 
     <target name="deploy" depends="copy-war, tomcat-start"/>
 
