@@ -6,6 +6,7 @@ import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.EntityService;
+import com.softserve.entity.generator.webservice.util.OperationType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -34,6 +35,6 @@ public class EntitySaver
 
     public void saveEntities(List<Entity> receivedEntities)
     {
-        entityService.processBatchOperation(receivedEntities);
+        entityService.processBatchOperation(receivedEntities, OperationType.UPDATE_OPERATION);
     }
 }

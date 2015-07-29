@@ -17,9 +17,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @WebService(name = "NotificationPort", targetNamespace = "http://soap.sforce.com/2005/09/outbound")
 public class NotificationPortImpl implements NotificationPort
@@ -45,25 +44,37 @@ public class NotificationPortImpl implements NotificationPort
             @WebParam(name = "Notification", targetNamespace = TARGET_NAMESPACE)
             List<NotificationMessageCNotification> notifications)
     {
-        Map<Entity, OperationType> entitiesToSync = new HashMap<Entity, OperationType>();
+        List<Entity> entitiesToInsert = new ArrayList<Entity>();
+        List<Entity> entitiesToUpdate = new ArrayList<Entity>();
+        List<Entity> entitiesToDelete = new ArrayList<Entity>();
         SObjectProcessor<Entity> objectProcessor = new SObjectProcessor<Entity>(sessionId, Entity.class);
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
             String sObjectId = notificationMessage.getSObject().getSalesforceIdC().getValue();
+            Entity entityToSync = objectProcessor.getBySalesforceId(sObjectId);
+
             OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
-
-            entitiesToSync.put(objectProcessor.getBySalesforceId(sObjectId), operationType);
+            switch (operationType)
+            {
+                case INSERT_OPERATION : entitiesToInsert.add(entityToSync);
+                    break;
+                case UPDATE_OPERATION : entitiesToUpdate.add(entityToSync);
+                    break;
+                case DELETE_OPERATION : entitiesToDelete.add(entityToSync);
+                    break;
+            }
         }
-
-        syncData(entitiesToSync);
+        syncData(entitiesToInsert, OperationType.INSERT_OPERATION);
+        syncData(entitiesToUpdate, OperationType.UPDATE_OPERATION);
+        syncData(entitiesToDelete, OperationType.DELETE_OPERATION);
         return true;
     }
 
-    private void syncData(Map<Entity, OperationType> entitiesToSync)
+    private void syncData(List<Entity> entitiesToSync, OperationType operationType)
     {
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         EntityService entityService = context.getBean(EntityService.class);
-        entityService.processBatchOperation(entitiesToSync);
+        entityService.processBatchOperation(entitiesToSync, operationType);
     }
 }

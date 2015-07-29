@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EntityServiceImpl extends BaseServiceImpl<Entity> implements EntityService
@@ -33,17 +32,16 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
 
     @Override
     @Transactional
-    public void processBatchOperation(Map<Entity, OperationType> entitiesToSync)
+    public void processBatchOperation(List<Entity> entities, OperationType operationType)
     {
-        for (Map.Entry<Entity, OperationType> entry : entitiesToSync.entrySet())
+        for (Entity entity : entities)
         {
-            Entity entityToSync = entry.getKey();
-            for (Field field : entityToSync.getFields())
+            for (Field field : entity.getFields())
             {
-                field.setEntity(entityToSync);
+                field.setEntity(entity);
             }
-            Entity managedEntity = entityRepository.merge(entityToSync);
-            if (entry.getValue().equals(OperationType.DELETE_OPERATION))
+            Entity managedEntity = entityRepository.merge(entity);
+            if (operationType.equals(OperationType.DELETE_OPERATION))
             {
                 entityRepository.delete(managedEntity);
             }

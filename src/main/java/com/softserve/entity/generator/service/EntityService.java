@@ -5,7 +5,6 @@ import com.softserve.entity.generator.webservice.util.OperationType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Business layer interface that do required business logic on Entity object.
@@ -21,7 +20,7 @@ public interface EntityService extends BaseService<Entity>
     void resolveDeleted(List<Entity> entities);
 
     /**
-     * Performs batch operation based on {@literal operationType} value on newly come entities from Salesforce database.
+     * Performs batch operation based on {@literal operationType} argument on newly come entities from Salesforce database.
      * Also makes parent-to-child assignment, for instance:
      * {@code
      *  Entity entity = any();
@@ -31,7 +30,7 @@ public interface EntityService extends BaseService<Entity>
      *  }
      * }
      *
-     * @param entitiesToSync new entities list that come form Salesforce side
+     * @param entities new entities list that come form Salesforce side
      */
-    void processBatchOperation(Map<Entity, OperationType> entitiesToSync);
+    void processBatchOperation(List<Entity> entities, OperationType operationType);
 }
