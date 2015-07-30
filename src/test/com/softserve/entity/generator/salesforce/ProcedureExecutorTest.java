@@ -46,7 +46,7 @@ public class ProcedureExecutorTest
     @Ignore
     public void generateAndExecuteTest()
     {
-        procedureExecutor.generateAndExecute(mock(Credentials.class));
+        procedureExecutor.generateAndExecute(mock(SalesforceCredentials.class));
 
         List<Entity> entities = Arrays.asList(mock(Entity.class), mock(Entity.class), mock(Entity.class));
 

@@ -4,9 +4,9 @@ import com.softserve.entity.generator.salesforce.ColumnsRegister;
 import com.softserve.entity.generator.salesforce.SObjectMetadata;
 import org.apache.log4j.Logger;
 
-public class SooqlQueryBuilder
+public class SoqlQueryBuilder
 {
-    private static final Logger logger = Logger.getLogger(SooqlQueryBuilder.class);
+    private static final Logger logger = Logger.getLogger(SoqlQueryBuilder.class);
 
     public static String buildQuery(Class<?> sObjectClass)
     {

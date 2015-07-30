@@ -21,7 +21,7 @@ public class ParsingUtil
      * Checks if SObject is child in salesforce database relationships by its name.
      *
      * @param sObjectName name of SObject
-     * @return true if sObjectName is child in salesforce database relationships, false otherwise
+     * @return true if sObjectClassName is child in salesforce database relationships, false otherwise
      */
     public static boolean isChild(String sObjectName)
     {
@@ -30,20 +30,24 @@ public class ParsingUtil
 
     /**
      * Converts salesforce-style classname to Java Class.
+     * Note: raw type was used intentionally because of webservice issue.
      *
-     * @param sObjectName salesforce-style classname
+     * @param sObjectClassName salesforce-style classname
      * @return corresponding java Class object
      */
-    public static Class<?> toJavaClass(String sObjectName)
+    public static Class toJavaClass(String sObjectClassName)
     {
-        String javaStyleClassName = sObjectName.replace("s__r", "");
+        String javaStyleClassName = sObjectClassName
+                .replace("__c", "")
+                .replace("__r", "")
+                .replace("s__r", "");
         try
         {
             return Class.forName(ColumnsRegister.getFullName(javaStyleClassName));
         }
         catch (ClassNotFoundException ex)
         {
-            logger.error("Class not found: " + javaStyleClassName, ex);
+            logger.error("Cannot map SObject class " + sObjectClassName + " to Java class");
             throw new AssertionError(ex);
         }
     }
@@ -79,7 +83,7 @@ public class ParsingUtil
     /**
      * Converts java.lang.reflect.Field to salesforce-like stringified field
      *
-     * @param field field to convert
+     * @param field   field to convert
      * @param postfix extension like __c or __r
      * @return formatted stringified {@literal field} in salesforce style
      */

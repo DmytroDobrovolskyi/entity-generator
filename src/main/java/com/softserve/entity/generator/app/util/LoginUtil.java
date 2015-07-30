@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.app.util;
 
-import com.softserve.entity.generator.salesforce.Credentials;
+import com.softserve.entity.generator.salesforce.SalesforceCredentials;
 import javassist.NotFoundException;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
@@ -9,15 +9,15 @@ public class LoginUtil
 {
     private static final Logger logger = Logger.getLogger(LoginUtil.class);
 
-    private static Credentials credentials;
+    private static SalesforceCredentials salesforceCredentials;
 
-    public static Credentials getPersistedCredentials()
+    public static SalesforceCredentials getPersistedCredentials()
     {
-        if (credentials == null)
+        if (salesforceCredentials == null)
         {
             try
             {
-                credentials = CredentialsUtil.loadCredentials();
+                salesforceCredentials = CredentialsUtil.loadCredentials();
             }
             catch (NotFoundException ex)
             {
@@ -25,10 +25,10 @@ public class LoginUtil
                 System.exit(1);
             }
         }
-        return credentials;
+        return salesforceCredentials;
     }
 
-    public static Credentials parseCredentials(String[] credentials)
+    public static SalesforceCredentials parseCredentials(String[] credentials)
     {
         Options options = new Options();
 
@@ -62,8 +62,8 @@ public class LoginUtil
                     System.exit(1);
                 }
 
-                Credentials parsedCredentials = new Credentials(username, password, token);
-                CredentialsUtil.saveCredentials(parsedCredentials);
+                SalesforceCredentials parsedSalesforceCredentials = new SalesforceCredentials(username, password, token);
+                CredentialsUtil.saveCredentials(parsedSalesforceCredentials);
             }
             catch (ParseException ex)
             {

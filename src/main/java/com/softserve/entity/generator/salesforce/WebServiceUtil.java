@@ -17,25 +17,25 @@ public class WebServiceUtil
 {
     private static final Logger logger = Logger.getLogger(WebServiceUtil.class);
 
-    private static final Map<Credentials, WebServiceUtil> instanceCache = new HashMap<Credentials, WebServiceUtil>();
+    private static final Map<SalesforceCredentials, WebServiceUtil> instanceCache = new HashMap<SalesforceCredentials, WebServiceUtil>();
 
     //holds different connection to salesforce services
     private final Map<Class<?>, Object> connections = new HashMap<Class<?>, Object>();
 
     private LoginResult loginResult;
-    private final Credentials credentials;
+    private final SalesforceCredentials salesforceCredentials;
 
-    private WebServiceUtil(Credentials credentials)
+    private WebServiceUtil(SalesforceCredentials salesforceCredentials)
     {
-        this.credentials = credentials;
+        this.salesforceCredentials = salesforceCredentials;
     }
 
-    public static WebServiceUtil getInstance(Credentials credentials)
+    public static WebServiceUtil getInstance(SalesforceCredentials salesforceCredentials)
     {
-        WebServiceUtil instance = instanceCache.get(credentials);
+        WebServiceUtil instance = instanceCache.get(salesforceCredentials);
         if (instance == null)
         {
-            instance = new WebServiceUtil(credentials);
+            instance = new WebServiceUtil(salesforceCredentials);
         }
         return instance;
     }
@@ -85,7 +85,7 @@ public class WebServiceUtil
      *
      * @return login result
      */
-    private LoginResult getLoginResult()
+    public LoginResult getLoginResult()
     {
         if (loginResult == null)
         {
@@ -99,9 +99,9 @@ public class WebServiceUtil
         Class<PartnerConnection> partnerConnectionClass = PartnerConnection.class;
         PartnerConnection connection = ReflectionUtil.castSafe(partnerConnectionClass, connections.get(partnerConnectionClass));
 
-        String username = credentials.getUsername();
-        String password = credentials.getPassword();
-        String secToken = credentials.getToken();
+        String username = salesforceCredentials.getUsername();
+        String password = salesforceCredentials.getPassword();
+        String secToken = salesforceCredentials.getToken();
 
         try
         {

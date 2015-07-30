@@ -16,7 +16,7 @@ import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.entity.generator.entity.util.TestEntityGenerator.generateEntity;
+import static com.softserve.entity.generator.entity.util.FakeEntityGenerator.generateEntity;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 

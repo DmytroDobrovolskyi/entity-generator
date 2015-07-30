@@ -1,7 +1,6 @@
 package com.softserve.entity.generator.service.impl;
 
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.entity.Field;
 import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,32 +25,6 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
             {
                 entityRepository.delete(managedEntity);
             }
-        }
-    }
-
-    @Override
-    @Transactional
-    public void batchMerge(List<Entity> entities)
-    {
-        for (Entity entity : entities)
-        {
-            for (Field field : entity.getFields())
-            {
-                field.setEntity(entity);
-            }
-            entityRepository.merge(entity);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void batchDelete(List<String> entityIdList)
-    {
-        for (String id : entityIdList)
-        {
-            entityRepository.delete(
-                    entityRepository.findById(id)
-            );
         }
     }
 }

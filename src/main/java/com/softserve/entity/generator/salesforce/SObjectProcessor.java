@@ -2,7 +2,7 @@ package com.softserve.entity.generator.salesforce;
 
 import com.google.gson.Gson;
 import com.softserve.entity.generator.salesforce.util.SObjectJsonParser;
-import com.softserve.entity.generator.salesforce.util.SooqlQueryBuilder;
+import com.softserve.entity.generator.salesforce.util.SoqlQueryBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -48,7 +48,7 @@ public class SObjectProcessor<T>
      */
     public List<T> getAll()
     {
-        String sObjectJson = getPureSObjectJson(SooqlQueryBuilder.buildQuery(sObjectClass));
+        String sObjectJson = getPureSObjectJson(SoqlQueryBuilder.buildQuery(sObjectClass));
 
         if (sObjectJson.contains(NONE_OBJECTS))
         {
@@ -65,12 +65,12 @@ public class SObjectProcessor<T>
      * Retrieve single object form Salesforce database by its id performing all required operation like making request
      * and parsing retrieved data to Java objects.
      *
-     * @param salesforceId id of object in Salesforce database
-     * @return Java representation of Salesforce database object with {@literal salesforceId}
+     * @param externalId id of object in Salesforce database
+     * @return Java representation of Salesforce database object with {@literal externalId}
      */
-    public T getByExternalId(String salesforceId)
+    public T getByExternalId(String externalId)
     {
-        String sooqlQuery = SooqlQueryBuilder.buildQuery(sObjectClass) + "+WHERE+EntityId__c='" + salesforceId + "'";
+        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass) + "+WHERE+EntityId__c='" + externalId + "'"; //TODO
         String sObjectJson = getPureSObjectJson(sooqlQuery);
         if (sObjectJson.contains(NONE_OBJECTS))
         {

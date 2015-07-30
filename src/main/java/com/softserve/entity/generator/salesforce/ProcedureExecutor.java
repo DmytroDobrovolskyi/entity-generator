@@ -19,7 +19,7 @@ public class ProcedureExecutor
     @Autowired
     private EntityService entityService;
 
-    public void generateAndExecute(Credentials credentials)
+    public void generateAndExecute(SalesforceCredentials salesforceCredentials)
     {
         List<Entity> entitiesToProcess = entityService.findAll();
 
@@ -30,6 +30,6 @@ public class ProcedureExecutor
             entity.setIsProcessingNeeded(false);
             entityService.merge(entity);
         }
-        WebServiceUtil.getInstance(credentials).executeApex(RESET_IS_PROCESSING_NEEDED);
+        WebServiceUtil.getInstance(salesforceCredentials).executeApex(RESET_IS_PROCESSING_NEEDED);
     }
 }

@@ -3,9 +3,9 @@ package com.softserve.entity.generator.webservice;
 import com.sforce.soap._2005._09.outbound.NotificationMessageCNotification;
 import com.sforce.soap._2005._09.outbound.NotificationPort;
 import com.softserve.entity.generator.config.AppConfig;
-import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
-import com.softserve.entity.generator.service.EntityService;
+import com.softserve.entity.generator.salesforce.util.ParsingUtil;
+import com.softserve.entity.generator.service.BatchService;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebService(name = "NotificationPort", targetNamespace = "http://soap.sforce.com/2005/09/outbound")
-public class NotificationPortImpl implements NotificationPort
+public class NotificationPortImpl<T> implements NotificationPort
 {
     private static final Logger logger = Logger.getLogger(NotificationPortImpl.class);
     private static final String TARGET_NAMESPACE = "http://soap.sforce.com/2005/09/outbound";
@@ -42,13 +42,18 @@ public class NotificationPortImpl implements NotificationPort
             @WebParam(name = "Notification", targetNamespace = TARGET_NAMESPACE)
             List<NotificationMessageCNotification> notifications)
     {
-        List<Entity> entitiesToInsertOrUpdate = new ArrayList<Entity>();
+        List<T> entitiesToInsertOrUpdate = new ArrayList<T>();
         List<String> idsOfEntitiesToDelete = new ArrayList<String>();
-
-        SObjectProcessor<Entity> objectProcessor = new SObjectProcessor<Entity>(sessionId, Entity.class);
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
+            @SuppressWarnings("uncheked")
+            SObjectProcessor<T> objectProcessor = new SObjectProcessor<T>(
+                    sessionId,
+                    ParsingUtil.toJavaClass(
+                            notificationMessage.getSObject().getSObjectTypeC().getValue()
+                    )
+            );
             String objectId = notificationMessage.getSObject().getExternalIdC().getValue();
 
             OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
@@ -70,9 +75,9 @@ public class NotificationPortImpl implements NotificationPort
         return true;
     }
 
-    private void syncData(List<Entity> entitiesToSync, List<String> idsOfEntitiesToDelete)
+    private void syncData(List<T> entitiesToSync, List<String> idsOfEntitiesToDelete)
     {
-        EntityService entityService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(EntityService.class);
+        BatchService<T> entityService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(BatchService.class);
 
         entityService.batchMerge(entitiesToSync);
         entityService.batchDelete(idsOfEntitiesToDelete);

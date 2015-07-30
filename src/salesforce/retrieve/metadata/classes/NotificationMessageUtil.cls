@@ -19,7 +19,7 @@ public class NotificationMessageUtil
 
             notificationMessage.OperationType__c = operationType.name();
             notificationMessage.ExternalId__c = ((Entity__c) sObjectToProcess).EntityId__c;
-
+            notificationMessage.SObjectType__c = String.valueOf(sObjectsToProcess.getSObjectType());
             Database.insert(notificationMessage);
         }
     }
