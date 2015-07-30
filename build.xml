@@ -62,7 +62,7 @@
         </war>
     </target>
 
-    <target name="package-main" depends="test">
+    <target name="package-main" depends="compile"> <!--TODO: TEST-->
         <jar jarfile="${main.jar}" basedir=".">
             <fileset dir="${classes.to.copy}">
                 <include name="**"/>

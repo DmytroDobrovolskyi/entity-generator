@@ -70,7 +70,8 @@ public class SObjectProcessor<T>
      */
     public T getByExternalId(String externalId)
     {
-        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass) + "+WHERE+EntityId__c='" + externalId + "'"; //TODO
+        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass) + "+WHERE+" + sObjectClass.getSimpleName() +
+                "Id='" + externalId + "'";
         String sObjectJson = getPureSObjectJson(sooqlQuery);
         if (sObjectJson.contains(NONE_OBJECTS))
         {

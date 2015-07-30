@@ -37,10 +37,7 @@ public class ParsingUtil
      */
     public static Class toJavaClass(String sObjectClassName)
     {
-        String javaStyleClassName = sObjectClassName
-                .replace("__c", "")
-                .replace("__r", "")
-                .replace("s__r", "");
+        String javaStyleClassName = sObjectClassName.replaceAll("(__c)|(s__r)|(__r)", "");
         try
         {
             return Class.forName(ColumnsRegister.getFullName(javaStyleClassName));
