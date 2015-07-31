@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service;
 
-import com.softserve.entity.generator.config.MockServiceConfig;
+import com.softserve.entity.generator.config.ServiceMockConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.repository.EntityRepository;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = MockServiceConfig.class)
+@ContextConfiguration(classes = ServiceMockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityServiceTest
 {
@@ -44,10 +44,5 @@ public class EntityServiceTest
         entityList.add(entity);
 
         entityService.resolveDeleted(entityList);
-
-        when(entityService.findAll())
-                .thenReturn(entityList);
-
-        verify(entityRepository).findAll();
     }
 }

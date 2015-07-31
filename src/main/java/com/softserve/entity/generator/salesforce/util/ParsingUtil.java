@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.salesforce.util;
 
+import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.salesforce.ColumnsRegister;
 import org.apache.log4j.Logger;
 
@@ -35,12 +36,13 @@ public class ParsingUtil
      * @param sObjectClassName salesforce-style classname
      * @return corresponding java Class object
      */
-    public static Class toJavaClass(String sObjectClassName)
+    @SuppressWarnings("unchecked")
+    public static <T> Class<T> toJavaClass(String sObjectClassName)
     {
         String javaStyleClassName = sObjectClassName.replaceAll("(__c)|(s__r)|(__r)", "");
         try
         {
-            return Class.forName(ColumnsRegister.getFullName(javaStyleClassName));
+            return (Class<T>) Class.forName(ColumnsRegister.getFullName(javaStyleClassName)).asSubclass(DatabaseObject.class);
         }
         catch (ClassNotFoundException ex)
         {

@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.repository;
 
-import com.softserve.entity.generator.config.MockRepositoryConfig;
+import com.softserve.entity.generator.config.RepositoryMockConfig;
 import com.softserve.entity.generator.entity.Entity;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.List;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.any;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = MockRepositoryConfig.class)
+@ContextConfiguration(classes = RepositoryMockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityRepositoryTest
 {
@@ -72,7 +66,7 @@ public class EntityRepositoryTest
     public void testFindById()
     {
         String id = "testId";
-        repository.findById(id);
+
 
         verify(entityManager).find(Entity.class, id);
     }
@@ -87,7 +81,7 @@ public class EntityRepositoryTest
                 .when(entityManager)
                 .createQuery(query, entityClass);
 
-        assertThat(repository.findAll(), is(any(List.class)));
+
 
         verify(entityManager).createQuery(query, entityClass);
     }

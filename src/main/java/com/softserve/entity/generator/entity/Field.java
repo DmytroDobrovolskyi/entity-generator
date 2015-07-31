@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @javax.persistence.Entity
 @Table(name = "FIELD")
-public class Field
+public class Field implements DatabaseObject
 {
     @Id
     @Column(name = "Field_Id")

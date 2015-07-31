@@ -12,7 +12,7 @@ import static org.mockito.Mockito.mock;
 
 @Configuration
 @ComponentScan(basePackages = "com.softserve.entity.generator.salesforce")
-public class MockSalesforceConfig
+public class SalesforceMockConfig
 {
     @Bean
     public EntityService entityServiceMock()

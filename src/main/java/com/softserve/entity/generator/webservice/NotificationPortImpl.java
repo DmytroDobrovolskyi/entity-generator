@@ -3,6 +3,7 @@ package com.softserve.entity.generator.webservice;
 import com.sforce.soap._2005._09.outbound.NotificationMessageCNotification;
 import com.sforce.soap._2005._09.outbound.NotificationPort;
 import com.softserve.entity.generator.config.AppConfig;
+import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.service.BatchService;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebService(name = "NotificationPort", targetNamespace = "http://soap.sforce.com/2005/09/outbound")
-public class NotificationPortImpl<T> implements NotificationPort
+public class NotificationPortImpl<T extends DatabaseObject> implements NotificationPort
 {
     private static final Logger logger = Logger.getLogger(NotificationPortImpl.class);
     private static final String TARGET_NAMESPACE = "http://soap.sforce.com/2005/09/outbound";
@@ -47,10 +48,9 @@ public class NotificationPortImpl<T> implements NotificationPort
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
-            @SuppressWarnings("uncheked")
             SObjectProcessor<T> objectProcessor = new SObjectProcessor<T>(
                     sessionId,
-                    ParsingUtil.toJavaClass(
+                    ParsingUtil.<T>toJavaClass(
                             notificationMessage.getSObject().getSObjectTypeC().getValue()
                     )
             );
@@ -77,9 +77,10 @@ public class NotificationPortImpl<T> implements NotificationPort
 
     private void syncData(List<T> entitiesToSync, List<String> idsOfEntitiesToDelete)
     {
-        BatchService<T> entityService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(BatchService.class);
+        @SuppressWarnings("unchecked")
+        BatchService<T> batchService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(BatchService.class);
 
-        entityService.batchMerge(entitiesToSync);
-        entityService.batchDelete(idsOfEntitiesToDelete);
+        batchService.batchMerge(entitiesToSync);
+        batchService.batchDelete(idsOfEntitiesToDelete);
     }
 }

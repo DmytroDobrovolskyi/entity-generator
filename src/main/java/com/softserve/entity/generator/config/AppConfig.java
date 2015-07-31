@@ -15,7 +15,8 @@ import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = "com.softserve.entity.generator")
+@ComponentScan(basePackages = "com.softserve.entity.generator", excludeFilters = {
+@ComponentScan.Filter(type = FilterType.REGEX, pattern="com.softserve.entity.generator.config.*MockConfig")})
 @PropertySource(value = "/META-INF/database.properties")
 public class AppConfig
 {

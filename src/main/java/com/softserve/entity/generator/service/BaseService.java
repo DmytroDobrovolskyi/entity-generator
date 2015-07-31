@@ -2,18 +2,12 @@ package com.softserve.entity.generator.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public interface BaseService<T>
 {
-    void save(T entity);
+    void save(T object);
 
-    void delete(T entity);
+    void delete(T object);
 
-    T merge(T entity);
-
-    T findById(String id);
-
-    List<T> findAll();
+    T merge(T object);
 }

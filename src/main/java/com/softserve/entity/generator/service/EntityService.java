@@ -17,4 +17,6 @@ public interface EntityService extends BaseService<Entity>
      * @param entities new entities list that come form Salesforce side
      */
     void resolveDeleted(List<Entity> entities);
+
+    void applyData();
 }

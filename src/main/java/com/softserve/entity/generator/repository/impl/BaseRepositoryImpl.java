@@ -1,58 +1,35 @@
 package com.softserve.entity.generator.repository.impl;
 
+import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.repository.BaseRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Repository
 @Primary
-public class BaseRepositoryImpl<T> implements BaseRepository<T>
+public class BaseRepositoryImpl<T extends DatabaseObject> implements BaseRepository<T>
 {
-    private Class<T> entityClass;
-
     @PersistenceContext
     protected EntityManager entityManager;
 
-    public BaseRepositoryImpl(Class<T> entityClass)
-    {
-        this.entityClass = entityClass;
-    }
-
-    protected BaseRepositoryImpl() {}
-
     @Override
-    public void save(T entity)
+    public void save(T object)
     {
-        entityManager.persist(entity);
+        entityManager.persist(object);
     }
 
     @Override
-    public void delete(T entity)
+    public void delete(T object)
     {
-        entityManager.remove(entity);
+        entityManager.remove(object);
     }
 
     @Override
-    public T merge(T entity)
+    public T merge(T object)
     {
-        return entityManager.merge(entity);
-    }
-
-    @Override
-    public T findById(String id)
-    {
-        return entityManager.find(entityClass, id);
-    }
-
-    @Override
-    public List<T> findAll()
-    {
-        return entityManager
-                .createQuery("FROM " + entityClass.getSimpleName(), entityClass)
-                .getResultList();
+        return entityManager.merge(object);
     }
 }

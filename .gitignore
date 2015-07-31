@@ -9,6 +9,7 @@ out/
 *.war
 /dist
 lib/*/
+/IlluminatedCloud
 !/lib/*.jar
 *.log
 build/salesforce/sf.credentials.properties

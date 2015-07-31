@@ -8,7 +8,7 @@ import java.util.*;
 
 @javax.persistence.Entity
 @Table(name = "ENTITY")
-public class Entity
+public class Entity implements DatabaseObject
 {
     @Id
     @Column(name = "Entity_Id")
@@ -82,7 +82,11 @@ public class Entity
 
     public void setFields(Set<Field> fields)
     {
-        this.fields = fields;
+        for (Field field : fields)
+        {
+            field.setEntity(this);
+        }
+        this.fields.addAll(fields);
     }
 
     @Override

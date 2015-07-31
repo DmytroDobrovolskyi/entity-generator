@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.config;
 
+import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.repository.impl.BaseRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,9 +13,15 @@ import javax.persistence.EntityManager;
 import static org.mockito.Mockito.mock;
 
 @Configuration
-@ComponentScan(basePackages = "com.softserve.entity.generator.repository")
-public class MockRepositoryConfig
+@ComponentScan(basePackages = "com.softserve.entity.generator.service")
+public class ServiceMockConfig
 {
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory()
+    {
+        return new EntityManagerFactoryBeanMock(entityManagerMock());
+    }
+
     @Bean
     public EntityManager entityManagerMock()
     {
@@ -22,8 +29,15 @@ public class MockRepositoryConfig
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory()
+    public EntityRepository entityRepositoryMock()
     {
-        return new EntityManagerFactoryBeanMock(entityManagerMock());
+        return mock(EntityRepository.class);
+    }
+
+    @Bean
+    @Primary
+    public BaseRepositoryImpl baseRepositoryMock()
+    {
+        return mock(BaseRepositoryImpl.class);
     }
 }

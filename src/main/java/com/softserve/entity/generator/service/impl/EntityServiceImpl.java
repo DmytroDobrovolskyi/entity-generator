@@ -3,17 +3,23 @@ package com.softserve.entity.generator.service.impl;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.EntityService;
+import com.softserve.entity.generator.service.applier.EntityApplier;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Primary
 public class EntityServiceImpl extends BaseServiceImpl<Entity> implements EntityService
 {
     @Autowired
     private EntityRepository entityRepository;
+
+    @Autowired
+    private EntityApplier entityApplier;
 
     @Override
     @Transactional
@@ -25,6 +31,21 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
             {
                 entityRepository.delete(managedEntity);
             }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void applyData()
+    {
+        List<Entity> entitiesToProcess = entityRepository.findAll();
+
+        entityApplier.applyAll(entitiesToProcess);
+
+        for (Entity entity : entitiesToProcess)
+        {
+            entity.setIsProcessingNeeded(false);
+            entityRepository.merge(entity);
         }
     }
 }

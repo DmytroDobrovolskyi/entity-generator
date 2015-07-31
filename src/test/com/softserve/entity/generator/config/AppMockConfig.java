@@ -1,7 +1,6 @@
 package com.softserve.entity.generator.config;
 
 import com.softserve.entity.generator.app.EntityGenerator;
-import com.softserve.entity.generator.salesforce.ProcedureExecutor;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
 import org.springframework.context.annotation.Bean;
@@ -12,13 +11,8 @@ import static org.mockito.Mockito.mock;
 
 @Configuration
 @ComponentScan(basePackages = "com.softserve.entity.generator.app")
-public class MockAppConfig
+public class AppMockConfig
 {
-    @Bean
-    public ProcedureExecutor procedureExecutorMock()
-    {
-        return mock(ProcedureExecutor.class);
-    }
 
     @Bean
     public EntityService entityServiceMock()

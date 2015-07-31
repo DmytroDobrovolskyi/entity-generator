@@ -21,9 +21,9 @@ public interface BatchService<T>
      *  }
      * }
      *
-     * @param entities new entities list that come form Salesforce side
+     * @param objects new entities list that come form Salesforce side
      */
-    void batchMerge(List<T> entities);
+    void batchMerge(List<T> objects);
 
     /**
      * Deletes all objects from database whose ids matches ids in {@literal objectIdList}.
