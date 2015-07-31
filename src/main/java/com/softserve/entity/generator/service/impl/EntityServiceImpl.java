@@ -5,14 +5,12 @@ import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Primary
 public class EntityServiceImpl extends BaseServiceImpl<Entity> implements EntityService
 {
     @Autowired
@@ -20,6 +18,11 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
 
     @Autowired
     private EntityApplier entityApplier;
+
+    private EntityServiceImpl()
+    {
+        super(Entity.class);
+    }
 
     @Override
     @Transactional

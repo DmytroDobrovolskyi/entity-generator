@@ -1,40 +1,68 @@
 package com.softserve.entity.generator.service.impl;
 
 import com.softserve.entity.generator.entity.DatabaseObject;
-import com.softserve.entity.generator.repository.BaseRepository;
-import com.softserve.entity.generator.service.BaseService;
+import com.softserve.entity.generator.repository.CrudRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
-@Primary
-public class BaseServiceImpl<T extends DatabaseObject> implements BaseService<T>
+abstract class BaseServiceImpl<T extends DatabaseObject>
 {
-    @Autowired
-    @Qualifier(value = "baseRepositoryImpl")
-    private BaseRepository<T> repository;
+    private static final Logger logger = Logger.getLogger(BaseServiceImpl.class);
 
-    @Override
+    @Autowired
+    @Qualifier(value = "crudRepositoryImpl")
+    private CrudRepository<T> crudRepository;
+
+    private Class<T> objectClass;
+
+    protected BaseServiceImpl(Class<T> objectClass)
+    {
+        this.objectClass = objectClass;
+    }
+
+    @PostConstruct
+    private void init()
+    {
+        Assert.notNull(objectClass);
+        Assert.notNull(crudRepository);
+        crudRepository.setObjectClassToken(objectClass);
+    }
+
     @Transactional
     public void save(T entity)
     {
-        repository.save(entity);
+        crudRepository.save(entity);
     }
 
-    @Override
     @Transactional
     public void delete(T entity)
     {
-        repository.delete(entity);
+        crudRepository.delete(entity);
     }
 
-    @Override
     @Transactional
     public T merge(T entity)
     {
-        return repository.merge(entity);
+        return crudRepository.merge(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public T findById(String id)
+    {
+        return crudRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<T> findAll()
+    {
+        return crudRepository.findAll();
     }
 }

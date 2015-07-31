@@ -23,7 +23,6 @@ public class EntityRepositoryTest
 {
     @Autowired
     @InjectMocks
-    @Qualifier("entityRepositoryImpl")
     private EntityRepository repository;
 
     @Autowired

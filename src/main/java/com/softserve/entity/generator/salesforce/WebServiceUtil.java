@@ -108,7 +108,7 @@ public class WebServiceUtil
         }
         catch (ConnectionException ex)
         {
-            logger.error("Failed to log in. Check your credentials");
+            logger.error("Failed to log in. Check your credentials and internet connection");
             System.exit(1);
         }
         return loginResult;

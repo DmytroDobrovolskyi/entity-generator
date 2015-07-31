@@ -2,7 +2,7 @@ package com.softserve.entity.generator.service;
 
 import com.softserve.entity.generator.config.ServiceMockConfig;
 import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.repository.BaseRepository;
+import com.softserve.entity.generator.repository.CrudRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ public class BaseServiceTest
 
     @Autowired
     @Qualifier("baseRepositoryMock")
-    private BaseRepository<Entity> repository;
+    private CrudRepository<Entity> repository;
 
     @Before
     public void setUp()

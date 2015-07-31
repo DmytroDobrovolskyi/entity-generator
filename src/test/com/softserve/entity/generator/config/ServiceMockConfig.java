@@ -1,7 +1,7 @@
 package com.softserve.entity.generator.config;
 
 import com.softserve.entity.generator.repository.EntityRepository;
-import com.softserve.entity.generator.repository.impl.BaseRepositoryImpl;
+import com.softserve.entity.generator.repository.impl.CrudRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,8 +36,8 @@ public class ServiceMockConfig
 
     @Bean
     @Primary
-    public BaseRepositoryImpl baseRepositoryMock()
+    public CrudRepositoryImpl baseRepositoryMock()
     {
-        return mock(BaseRepositoryImpl.class);
+        return mock(CrudRepositoryImpl.class);
     }
 }

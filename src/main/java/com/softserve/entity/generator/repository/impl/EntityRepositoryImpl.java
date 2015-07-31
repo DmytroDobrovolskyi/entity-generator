@@ -5,10 +5,10 @@ import com.softserve.entity.generator.repository.EntityRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EntityRepositoryImpl extends BaseSearchRepositoryImpl<Entity> implements EntityRepository
+public class EntityRepositoryImpl extends CrudRepositoryImpl<Entity> implements EntityRepository
 {
-    public EntityRepositoryImpl()
+    private EntityRepositoryImpl()
     {
-        super(Entity.class);
+        super.setObjectClassToken(Entity.class);
     }
 }

@@ -15,8 +15,8 @@ import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = "com.softserve.entity.generator", excludeFilters = {
-@ComponentScan.Filter(type = FilterType.REGEX, pattern="com.softserve.entity.generator.config.*MockConfig")})
+@ComponentScan(basePackages = "com.softserve.entity.generator", excludeFilters = {@ComponentScan.Filter(
+        type = FilterType.REGEX, pattern = "com.softserve.entity.generator.config.*MockConfig")})
 @PropertySource(value = "/META-INF/database.properties")
 public class AppConfig
 {
@@ -54,7 +54,7 @@ public class AppConfig
         return transactionManager;
     }
 
-    public Map<String, String> jpaProperties()
+    private Map<String, String> jpaProperties()
     {
         Map<String, String> jpaProperties = new HashMap<String, String>();
         jpaProperties.put("hibernate.dialect", env.getProperty("hb.dialect"));

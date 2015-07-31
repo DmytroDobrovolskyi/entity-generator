@@ -1,9 +1,10 @@
 package com.softserve.entity.generator.service.impl;
 
 import com.softserve.entity.generator.entity.DatabaseObject;
-import com.softserve.entity.generator.repository.BaseSearchRepository;
+import com.softserve.entity.generator.repository.CrudRepository;
 import com.softserve.entity.generator.service.BatchService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,15 +13,11 @@ import java.util.List;
 @Service
 public class BatchServiceImpl<T extends DatabaseObject> implements BatchService<T>
 {
-    private BaseSearchRepository<T> baseSearchRepository;
+    @Autowired
+    @Qualifier(value = "crudRepositoryImpl")
+    private CrudRepository<T> crudRepository;
 
-    @SuppressWarnings("unchecked")
-    public BatchServiceImpl(Class<T> objectClassToken)
-    {
-        baseSearchRepository = new AnnotationConfigApplicationContext().getBean(BaseSearchRepository.class, objectClassToken);
-    }
-
-    protected BatchServiceImpl() {}
+    private BatchServiceImpl() { }
 
     @Override
     @Transactional
@@ -28,18 +25,20 @@ public class BatchServiceImpl<T extends DatabaseObject> implements BatchService<
     {
         for (T object : objects)
         {
-            baseSearchRepository.merge(object);
+            crudRepository.merge(object);
         }
     }
 
     @Override
     @Transactional
-    public void batchDelete(List<String> objectIdList)
+    public void batchDelete(List<String> objectIdList, Class<T> objectClass)
     {
+        crudRepository.setObjectClassToken(objectClass);
+
         for (String id : objectIdList)
         {
-            baseSearchRepository.delete(
-                    baseSearchRepository.findById(id)
+            crudRepository.delete(
+                    crudRepository.findById(id)
             );
         }
     }

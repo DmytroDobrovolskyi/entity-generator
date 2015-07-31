@@ -81,6 +81,6 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
         BatchService<T> batchService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(BatchService.class);
 
         batchService.batchMerge(entitiesToSync);
-        batchService.batchDelete(idsOfEntitiesToDelete);
+//        batchService.batchDelete(idsOfEntitiesToDelete);
     }
 }

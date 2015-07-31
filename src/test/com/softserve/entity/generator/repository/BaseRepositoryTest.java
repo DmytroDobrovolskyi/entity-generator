@@ -23,8 +23,8 @@ public class BaseRepositoryTest
 {
     @Autowired
     @InjectMocks
-    @Qualifier("entityRepositoryImpl")
-    private BaseRepository<Entity> repository;
+    @Qualifier("crudRepositoryImpl")
+    private CrudRepository<Entity> repository;
 
     @Autowired
     @Qualifier("entityManagerMock")

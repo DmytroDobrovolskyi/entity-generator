@@ -4,4 +4,4 @@ import com.softserve.entity.generator.entity.Entity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EntityRepository extends BaseSearchRepository<Entity> { }
+public interface EntityRepository extends CrudRepository<Entity> { }

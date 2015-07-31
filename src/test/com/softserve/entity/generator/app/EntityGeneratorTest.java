@@ -22,8 +22,6 @@ public class EntityGeneratorTest
     @InjectMocks
     private EntityGenerator entityGenerator;
 
-
-
     @Before
     public void setUp()
     {
