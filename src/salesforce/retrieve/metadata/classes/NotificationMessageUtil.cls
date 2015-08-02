@@ -1,26 +1,23 @@
 public class NotificationMessageUtil
 {
-	public static void setNotificationMessageMetadata()
+	public static void insertMessage(List<SObject> sObjects, OperationType operationType)
     {
-        if (Trigger.isDelete)
+        for (SObject sObjectToProcess : sObjects)
         {
-            processSObjects(Trigger.old, OperationType.DELETE_OPERATION);
-        }
-        else
-        {
-            processSObjects(Trigger.new, Trigger.isInsert ? OperationType.INSERT_OPERATION : OperationType.UPDATE_OPERATION);
+            NotificationMessage__c message = new NotificationMessage__c();
+
+            String sObjectType = String.valueOf(sObjectToProcess.getSObjectType());
+
+            message.SObjectType__c = sObjectType;
+            message.ExternalId__c = String.valueOf(sObjectToProcess.get(toExternalIdFieldName(sObjectType)));
+            message.OperationType__c = String.valueOf(operationType);
+
+            Database.insert(message);
         }
     }
-    private static void processSObjects(List<SObject> sObjectsToProcess, OperationType operationType)
-    {
-        for (SObject sObjectToProcess : sObjectsToProcess)
-        {
-            NotificationMessage__c notificationMessage = new NotificationMessage__c();
 
-            notificationMessage.OperationType__c = operationType.name();
-            notificationMessage.ExternalId__c = ((Entity__c) sObjectToProcess).EntityId__c;
-            notificationMessage.SObjectType__c = String.valueOf(sObjectsToProcess.getSObjectType());
-            Database.insert(notificationMessage);
-        }
+    private static String toExternalIdFieldName(String sObjectType)
+    {
+        return sObjectType.replace('__c', 'Id__c');
     }
 }

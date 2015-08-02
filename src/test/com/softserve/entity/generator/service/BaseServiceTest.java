@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service;
 
-import com.softserve.entity.generator.config.ServiceMockConfig;
+import com.softserve.entity.generator.config.MockServiceConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.repository.CrudRepository;
 import org.junit.Before;
@@ -13,9 +13,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.any;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
-@ContextConfiguration(classes = {ServiceMockConfig.class})
+@ContextConfiguration(classes = {MockServiceConfig.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseServiceTest
 {
@@ -61,4 +66,20 @@ public class BaseServiceTest
         verify(repository).delete(entity);
     }
 
+    @Test
+    public void testFindById()
+    {
+        String id = "testId";
+        service.findById(id);
+
+        verify(repository).findById(id);
+    }
+
+    @Test
+    public void testFindAll()
+    {
+        assertThat(repository.findAll(), is(any(List.class)));
+
+        verify(repository).findAll();
+    }
 }

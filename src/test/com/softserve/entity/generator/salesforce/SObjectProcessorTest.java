@@ -17,9 +17,9 @@ public class SObjectProcessorTest
     @Ignore
     public void getAllEntitiesTest()
     {
-        SObjectProcessor<Entity> SObjectProcessor = new SObjectProcessor<Entity>(anyString(), Entity.class);
+        SObjectProcessor<Entity> sObjectProcessor = SObjectProcessor.getInstance(anyString(), Entity.class);
         List<Entity> entities = new ArrayList<Entity>();
-        when(SObjectProcessor.getAll()).thenReturn(entities);
+        when(sObjectProcessor.getAll()).thenReturn(entities);
 
     }
 }

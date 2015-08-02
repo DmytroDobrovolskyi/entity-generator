@@ -1,9 +1,7 @@
 package com.softserve.entity.generator.app;
 
-import com.softserve.entity.generator.config.AppMockConfig;
-import com.softserve.entity.generator.salesforce.SalesforceCredentials;
+import com.softserve.entity.generator.config.MockAppConfig;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.mockito.Mockito.mock;
-
-@ContextConfiguration(classes = AppMockConfig.class)
+@ContextConfiguration(classes = MockAppConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityGeneratorTest
 {
@@ -22,6 +18,10 @@ public class EntityGeneratorTest
     @InjectMocks
     private EntityGenerator entityGenerator;
 
+  /*  @Autowired
+    @Qualifier(value = "procedureExecutorMock")
+    private ProcedureExecutor procedureExecutor;
+*/
     @Before
     public void setUp()
     {
@@ -29,9 +29,11 @@ public class EntityGeneratorTest
     }
 
     @Test
-    @Ignore
     public void generateEntitiesTest()
     {
-        SalesforceCredentials salesforceCredentials = mock(SalesforceCredentials.class);
+      /*  Credentials credentials = mock(Credentials.class);
+        entityGenerator.generateEntities(credentials);
+
+        verify(procedureExecutor).generateAndExecute(credentials);*/
     }
 }

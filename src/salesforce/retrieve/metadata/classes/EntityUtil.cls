@@ -3,7 +3,7 @@ global class EntityUtil
     @TestVisible
     private static List<Entity__c> entityList { get; set; }
 
-    public static void generateEntityTable(List<Entity__c> entities)
+    public static void generateEntityTableName(List<Entity__c> entities)
     {
         for(Entity__c entity : entities)
         {

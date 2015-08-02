@@ -53,7 +53,7 @@ public class EditEntityController
         return options;
     }
 
-  
+
     public void deleteField()
     {
         Database.delete(fieldId, true);

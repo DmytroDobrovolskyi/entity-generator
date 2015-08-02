@@ -3,12 +3,12 @@ package com.softserve.entity.generator.webservice;
 import com.sforce.soap._2005._09.outbound.NotificationMessageCNotification;
 import com.sforce.soap._2005._09.outbound.NotificationPort;
 import com.softserve.entity.generator.config.AppConfig;
+import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.service.BatchService;
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -48,12 +48,10 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
-            SObjectProcessor<T> objectProcessor = new SObjectProcessor<T>(
-                    sessionId,
-                    ParsingUtil.<T>toJavaClass(
-                            notificationMessage.getSObject().getSObjectTypeC().getValue()
-                    )
-            );
+            Class<T> javaClassAnalogue = ParsingUtil.<T>toJavaClass(notificationMessage.getSObject().getSObjectTypeC().getValue());
+
+            SObjectProcessor<T> objectProcessor = SObjectProcessor.getInstance(sessionId, javaClassAnalogue);
+
             String objectId = notificationMessage.getSObject().getExternalIdC().getValue();
 
             OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
@@ -71,16 +69,16 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
                     break;
             }
         }
-        syncData(entitiesToInsertOrUpdate, idsOfEntitiesToDelete);
+        syncData(entitiesToInsertOrUpdate, idsOfEntitiesToDelete, null);
         return true;
     }
 
-    private void syncData(List<T> entitiesToSync, List<String> idsOfEntitiesToDelete)
+    private void syncData(List<T> entitiesToSync, List<String> idsOfEntitiesToDelete, Class<T> objectClass)
     {
         @SuppressWarnings("unchecked")
-        BatchService<T> batchService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(BatchService.class);
+        BatchService<T> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
         batchService.batchMerge(entitiesToSync);
-//        batchService.batchDelete(idsOfEntitiesToDelete);
+        batchService.batchDelete(idsOfEntitiesToDelete, objectClass);
     }
 }

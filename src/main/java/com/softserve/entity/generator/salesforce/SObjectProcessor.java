@@ -3,6 +3,7 @@ package com.softserve.entity.generator.salesforce;
 import com.google.gson.Gson;
 import com.softserve.entity.generator.salesforce.util.SObjectJsonParser;
 import com.softserve.entity.generator.salesforce.util.SoqlQueryBuilder;
+import com.softserve.entity.generator.util.ReflectionUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -11,11 +12,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import com.softserve.entity.generator.util.ReflectionUtil;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class stands for retrieving objects from salesforce side.
@@ -30,14 +32,29 @@ public class SObjectProcessor<T>
     private static final String API_VERSION = "v34.0/";
     private static final String NONE_OBJECTS = "\"totalSize\" : 0";
 
+    private static final Map<String, SObjectProcessor> instanceCache = new HashMap<String, SObjectProcessor>();
+
     private final String sessionId;
     private final Class<T> sObjectClass;
     private final HttpClient httpClient = HttpClientBuilder.create().build();
 
-    public SObjectProcessor(String sessionId, Class<T> sObjectClass)
+    private SObjectProcessor(String sessionId, Class<T> sObjectClass)
     {
         this.sessionId = sessionId;
         this.sObjectClass = sObjectClass;
+    }
+
+    public static <T> SObjectProcessor<T> getInstance(String sessionId, Class<T> sObjectClass)
+    {
+        @SuppressWarnings("unchecked")
+        SObjectProcessor<T> instance = instanceCache.get(sessionId);
+
+        if (instance == null || !instance.sObjectClass.equals(sObjectClass))
+        {
+            instance = new SObjectProcessor<T>(sessionId, sObjectClass);
+            instanceCache.put(sessionId, instance);
+        }
+        return instance;
     }
 
     /**

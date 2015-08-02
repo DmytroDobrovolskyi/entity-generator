@@ -2,11 +2,10 @@ package com.softserve.entity.generator.app;
 
 import com.softserve.entity.generator.app.util.LoginUtil;
 import com.softserve.entity.generator.config.AppConfig;
-import com.softserve.entity.generator.salesforce.SalesforceCredentials;
+import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class EntityGenerator
 {
@@ -15,11 +14,9 @@ public class EntityGenerator
 
     public static void main(String[] args)
     {
-        SalesforceCredentials salesforceCredentials = LoginUtil.parseCredentials(args);
-
-        EntityService entityService = new AnnotationConfigApplicationContext(AppConfig.class).getBean(EntityService.class);
-
+        EntityService entityService = AppContextCache.getContext(AppConfig.class).getBean(EntityService.class);
         entityService.applyData();
-        WebServiceUtil.getInstance(salesforceCredentials).executeApex(RESET_IS_PROCESSING_NEEDED);
+
+        WebServiceUtil.getInstance(LoginUtil.parseCredentials(args)).executeApex(RESET_IS_PROCESSING_NEEDED);
     }
 }

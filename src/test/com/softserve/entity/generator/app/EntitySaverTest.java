@@ -1,12 +1,13 @@
 package com.softserve.entity.generator.app;
 
-import com.softserve.entity.generator.config.AppMockConfig;
+import com.softserve.entity.generator.config.MockAppConfig;
 import com.softserve.entity.generator.entity.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,11 +20,13 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = AppMockConfig.class)
+@ContextConfiguration(classes = MockAppConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntitySaverTest
 {
-
+    @Autowired
+    @InjectMocks
+    private EntitySaver entitySaver;
 
     @Autowired
     @Qualifier(value = "entityServiceMock")
@@ -41,6 +44,7 @@ public class EntitySaverTest
     {
         Entity entity = mock(Entity.class);
         List<Entity>entities = new ArrayList<Entity>(Arrays.asList(entity,entity));
+//        entitySaver.saveEntities(entities);
 
         verify(entityService).resolveDeleted(entities);
 

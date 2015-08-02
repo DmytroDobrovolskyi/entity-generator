@@ -1,7 +1,8 @@
 package com.softserve.entity.generator.service.applier;
 
-import com.softserve.entity.generator.config.ServiceMockConfig;
+import com.softserve.entity.generator.config.MockServiceConfig;
 import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.util.FakeEntityGenerator;
 import com.softserve.entity.generator.service.applier.util.ProcedureGenerator;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +17,10 @@ import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softserve.entity.generator.entity.util.FakeEntityGenerator.generateEntity;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = ServiceMockConfig.class)
+@ContextConfiguration(classes = MockServiceConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityApplierTest
 {
@@ -42,7 +42,7 @@ public class EntityApplierTest
     @Test
     public void testApplyAll()
     {
-        Entity entity = generateEntity();
+        Entity entity = FakeEntityGenerator.generateEntity();
         List<Entity> entityList = new ArrayList<Entity>();
         entityList.add(entity);
 
