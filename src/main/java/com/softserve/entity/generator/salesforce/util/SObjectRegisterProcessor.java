@@ -5,7 +5,7 @@ import com.softserve.entity.generator.salesforce.SObjectMetadata;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class ColumnsRegisterProcessor
+public class SObjectRegisterProcessor
 {
     public static Map<Class<?>, SObjectMetadata> processRegistration(List<Class<?>> registerMetadata, List<String> exclusions)
     {
@@ -26,6 +26,8 @@ public class ColumnsRegisterProcessor
         List<String> nonRelationalFields = new ArrayList<String>();
         List<String> relationalFields = new ArrayList<String>();
 
+        ObjectType objectType = ObjectType.SUBORDER_OBJECT;
+
         for (Field field : fieldsToProcess)
         {
             if (exclusions.contains(field.getName()))
@@ -33,7 +35,14 @@ public class ColumnsRegisterProcessor
                 continue;
             }
             Class<?> filedType = field.getType();
-            boolean isRelational = Collection.class.isAssignableFrom(filedType) || registerMetadata.contains(filedType);
+
+            boolean hasChildren = Collection.class.isAssignableFrom(filedType);
+            if (hasChildren)
+            {
+                objectType = ObjectType.HIGH_ORDER_OBJECT;
+            }
+
+            boolean isRelational =  hasChildren || registerMetadata.contains(filedType);
 
             if (isRelational)
             {
@@ -44,6 +53,6 @@ public class ColumnsRegisterProcessor
                 nonRelationalFields.add(ParsingUtil.toSalesforceStyle(field, "__c"));
             }
         }
-        return new SObjectMetadata(nonRelationalFields, relationalFields);
+        return new SObjectMetadata(nonRelationalFields, relationalFields, objectType);
     }
 }

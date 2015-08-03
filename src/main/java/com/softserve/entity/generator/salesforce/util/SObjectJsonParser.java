@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.salesforce.util;
 
-import com.softserve.entity.generator.salesforce.ColumnsRegister;
+import com.softserve.entity.generator.salesforce.SObjectRegister;
 import com.softserve.entity.generator.salesforce.SObjectMetadata;
 import org.apache.log4j.Logger;
 
@@ -82,7 +82,7 @@ public class SObjectJsonParser
     {
         StringBuilder regexBuilder = new StringBuilder();
 
-        SObjectMetadata objectMetadata = ColumnsRegister.getSObjectMetadata(sObjectClass);
+        SObjectMetadata objectMetadata = SObjectRegister.getSObjectMetadata(sObjectClass);
 
         //appends non-relational fields
         for (String nonRelationalField : objectMetadata.getNonRelationalFields())
@@ -97,7 +97,7 @@ public class SObjectJsonParser
         {
             if (ParsingUtil.isChild(relationalField))
             {
-                SObjectMetadata childMetadata = ColumnsRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relationalField));
+                SObjectMetadata childMetadata = SObjectRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relationalField));
                 for (String childNonRelationFiled : childMetadata.getNonRelationalFields())
                 {
                     regexBuilder

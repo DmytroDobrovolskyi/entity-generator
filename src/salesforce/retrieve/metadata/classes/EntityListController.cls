@@ -69,8 +69,6 @@ public class EntityListController
             }
         }
 
-        Map<String, Entity__c> newEntityMap = new Map<String, Entity__c>();
-
         if (newEntity != null)
         {
             if (isAlreadyExist(entitiesToUpdate, newEntity.TableName__c) ||
@@ -82,18 +80,13 @@ public class EntityListController
             else
             {
                 Database.insert(newEntity);
-                newEntityMap.put(newEntity.Id, newEntity);
+
+                entityMap.remove(newEntityId);
+                entityMap.put(newEntity.Id, newEntity);
                    
                 newEntity = null;
             }
         }
-
-        for (Entity__c entity : entitiesToUpdate)
-        {
-            newEntityMap.put(entity.Id, entity);
-        }
-        newEntityMap.values().sort();
-        entityMap = newEntityMap;
         wereChanges = false;
     }
 

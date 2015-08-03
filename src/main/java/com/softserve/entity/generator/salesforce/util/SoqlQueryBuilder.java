@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.salesforce.util;
 
-import com.softserve.entity.generator.salesforce.ColumnsRegister;
+import com.softserve.entity.generator.salesforce.SObjectRegister;
+import com.softserve.entity.generator.salesforce.FetchType;
 import com.softserve.entity.generator.salesforce.SObjectMetadata;
 import org.apache.log4j.Logger;
 
@@ -8,10 +9,10 @@ public class SoqlQueryBuilder
 {
     private static final Logger logger = Logger.getLogger(SoqlQueryBuilder.class);
 
-    public static String buildQuery(Class<?> sObjectClass)
+    public static String buildQuery(Class<?> sObjectClass, FetchType fetchType)
     {
-        StringBuilder queryBuilder  = new StringBuilder();
-        SObjectMetadata objectMetadata = ColumnsRegister.getSObjectMetadata(sObjectClass);
+        StringBuilder queryBuilder = new StringBuilder();
+        SObjectMetadata objectMetadata = SObjectRegister.getSObjectMetadata(sObjectClass);
         queryBuilder
                 .append("SELECT+Name,")
                 .append(
@@ -20,21 +21,37 @@ public class SoqlQueryBuilder
                         )
                 );
 
-        for (String relation : objectMetadata.getRelationalFields())
+        if (fetchType.equals(FetchType.EAGER))
         {
-            if(ParsingUtil.isChild(relation))
+            for (String relation : objectMetadata.getRelationalFields())
             {
-                SObjectMetadata relatedObjectMetadata = ColumnsRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relation));
-                queryBuilder
-                        .append(",(SELECT+Name,")
-                        .append(
-                                ParsingUtil.stringifyFieldsList(
-                                        relatedObjectMetadata.getNonRelationalFields()
-                                )
-                        )
-                        .append("+FROM+")
-                        .append(relation)
-                        .append(")");
+                if (ParsingUtil.isChild(relation))
+                {
+                    SObjectMetadata relatedObjectMetadata = SObjectRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relation));
+                    queryBuilder
+                            .append(",(SELECT+Name,")
+                            .append(
+                                    ParsingUtil.stringifyFieldsList(
+                                            relatedObjectMetadata.getNonRelationalFields()
+                                    )
+                            )
+                            .append("+FROM+")
+                            .append(relation)
+                            .append(")");
+                }
+                else
+                {
+                    String relationPrefix = relation + ".";
+                    queryBuilder
+                            .append(relationPrefix)
+                            .append("Name")
+                            .append(
+                                    ParsingUtil.stringifyFieldsList(
+                                            SObjectRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relation)).getNonRelationalFields(),
+                                            relationPrefix
+                                    )
+                            );
+                }
             }
         }
 
@@ -43,6 +60,6 @@ public class SoqlQueryBuilder
                 .append(sObjectClass.getSimpleName())
                 .append("__c");
 
-         return queryBuilder.toString();
+        return queryBuilder.toString();
     }
 }

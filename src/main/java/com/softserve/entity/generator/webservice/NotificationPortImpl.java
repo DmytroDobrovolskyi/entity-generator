@@ -5,6 +5,7 @@ import com.sforce.soap._2005._09.outbound.NotificationPort;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.DatabaseObject;
+import com.softserve.entity.generator.salesforce.FetchType;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.service.BatchService;
@@ -17,7 +18,9 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebService(name = "NotificationPort", targetNamespace = "http://soap.sforce.com/2005/09/outbound")
 public class NotificationPortImpl<T extends DatabaseObject> implements NotificationPort
@@ -43,42 +46,59 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
             @WebParam(name = "Notification", targetNamespace = TARGET_NAMESPACE)
             List<NotificationMessageCNotification> notifications)
     {
-        List<T> entitiesToInsertOrUpdate = new ArrayList<T>();
-        List<String> idsOfEntitiesToDelete = new ArrayList<String>();
+        Map<Class<T>, Map<OperationType, List<String>>> classMap = new HashMap<Class<T>, Map<OperationType, List<String>>>();
+
+        List<Class<T>> classList = new ArrayList<Class<T>>();
 
         for (NotificationMessageCNotification notificationMessage : notifications)
         {
             Class<T> javaClassAnalogue = ParsingUtil.<T>toJavaClass(notificationMessage.getSObject().getSObjectTypeC().getValue());
-
-            SObjectProcessor<T> objectProcessor = SObjectProcessor.getInstance(sessionId, javaClassAnalogue);
-
+            OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
             String objectId = notificationMessage.getSObject().getExternalIdC().getValue();
 
-            OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
-            switch (operationType)
+            Map<OperationType, List<String>> operationMap = classMap.get(javaClassAnalogue);
+            if (operationMap == null)
             {
-                case INSERT_OPERATION:
-                case UPDATE_OPERATION:
-                    entitiesToInsertOrUpdate.add(
-                            objectProcessor.getByExternalId(objectId)
-                    );
-                    break;
+                operationMap = new HashMap<OperationType, List<String>>();
 
-                case DELETE_OPERATION:
-                    idsOfEntitiesToDelete.add(objectId);
-                    break;
+                operationMap.put(OperationType.INSERT_OPERATION, new ArrayList<String>());
+                operationMap.put(OperationType.UPDATE_OPERATION, new ArrayList<String>());
+                operationMap.put(OperationType.DELETE_OPERATION, new ArrayList<String>());
+
+                classMap.put(javaClassAnalogue, operationMap);
+                classList.add(javaClassAnalogue);
             }
+            operationMap.get(operationType).add(objectId);
         }
-        syncData(entitiesToInsertOrUpdate, idsOfEntitiesToDelete, null);
+
+        for (Class<T> objectClass : classList)
+        {
+            syncData(classMap.get(objectClass), objectClass, sessionId);
+        }
+
         return true;
     }
 
-    private void syncData(List<T> entitiesToSync, List<String> idsOfEntitiesToDelete, Class<T> objectClass)
+    private void syncData(Map<OperationType, List<String>> operationMap, Class<T> objectClass, String sessionId)
     {
         @SuppressWarnings("unchecked")
         BatchService<T> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
-        batchService.batchMerge(entitiesToSync);
-        batchService.batchDelete(idsOfEntitiesToDelete, objectClass);
+        for (Map.Entry<OperationType, List<String>> operationEntry : operationMap.entrySet())
+        {
+            OperationType operation = operationEntry.getKey();
+            switch (operation)
+            {
+                case INSERT_OPERATION:
+                case UPDATE_OPERATION:
+                    batchService.batchMerge(
+                            SObjectProcessor.getInstance(sessionId, objectClass)
+                                    .getAll(objectClass.getSimpleName() + "Id__c", operationEntry.getValue(), FetchType.LAZY)
+                    );
+                    break;
+                case  DELETE_OPERATION:
+                    batchService.batchDelete(operationEntry.getValue(), objectClass);
+            }
+        }
     }
 }

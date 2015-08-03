@@ -1,5 +1,7 @@
 package com.softserve.entity.generator.salesforce;
 
+import com.softserve.entity.generator.salesforce.util.ObjectType;
+
 import java.util.List;
 
 /**
@@ -9,11 +11,13 @@ public class SObjectMetadata
 {
     private final List<String> nonRelationalFields;
     private final List<String> relationalFields;
+    private final ObjectType objectType;
 
-    public SObjectMetadata(List<String> nonRelationalFields, List<String> relationalFields)
+    public SObjectMetadata(List<String> nonRelationalFields, List<String> relationalFields, ObjectType objectType)
     {
         this.nonRelationalFields = nonRelationalFields;
         this.relationalFields = relationalFields;
+        this.objectType = objectType;
     }
 
     public List<String> getNonRelationalFields()
@@ -24,5 +28,10 @@ public class SObjectMetadata
     public List<String> getRelationalFields()
     {
         return relationalFields;
+    }
+
+    public ObjectType getObjectType()
+    {
+        return objectType;
     }
 }

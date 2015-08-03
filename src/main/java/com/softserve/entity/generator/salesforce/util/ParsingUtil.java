@@ -1,7 +1,7 @@
 package com.softserve.entity.generator.salesforce.util;
 
 import com.softserve.entity.generator.entity.DatabaseObject;
-import com.softserve.entity.generator.salesforce.ColumnsRegister;
+import com.softserve.entity.generator.salesforce.SObjectRegister;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
@@ -42,7 +42,7 @@ public class ParsingUtil
         String javaStyleClassName = sObjectClassName.replaceAll("(__c)|(s__r)|(__r)", "");
         try
         {
-            return (Class<T>) Class.forName(ColumnsRegister.getFullName(javaStyleClassName)).asSubclass(DatabaseObject.class);
+            return (Class<T>) Class.forName(SObjectRegister.getFullName(javaStyleClassName)).asSubclass(DatabaseObject.class);
         }
         catch (ClassNotFoundException ex)
         {
@@ -103,11 +103,28 @@ public class ParsingUtil
      */
     public static String stringifyFieldsList(List<String> fields)
     {
+        return stringifyList(fields, "", "");
+    }
+
+    public static String stringifyFieldsList(List<String> fields, String prefix)
+    {
+        return stringifyList(fields, prefix, "");
+    }
+
+    public static String stringifyFieldsList(List<String> fields, String prefix, String postfix)
+    {
+        return stringifyList(fields, prefix, postfix);
+    }
+
+    private static String stringifyList(List<String> listToStringify, String prefix, String postfix)
+    {
         StringBuilder fieldStringBuilder = new StringBuilder();
-        for (String field : fields)
+        for (String elem : listToStringify)
         {
             fieldStringBuilder
-                    .append(field)
+                    .append(prefix)
+                    .append(elem)
+                    .append(postfix)
                     .append(",");
         }
         int lastCommaIndex = fieldStringBuilder.length() - 1;

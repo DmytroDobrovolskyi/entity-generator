@@ -103,13 +103,15 @@ public class EditEntityController
         Boolean isProcessingNeeded = false;
         for (Field__c field : fieldsToUpdate)
         {
+            System.debug(field.IsUpdateNeeded__c);
             if(field.IsUpdateNeeded__c)
             {
                 resolveIsPrimaryKey(field);
+                field.IsUpdateNeeded__c = false;
+
                 if(Database.update(field, false).isSuccess())
                 {
                     isProcessingNeeded = true;
-                    field.IsUpdateNeeded__c = false;
                 }
                 else
                 {
@@ -123,8 +125,6 @@ public class EditEntityController
             setIsProcessingNeeded();
         }
 
-        Map<String, Field__c>  newFieldMap = new Map<String, Field__c>();
-
         if (newField != null)
         {
             if (isAlreadyExist(fieldsToUpdate, newField.ColumnName__c) ||
@@ -136,19 +136,15 @@ public class EditEntityController
             else
             {
                 resolveIsPrimaryKey(newField);
+                fieldMap.remove(newFieldId);
+
                 Database.insert(newField, true);
-                newFieldMap.put(newField.Id, newField);
+                fieldMap.put(newField.Id, newField);
+
                 setIsProcessingNeeded();
                 newField = null;
             }
         }
-
-        for (Field__c field : fieldsToUpdate)
-        {
-            newFieldMap.put(field.Id, field);
-        }
-        newFieldMap.values().sort();
-        fieldMap = newFieldMap;
         wereChanges = false;
     }
 
@@ -191,14 +187,18 @@ public class EditEntityController
         if (fieldToUpdate != null && String.valueOf(fieldToUpdate.Id) != newFieldId)
         {
             fieldToUpdate.IsUpdateNeeded__c = true;
+            System.debug(fieldToUpdate.IsUpdateNeeded__c);
         }
         wereChanges = true;
     }
 
     private void setIsProcessingNeeded()
     {
-        entity.IsProcessingNeeded__c = true;
-        Database.update(entity);
+        if (!entity.IsProcessingNeeded__c)
+        {
+            entity.IsProcessingNeeded__c = true;
+            Database.update(entity);
+        }
     }
 
     private void showError()

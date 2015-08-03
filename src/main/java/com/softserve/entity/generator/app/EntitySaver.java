@@ -21,6 +21,6 @@ public class EntitySaver
         @SuppressWarnings("unchecked")
         BatchService<Entity> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
-        batchService.batchMerge(sObjectProcessor.getAll());
+//        batchService.batchMerge(sObjectProcessor.getAll());
     }
 }

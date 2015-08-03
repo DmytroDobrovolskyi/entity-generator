@@ -48,7 +48,7 @@ function resolveCheckboxes()
                 {
                     checkbox
                         .css('display', 'none')
-                        .prop( "checked", false );
+                        .prop("checked", false);
                 }
             }
         });
@@ -102,11 +102,14 @@ function generateColumnName(context)
                 return firstCharacter.toUpperCase()
             });
 
-        for(var i=0;i<name.length;i++)
+        for (var i = 0; i < name.length; i++)
         {
-            if (name.charAt(i)=='_')
+            if (name.charAt(i) == '_')
             {
-                name =  name.replace(/_[a-z]/, function(character){ return character.toUpperCase() });
+                name = name.replace(/_[a-z]/, function (character)
+                {
+                    return character.toUpperCase()
+                });
             }
         }
         context.value = name;

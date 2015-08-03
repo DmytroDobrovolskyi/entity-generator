@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.salesforce;
 
 import com.google.gson.Gson;
+import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.salesforce.util.SObjectJsonParser;
 import com.softserve.entity.generator.salesforce.util.SoqlQueryBuilder;
 import com.softserve.entity.generator.util.ReflectionUtil;
@@ -61,11 +62,12 @@ public class SObjectProcessor<T>
      * Retrieve all object form Salesforce database by performing all required operation like making request
      * and parsing retrieved data to Java objects.
      *
+     * @param fetchType EAGER — get full object with all relations, LAZY — get pure object
      * @return Java representation of Salesforce database objects
      */
-    public List<T> getAll()
+    public List<T> getAll(FetchType fetchType)
     {
-        String sObjectJson = getPureSObjectJson(SoqlQueryBuilder.buildQuery(sObjectClass));
+        String sObjectJson = getPureSObjectJson(SoqlQueryBuilder.buildQuery(sObjectClass, fetchType));
 
         if (sObjectJson.contains(NONE_OBJECTS))
         {
@@ -82,19 +84,37 @@ public class SObjectProcessor<T>
      * Retrieve single object form Salesforce database by its id performing all required operation like making request
      * and parsing retrieved data to Java objects.
      *
-     * @param externalId id of object in Salesforce database
-     * @return Java representation of Salesforce database object with {@literal externalId}
+     * @param conditionFieldName name of filed by which object will be retrieved
+     * @param conditionFieldValue value of filed by which object will be retrieved
+     * @param fetchType EAGER — get full object with all relations, LAZY — get pure object
+     * @return Java representation of Salesforce database object with {@literal conditionFieldValue}, null if
+     * none object were find
      */
-    public T getByExternalId(String externalId)
+    public T getOne(String conditionFieldName, String conditionFieldValue, FetchType fetchType)
     {
-        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass) + "+WHERE+" + sObjectClass.getSimpleName() +
-                "Id__c='" + externalId + "'";
+        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass, fetchType) + "+WHERE+" + conditionFieldName +
+                "='" + conditionFieldValue + "'";
         String sObjectJson = getPureSObjectJson(sooqlQuery);
         if (sObjectJson.contains(NONE_OBJECTS))
         {
             return null;
         }
         return new Gson().fromJson(SObjectJsonParser.parseSObjectJson(sObjectJson, sObjectClass), sObjectClass);
+    }
+
+    public List<T> getAll(String conditionFieldName, List<String> conditionFieldValues, FetchType fetchType)
+    {
+        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass, fetchType) + "+WHERE+" + conditionFieldName +
+                "+IN+(" + ParsingUtil.stringifyFieldsList(conditionFieldValues, "'", "'") + ")";
+        String sObjectJson = getPureSObjectJson(sooqlQuery);
+        if (sObjectJson.contains(NONE_OBJECTS))
+        {
+            return Collections.emptyList();
+        }
+        return new Gson().fromJson(
+                SObjectJsonParser.parseSObjectJsonArray(sObjectJson, sObjectClass),
+                ReflectionUtil.getParametrizedType(sObjectClass, List.class)
+        );
     }
 
     private String getPureSObjectJson(String sooqlQuery)
