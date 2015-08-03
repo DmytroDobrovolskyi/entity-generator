@@ -92,9 +92,9 @@ public class SObjectProcessor<T>
      */
     public T getOne(String conditionFieldName, String conditionFieldValue, FetchType fetchType)
     {
-        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass, fetchType) + "+WHERE+" + conditionFieldName +
+        String soqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass, fetchType) + "+WHERE+" + conditionFieldName +
                 "='" + conditionFieldValue + "'";
-        String sObjectJson = getPureSObjectJson(sooqlQuery);
+        String sObjectJson = getPureSObjectJson(soqlQuery);
         if (sObjectJson.contains(NONE_OBJECTS))
         {
             return null;
@@ -104,9 +104,9 @@ public class SObjectProcessor<T>
 
     public List<T> getAll(String conditionFieldName, List<String> conditionFieldValues, FetchType fetchType)
     {
-        String sooqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass, fetchType) + "+WHERE+" + conditionFieldName +
+        String soqlQuery = SoqlQueryBuilder.buildQuery(sObjectClass, fetchType) + "+WHERE+" + conditionFieldName +
                 "+IN+(" + ParsingUtil.stringifyFieldsList(conditionFieldValues, "'", "'") + ")";
-        String sObjectJson = getPureSObjectJson(sooqlQuery);
+        String sObjectJson = getPureSObjectJson(soqlQuery);
         if (sObjectJson.contains(NONE_OBJECTS))
         {
             return Collections.emptyList();

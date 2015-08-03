@@ -4,10 +4,14 @@ import com.softserve.entity.generator.app.util.LoginUtil;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.Field;
+import com.softserve.entity.generator.salesforce.FetchType;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.BatchService;
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 public class EntitySaver
 {
@@ -21,6 +25,20 @@ public class EntitySaver
         @SuppressWarnings("unchecked")
         BatchService<Entity> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
-//        batchService.batchMerge(sObjectProcessor.getAll());
+        List<Entity> entitiesToSync = sObjectProcessor.getAll(FetchType.EAGER);
+
+        doParentToChildAssignment(entitiesToSync);
+        batchService.batchMerge(entitiesToSync);
+    }
+
+    private static void doParentToChildAssignment(List<Entity> entitiesToSync)
+    {
+        for (Entity entityToSync : entitiesToSync)
+        {
+            for (Field filed : entityToSync.getFields())
+            {
+                filed.setEntity(entityToSync);
+            }
+        }
     }
 }

@@ -75,7 +75,8 @@ public class SObjectJsonParser
                 .replaceAll("__r\" : \\{\\n", "\" : [ {\n")
                 .replaceAll("__c", "")
                 .replaceAll(",\\n.*},\\n.*\\{\\}\\]\\},", "},")
-                .replaceAll(",\\n.*},\\n.*\\{}]", "");
+                .replaceAll(",\\n.*},\\n.*\\{}]", "")
+                .replaceAll("\\}]\\n\\}]","}]");
     }
 
     private static String buildRegex(Class<?> sObjectClass)
