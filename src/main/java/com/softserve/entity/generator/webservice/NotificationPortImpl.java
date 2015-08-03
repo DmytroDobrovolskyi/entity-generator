@@ -70,6 +70,7 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
                 classList.add(javaClassAnalogue);
             }
             operationMap.get(operationType).add(objectId);
+            System.out.println(classMap);
         }
 
         for (Class<T> objectClass : classList)
@@ -85,14 +86,19 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
         for (Map.Entry<OperationType, List<String>> operationEntry : operationMap.entrySet())
         {
             OperationType operation = operationEntry.getKey();
-            switch (operation)
+            List<String> idList = operationEntry.getValue();
+
+            if (!idList.isEmpty())
             {
-                case INSERT_OPERATION:
-                case UPDATE_OPERATION:
-                    syncOnInsertUpdate(operationEntry.getValue(), objectClass, sessionId);
-                    break;
-                case DELETE_OPERATION:
-                    break;
+                switch (operation)
+                {
+                    case INSERT_OPERATION:
+                    case UPDATE_OPERATION:
+                        syncOnInsertUpdate(idList, objectClass, sessionId);
+                        break;
+                    case DELETE_OPERATION:
+                        break;
+                }
             }
         }
     }
@@ -104,6 +110,8 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
 
         List<T> newObjects = SObjectProcessor.getInstance(sessionId, objectClass)
                 .getAll(objectClass.getSimpleName() + "Id__c", idList, FetchType.LAZY);
+
+        System.out.println(newObjects);
 
         List<DatabaseObject> synchronizedObjects = SObjectSynchronizer.syncObjects(toIdMap(idList, newObjects), OperationType.UPDATE_OPERATION);
 
