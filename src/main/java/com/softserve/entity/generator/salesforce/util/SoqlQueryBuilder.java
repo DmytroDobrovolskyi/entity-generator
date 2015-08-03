@@ -1,8 +1,8 @@
 package com.softserve.entity.generator.salesforce.util;
 
-import com.softserve.entity.generator.salesforce.SObjectRegister;
 import com.softserve.entity.generator.salesforce.FetchType;
 import com.softserve.entity.generator.salesforce.SObjectMetadata;
+import com.softserve.entity.generator.salesforce.SObjectRegister;
 import org.apache.log4j.Logger;
 
 public class SoqlQueryBuilder
@@ -25,9 +25,10 @@ public class SoqlQueryBuilder
         {
             for (String relation : objectMetadata.getRelationalFields())
             {
-                if (ParsingUtil.isChild(relation))
+                Class<?> relationClass = ParsingUtil.toJavaClass(relation);
+                if (ParsingUtil.isChild(sObjectClass, relationClass))
                 {
-                    SObjectMetadata relatedObjectMetadata = SObjectRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relation));
+                    SObjectMetadata relatedObjectMetadata = SObjectRegister.getSObjectMetadata(relationClass);
                     queryBuilder
                             .append(",(SELECT+Name,")
                             .append(
@@ -43,8 +44,10 @@ public class SoqlQueryBuilder
                 {
                     String relationPrefix = relation + ".";
                     queryBuilder
+                            .append(",")
                             .append(relationPrefix)
                             .append("Name")
+                            .append(",")
                             .append(
                                     ParsingUtil.stringifyFieldsList(
                                             SObjectRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relation)).getNonRelationalFields(),

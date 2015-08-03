@@ -77,7 +77,7 @@ public class ReflectionUtil
             {
                 try
                 {
-                     method.invoke(objectToSetTo, args);
+                    method.invoke(objectToSetTo, args);
                 }
                 catch (IllegalAccessException ex)
                 {
@@ -91,6 +91,18 @@ public class ReflectionUtil
                 }
             }
         }
+    }
+
+    public static boolean isMethodExist(Class<?> classToCheck, String methodName)
+    {
+        for (Method method : classToCheck.getMethods())
+        {
+            if (method.getName().equals(methodName))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static <T> T castSafe(Class<T> classToCast, Object objectToCast)

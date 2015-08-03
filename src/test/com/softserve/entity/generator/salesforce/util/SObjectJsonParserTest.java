@@ -21,7 +21,7 @@ public class SObjectJsonParserTest
         assertEquals
                 (
                         this.getFormattedJsonFromFile().toString().trim(),
-                        SObjectJsonParser.parseSObjectJsonArray(getUnformattedJsonFromFile().toString(), Entity.class).trim()
+                        SObjectJsonParser.toJavaStyleJsonArray(getUnformattedJsonFromFile().toString(), Entity.class).trim()
                 );
     }
 

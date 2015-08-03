@@ -73,9 +73,8 @@ public class SObjectProcessor<T>
         {
             return Collections.emptyList();
         }
-
         return new Gson().fromJson(
-                SObjectJsonParser.parseSObjectJsonArray(sObjectJson, sObjectClass),
+                SObjectJsonParser.toJavaStyleJsonArray(sObjectJson, sObjectClass),
                 ReflectionUtil.getParametrizedType(sObjectClass, List.class)
         );
     }
@@ -99,7 +98,7 @@ public class SObjectProcessor<T>
         {
             return null;
         }
-        return new Gson().fromJson(SObjectJsonParser.parseSObjectJson(sObjectJson, sObjectClass), sObjectClass);
+        return new Gson().fromJson(SObjectJsonParser.toJavaStyleJson(sObjectJson, sObjectClass), sObjectClass);
     }
 
     public List<T> getAll(String conditionFieldName, List<String> conditionFieldValues, FetchType fetchType)
@@ -112,7 +111,7 @@ public class SObjectProcessor<T>
             return Collections.emptyList();
         }
         return new Gson().fromJson(
-                SObjectJsonParser.parseSObjectJsonArray(sObjectJson, sObjectClass),
+                SObjectJsonParser.toJavaStyleJsonArray(sObjectJson, sObjectClass),
                 ReflectionUtil.getParametrizedType(sObjectClass, List.class)
         );
     }
