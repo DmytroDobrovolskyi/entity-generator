@@ -43,8 +43,10 @@ public class SoqlQueryBuilder
                 {
                     String relationPrefix = relation + ".";
                     queryBuilder
+                            .append(",")
                             .append(relationPrefix)
                             .append("Name")
+                            .append(",")
                             .append(
                                     ParsingUtil.stringifyFieldsList(
                                             SObjectRegister.getSObjectMetadata(ParsingUtil.toJavaClass(relation)).getNonRelationalFields(),

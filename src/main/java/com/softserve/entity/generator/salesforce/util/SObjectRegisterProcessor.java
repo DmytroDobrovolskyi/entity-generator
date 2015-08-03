@@ -46,11 +46,11 @@ public class SObjectRegisterProcessor
 
             if (isRelational)
             {
-                relationalFields.add(ParsingUtil.toSalesforceStyle(field, "__r"));
+                relationalFields.add(ParsingUtil.toSalesforceStyleField(field, "__r"));
             }
             else
             {
-                nonRelationalFields.add(ParsingUtil.toSalesforceStyle(field, "__c"));
+                nonRelationalFields.add(ParsingUtil.toSalesforceStyleField(field, "__c"));
             }
         }
         return new SObjectMetadata(nonRelationalFields, relationalFields, objectType);

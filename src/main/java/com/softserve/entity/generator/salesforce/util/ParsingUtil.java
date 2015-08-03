@@ -57,7 +57,7 @@ public class ParsingUtil
      * @param jsonToFormat JSON String
      * @return formatted JSON String
      */
-    public static String JsonToJavaStyle(String jsonToFormat)
+    public static String toJavaStyleJson(String jsonToFormat)
     {
         StringBuilder formattedJson = new StringBuilder(jsonToFormat);
         Matcher matcher = Pattern.compile("(\"[A-Z].*__c\")|(\"[A-Z].*__r\")|(\"Name\")")
@@ -86,13 +86,21 @@ public class ParsingUtil
      * @param postfix extension like __c or __r
      * @return formatted stringified {@literal field} in salesforce style
      */
-    public static String toSalesforceStyle(Field field, String postfix)
+    public static String toSalesforceStyleField(Field field, String postfix)
     {
         String javaStyleField = field.getName();
         return new StringBuilder(javaStyleField)
                 .replace(0, 1, (javaStyleField.charAt(0) + "").toUpperCase())
                 .append(postfix)
                 .toString();
+    }
+
+    public static String toJavaStyleField(String salesforceStyleName)
+    {
+        char firstLetter = salesforceStyleName.charAt(0);
+        return salesforceStyleName
+                .replace(firstLetter, Character.toLowerCase(firstLetter))
+                .replaceAll("(__c)|(__r)", "");
     }
 
     /**
@@ -116,6 +124,12 @@ public class ParsingUtil
         return stringifyList(fields, prefix, postfix);
     }
 
+    public static void deleteLastComma(StringBuilder stringBuilder)
+    {
+        int lastCommaIndex = stringBuilder.length() - 1;
+        stringBuilder.delete(lastCommaIndex, lastCommaIndex + 1);
+    }
+
     private static String stringifyList(List<String> listToStringify, String prefix, String postfix)
     {
         StringBuilder fieldStringBuilder = new StringBuilder();
@@ -127,9 +141,7 @@ public class ParsingUtil
                     .append(postfix)
                     .append(",");
         }
-        int lastCommaIndex = fieldStringBuilder.length() - 1;
-        return fieldStringBuilder
-                .delete(lastCommaIndex, lastCommaIndex + 1)
-                .toString();
+        deleteLastComma(fieldStringBuilder);
+        return fieldStringBuilder.toString();
     }
 }

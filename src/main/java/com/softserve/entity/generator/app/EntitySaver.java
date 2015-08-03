@@ -25,7 +25,7 @@ public class EntitySaver
         @SuppressWarnings("unchecked")
         BatchService<Entity> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
-        List<Entity> entitiesToSync = sObjectProcessor.getAll(FetchType.EAGER);
+        List<Entity> entitiesToSync = sObjectProcessor.getAll(FetchType.LAZY);
 
         doParentToChildAssignment(entitiesToSync);
         batchService.batchMerge(entitiesToSync);
