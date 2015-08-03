@@ -8,7 +8,7 @@ import java.util.*;
 
 @javax.persistence.Entity
 @Table(name = "ENTITY")
-public class Entity implements DatabaseObject
+public class Entity extends DatabaseObject
 {
     @Id
     @Column(name = "Entity_Id")
@@ -20,7 +20,7 @@ public class Entity implements DatabaseObject
     @Column(name = "Name")
     private String name;
 
-    @OneToMany(mappedBy = "entity", cascade = {CascadeType.ALL} , orphanRemoval = true)
+    @OneToMany(mappedBy = "entity", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Set<Field> fields = new HashSet<Field>();
 
     @Column(name = "Is_Processing_Needed")
@@ -82,11 +82,7 @@ public class Entity implements DatabaseObject
 
     public void setFields(Set<Field> fields)
     {
-        for (Field field : fields)
-        {
-            field.setEntity(this);
-        }
-        this.fields.addAll(fields);
+        this.fields = fields;
     }
 
     @Override
@@ -102,6 +98,19 @@ public class Entity implements DatabaseObject
                 .append(entityId, entity.entityId)
                 .isEquals();
     }
+
+    @Override
+    public String toString()
+    {
+        return "Entity{" +
+                "entityId='" + entityId + '\'' +
+                ", tableName='" + tableName + '\'' +
+                ", name='" + name + '\'' +
+                ", fields=" + fields +
+                ", isProcessingNeeded=" + isProcessingNeeded +
+                '}';
+    }
+
     @Override
     public int hashCode()
     {

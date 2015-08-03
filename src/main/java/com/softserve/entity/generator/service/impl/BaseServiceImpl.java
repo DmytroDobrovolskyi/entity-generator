@@ -23,7 +23,7 @@ abstract class BaseServiceImpl<T extends DatabaseObject>
 
     private Class<T> objectClass;
 
-    protected BaseServiceImpl(Class<T> objectClass)
+    public BaseServiceImpl(Class<T> objectClass)
     {
         this.objectClass = objectClass;
     }

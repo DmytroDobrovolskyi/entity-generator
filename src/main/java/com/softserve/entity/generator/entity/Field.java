@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @javax.persistence.Entity
 @Table(name = "FIELD")
-public class Field implements DatabaseObject
+public class Field extends DatabaseObject
 {
     @Id
     @Column(name = "Field_Id")
@@ -110,10 +110,19 @@ public class Field implements DatabaseObject
 
         return new EqualsBuilder()
                 .append(fieldId, field.fieldId)
-                .append(columnName, field.columnName)
-                .append(type, field.type)
-                .append(isPrimaryKey, field.isPrimaryKey)
                 .isEquals();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Field{" +
+                "fieldId='" + fieldId + '\'' +
+                ", name='" + name + '\'' +
+                ", columnName='" + columnName + '\'' +
+                ", type='" + type + '\'' +
+                ", isPrimaryKey=" + isPrimaryKey +
+                '}';
     }
 
     @Override

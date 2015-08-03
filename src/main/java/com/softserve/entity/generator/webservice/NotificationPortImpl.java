@@ -7,6 +7,7 @@ import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.salesforce.FetchType;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
+import com.softserve.entity.generator.salesforce.SObjectSynchronizer;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.service.BatchService;
 import org.apache.log4j.Logger;
@@ -81,9 +82,6 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
 
     private void syncData(Map<OperationType, List<String>> operationMap, Class<T> objectClass, String sessionId)
     {
-        @SuppressWarnings("unchecked")
-        BatchService<T> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
-
         for (Map.Entry<OperationType, List<String>> operationEntry : operationMap.entrySet())
         {
             OperationType operation = operationEntry.getKey();
@@ -91,14 +89,43 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
             {
                 case INSERT_OPERATION:
                 case UPDATE_OPERATION:
-                    batchService.batchMerge(
-                            SObjectProcessor.getInstance(sessionId, objectClass)
-                                    .getAll(objectClass.getSimpleName() + "Id__c", operationEntry.getValue(), FetchType.LAZY)
-                    );
+                    syncOnInsertUpdate(operationEntry.getValue(), objectClass, sessionId);
                     break;
-                case  DELETE_OPERATION:
-                    batchService.batchDelete(operationEntry.getValue(), objectClass);
+                case DELETE_OPERATION:
+                    break;
             }
         }
+    }
+
+    private void syncOnInsertUpdate(List<String> idList, Class<T> objectClass, String sessionId)
+    {
+        @SuppressWarnings("unchecked")
+        BatchService<DatabaseObject> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
+
+        List<T> newObjects = SObjectProcessor.getInstance(sessionId, objectClass)
+                .getAll(objectClass.getSimpleName() + "Id__c", idList, FetchType.LAZY);
+
+        List<DatabaseObject> synchronizedObjects = SObjectSynchronizer.syncObjects(toIdMap(idList, newObjects), OperationType.UPDATE_OPERATION);
+
+        batchService.batchMerge(synchronizedObjects);
+    }
+
+    private Map<String, T> toIdMap(List<String> idList, List<T> objectList)
+    {
+        int objectListSize = objectList.size();
+        int idListSize = idList.size();
+
+        if (objectListSize != idListSize)
+        {
+            throw new AssertionError("Could not convert to map: idList size=" + idListSize + " objectList size=" + objectListSize);
+        }
+
+        Map<String, T> resultMap = new HashMap<String, T>();
+        for (int i = 0; i < objectListSize; i++)
+        {
+            resultMap.put(idList.get(i), objectList.get(i));
+        }
+
+        return resultMap;
     }
 }
