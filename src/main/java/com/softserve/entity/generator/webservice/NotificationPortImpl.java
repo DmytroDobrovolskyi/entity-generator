@@ -5,9 +5,8 @@ import com.sforce.soap._2005._09.outbound.NotificationPort;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.DatabaseObject;
-import com.softserve.entity.generator.salesforce.FetchType;
-import com.softserve.entity.generator.salesforce.SObjectProcessor;
-import com.softserve.entity.generator.salesforce.SObjectSynchronizer;
+import com.softserve.entity.generator.salesforce.*;
+import com.softserve.entity.generator.salesforce.util.ObjectType;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.service.BatchService;
 import org.apache.log4j.Logger;
@@ -47,7 +46,7 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
             @WebParam(name = "Notification", targetNamespace = TARGET_NAMESPACE)
             List<NotificationMessageCNotification> notifications)
     {
-        Map<Class<T>, Map<OperationType, List<String>>> classMap = new HashMap<Class<T>, Map<OperationType, List<String>>>();
+        Map<Class<T>, Map<OperationType, List<String>>> classToOperationMap = new HashMap<Class<T>, Map<OperationType, List<String>>>();
 
         List<Class<T>> classList = new ArrayList<Class<T>>();
 
@@ -57,33 +56,32 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
             OperationType operationType = OperationType.valueOf(notificationMessage.getSObject().getOperationTypeC().getValue());
             String objectId = notificationMessage.getSObject().getExternalIdC().getValue();
 
-            Map<OperationType, List<String>> operationMap = classMap.get(javaClassAnalogue);
-            if (operationMap == null)
+            Map<OperationType, List<String>> operationToIds = classToOperationMap.get(javaClassAnalogue);
+            if (operationToIds == null)
             {
-                operationMap = new HashMap<OperationType, List<String>>();
+                operationToIds = new HashMap<OperationType, List<String>>();
 
-                operationMap.put(OperationType.INSERT_OPERATION, new ArrayList<String>());
-                operationMap.put(OperationType.UPDATE_OPERATION, new ArrayList<String>());
-                operationMap.put(OperationType.DELETE_OPERATION, new ArrayList<String>());
+                operationToIds.put(OperationType.INSERT_OPERATION, new ArrayList<String>());
+                operationToIds.put(OperationType.UPDATE_OPERATION, new ArrayList<String>());
+                operationToIds.put(OperationType.DELETE_OPERATION, new ArrayList<String>());
 
-                classMap.put(javaClassAnalogue, operationMap);
+                classToOperationMap.put(javaClassAnalogue, operationToIds);
                 classList.add(javaClassAnalogue);
             }
-            operationMap.get(operationType).add(objectId);
-            System.out.println(classMap);
+            operationToIds.get(operationType).add(objectId);
         }
 
         for (Class<T> objectClass : classList)
         {
-            syncData(classMap.get(objectClass), objectClass, sessionId);
+            syncData(classToOperationMap.get(objectClass), objectClass, sessionId);
         }
 
         return true;
     }
 
-    private void syncData(Map<OperationType, List<String>> operationMap, Class<T> objectClass, String sessionId)
+    private void syncData(Map<OperationType, List<String>> operationToIds, Class<T> objectClass, String sessionId)
     {
-        for (Map.Entry<OperationType, List<String>> operationEntry : operationMap.entrySet())
+        for (Map.Entry<OperationType, List<String>> operationEntry : operationToIds.entrySet())
         {
             OperationType operation = operationEntry.getKey();
             List<String> idList = operationEntry.getValue();
@@ -93,8 +91,9 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
                 switch (operation)
                 {
                     case INSERT_OPERATION:
+                        break;
                     case UPDATE_OPERATION:
-                        syncOnInsertUpdate(idList, objectClass, sessionId);
+                        syncOnUpdate(idList, objectClass, sessionId);
                         break;
                     case DELETE_OPERATION:
                         break;
@@ -103,35 +102,42 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
         }
     }
 
-    private void syncOnInsertUpdate(List<String> idList, Class<T> objectClass, String sessionId)
+    private void syncOnUpdate(List<String> ids, Class<T> objectClass, String sessionId)
     {
+        ObjectType objectType = SObjectRegister.getSObjectMetadata(objectClass).getObjectType();
+        SObjectProcessor<T> objectProcessor = SObjectProcessor.getInstance(sessionId, objectClass);
+        String condition = objectClass.getSimpleName() + "Id__c";
+        List<T> newStateObjects = new ArrayList<T>();
+        switch (objectType)
+        {
+            case HIGH_ORDER_OBJECT:
+                newStateObjects.addAll(objectProcessor.getAll(condition, ids, FetchType.LAZY));
+                break;
+            case SUBORDER_OBJECT:
+                newStateObjects.addAll(objectProcessor.getAll(condition, ids, FetchType.EAGER));
+        }
+        List<DatabaseObject> resolvedObjects =  ObjectStateResolver.resolveOnUpdate(getIdToObject(ids, newStateObjects), objectClass);
+
         @SuppressWarnings("unchecked")
         BatchService<DatabaseObject> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
-        List<T> newObjects = SObjectProcessor.getInstance(sessionId, objectClass)
-                .getAll(objectClass.getSimpleName() + "Id__c", idList, FetchType.LAZY);
-
-        System.out.println(newObjects);
-
-        List<DatabaseObject> synchronizedObjects = SObjectSynchronizer.syncObjects(toIdMap(idList, newObjects), OperationType.UPDATE_OPERATION);
-
-        batchService.batchMerge(synchronizedObjects);
+        batchService.batchMerge(resolvedObjects);
     }
 
-    private Map<String, T> toIdMap(List<String> idList, List<T> objectList)
+    private Map<String, T> getIdToObject(List<String> ids, List<T> objects)
     {
-        int objectListSize = objectList.size();
-        int idListSize = idList.size();
+        int objectsQuantity = objects.size();
+        int idsQuantity = ids.size();
 
-        if (objectListSize != idListSize)
+        if (objectsQuantity != idsQuantity)
         {
-            throw new AssertionError("Could not convert to map: idList size=" + idListSize + " objectList size=" + objectListSize);
+            throw new AssertionError("Could not convert to map: ids size=" + idsQuantity + " objects size=" + objectsQuantity);
         }
 
         Map<String, T> resultMap = new HashMap<String, T>();
-        for (int i = 0; i < objectListSize; i++)
+        for (int i = 0; i < objectsQuantity; i++)
         {
-            resultMap.put(idList.get(i), objectList.get(i));
+            resultMap.put(ids.get(i), objects.get(i));
         }
 
         return resultMap;
