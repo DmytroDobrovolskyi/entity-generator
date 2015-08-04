@@ -2,8 +2,6 @@ public virtual with sharing class SObjectDomain
 {
     protected List<SObject> records { get; private set; }
 
-    protected String masterRelationName;
-
     public SObjectDomain(List<SObject> records)
     {
         this.records = records;
@@ -17,17 +15,17 @@ public virtual with sharing class SObjectDomain
 
     public virtual void onAfterInsert()
     {
-        NotificationMessageUtil.insertMessage(records, OperationType.INSERT_OPERATION, masterRelationName);
+        NotificationMessageUtil.insertMessage(records, OperationType.INSERT_OPERATION);
     }
 
     public virtual void onAfterUpdate(Map<Id, SObject> existingRecords)
     {
-        NotificationMessageUtil.insertMessage(records, OperationType.UPDATE_OPERATION, masterRelationName);
+        NotificationMessageUtil.insertMessage(records, OperationType.UPDATE_OPERATION);
     }
 
     public virtual void onAfterDelete()
     {
-        NotificationMessageUtil.insertMessage(records, OperationType.DELETE_OPERATION, masterRelationName);
+        NotificationMessageUtil.insertMessage(records, OperationType.DELETE_OPERATION);
     }
 
     public static void handleTrigger(Type domainClass)
