@@ -2,6 +2,7 @@ package com.softserve.entity.generator.salesforce.util;
 
 import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.salesforce.SObjectRegister;
+import com.softserve.entity.generator.util.ReflectionUtil;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
@@ -19,14 +20,15 @@ public class ParsingUtil
     private static final Logger logger = Logger.getLogger(ParsingUtil.class);
 
     /**
-     * Checks if SObject is child in salesforce database relationships by its name.
+     * Checks if SObject is child in salesforce database relationships.
      *
-     * @param sObjectName name of SObject
+     * @param objectClassToCheck object class where to check
+     * @param relationClass field class to check
      * @return true if sObjectClassName is child in salesforce database relationships, false otherwise
      */
-    public static boolean isChild(String sObjectName)
+    public static boolean isChild(Class<?> objectClassToCheck, Class<?> relationClass)
     {
-        return sObjectName.endsWith("s__r");
+        return ReflectionUtil.isMethodExist(objectClassToCheck, "get" + relationClass.getSimpleName() + "s");
     }
 
     /**
@@ -97,6 +99,10 @@ public class ParsingUtil
 
     public static String toJavaStyleField(String salesforceStyleName)
     {
+        if (salesforceStyleName.isEmpty())
+        {
+            return "";
+        }
         char firstLetter = salesforceStyleName.charAt(0);
         return salesforceStyleName
                 .replace(firstLetter, Character.toLowerCase(firstLetter))
@@ -129,6 +135,7 @@ public class ParsingUtil
         int lastCommaIndex = stringBuilder.length() - 1;
         stringBuilder.delete(lastCommaIndex, lastCommaIndex + 1);
     }
+
 
     private static String stringifyList(List<String> listToStringify, String prefix, String postfix)
     {

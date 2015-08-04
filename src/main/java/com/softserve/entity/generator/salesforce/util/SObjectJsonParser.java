@@ -1,6 +1,5 @@
 package com.softserve.entity.generator.salesforce.util;
 
-import com.softserve.entity.generator.salesforce.SObjectMetadata;
 import com.softserve.entity.generator.salesforce.SObjectRegister;
 import org.apache.log4j.Logger;
 
@@ -17,107 +16,163 @@ public class SObjectJsonParser
     private static final String TOTAL_SIZE_REGEX = "\"totalSize\" : (\\d+)";
     private static final String RELATIONS_TOTAL_SIZE_REGEX = "__r\" : \\{\\s+\"totalSize\" : (\\d+)";
 
-    private static int OBJECTS_PER_LOOP = 1;
-
-    public static String toJavaStyleJsonArray(String sObjectJson, Class<?> sObjectClass)
+    public static String toJavaStyleJsonArray(String sObjectJson, Class<?> javaClassAnalogue)
     {
-        return doParse(sObjectJson, sObjectClass);
+        return doParse(sObjectJson, javaClassAnalogue);
     }
 
-    public static String toJavaStyleJson(String sObjectJson, Class<?> sObjectClass)
+    public static String toJavaStyleJson(String sObjectJson, Class<?> javaClassAnalogue)
     {
         return toSingleJson(
-                doParse(sObjectJson, sObjectClass)
+                doParse(sObjectJson, javaClassAnalogue)
         );
     }
 
-    private static String doParse(String sObjectJson, Class<?> sObjectClass)
+    private static String doParse(String jsonToParse, Class<?> javaClassAnalogue)
     {
-        StringBuilder sObjectJsonBuilder = new StringBuilder(sObjectJson);
-        Matcher matcher = Pattern.compile(TOTAL_SIZE_REGEX).matcher(sObjectJsonBuilder);
+        StringBuilder javaStyleJsonBuilder = new StringBuilder("[");
+        int totalSize = getTotalSize(TOTAL_SIZE_REGEX, jsonToParse);
+        if (totalSize > 0)
+        {
+            Matcher matcher = Pattern.compile(
+                    buildRegex(
+                            javaClassAnalogue,
+                            SObjectRegister.getSObjectMetadata(javaClassAnalogue).getNonRelationalFields()))
+                    .matcher(jsonToParse);
+
+            String leftToParse = jsonToParse;
+            boolean isAlreadyParsed = false;
+
+            for (int i = 0; i < totalSize; i++)
+            {
+                javaStyleJsonBuilder
+                        .append("{");
+
+                while (matcher.find())
+                {
+                    String record = matcher.group();
+                    boolean isNameField = isName(record);
+
+                    if (isNameField && isAlreadyParsed)
+                    {
+                        System.out.println(leftToParse);
+                        isAlreadyParsed = false;
+                        break;
+                    }
+                    else if (isNameField)
+                    {
+                        isAlreadyParsed = true;
+                    }
+                    javaStyleJsonBuilder.append(toJavaStyleRecord(record));
+                    leftToParse = leftToParse.replaceFirst(record.trim(), "");
+                }
+                leftToParse = parseRelationalFields(javaStyleJsonBuilder, leftToParse, javaClassAnalogue);
+                matcher.reset(leftToParse);
+
+                javaStyleJsonBuilder.append("},");
+            }
+            ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
+
+            System.out.println(javaStyleJsonBuilder);
+        }
+        return javaStyleJsonBuilder
+                .append("]")
+                .toString();
+    }
+
+    private static String parseRelationalFields(StringBuilder javaStyleJsonBuilder, String leftToParse, Class<?> javaClassAnalogue)
+    {
+        for (String relationalField : SObjectRegister.getSObjectMetadata(javaClassAnalogue).getRelationalFields())
+        {
+            Class<?> relationClass = ParsingUtil.toJavaClass(relationalField);
+            Matcher matcher = Pattern.compile(
+                    buildRegex(
+                            relationClass,
+                            SObjectRegister.getSObjectMetadata(relationClass).getNonRelationalFields()))
+                    .matcher(leftToParse);
+
+            int totalSize = getTotalSize(RELATIONS_TOTAL_SIZE_REGEX, leftToParse);
+            if (ParsingUtil.isChild(javaClassAnalogue, relationClass) && totalSize > 0)
+            {
+                javaStyleJsonBuilder
+                        .append("\"")
+                        .append(ParsingUtil.toJavaStyleField(relationalField))
+                        .append("\"")
+                        .append(" : [");
+
+                String nextObjectNameRecord = "";
+                boolean isAlreadyParsed = false;
+
+                for (int i = 0; i < totalSize; i++)
+                {
+                    javaStyleJsonBuilder
+                            .append("{")
+                            .append(toJavaStyleRecord(nextObjectNameRecord));
+                    leftToParse = leftToParse.replaceFirst(nextObjectNameRecord.trim(), "");
+
+                    while (matcher.find())
+                    {
+                        String record = matcher.group();
+                        boolean isNameField = isName(record) || isName(nextObjectNameRecord);
+                        if (isNameField && isAlreadyParsed)
+                        {
+                            nextObjectNameRecord = record;
+                            isAlreadyParsed = false;
+                            break;
+                        }
+                        else if (isNameField)
+                        {
+                            nextObjectNameRecord = "";
+                            isAlreadyParsed = true;
+                        }
+                        javaStyleJsonBuilder.append(toJavaStyleRecord(record));
+                        leftToParse = leftToParse.replaceFirst(record.trim(), "");
+                    }
+                    javaStyleJsonBuilder.append("},");
+                }
+                ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
+                javaStyleJsonBuilder.append("]");
+            }
+            else if (leftToParse.contains(relationalField))
+            {
+                javaStyleJsonBuilder
+                        .append("\"")
+                        .append(ParsingUtil.toJavaStyleField(relationalField))
+                        .append("\"")
+                        .append(" : { ");
+
+                boolean isAlreadyParsed = false;
+                while (matcher.find())
+                {
+                    String record = matcher.group();
+                    boolean isNameField = isName(record);
+                    if (isNameField && isAlreadyParsed)
+                    {
+                        isAlreadyParsed = false;
+                        break;
+                    }
+                    else if (isNameField)
+                    {
+                        isAlreadyParsed = true;
+                    }
+                    javaStyleJsonBuilder.append(toJavaStyleRecord(record));
+                    leftToParse = leftToParse.replaceFirst(record.trim(), "");
+                }
+                javaStyleJsonBuilder.append("}");
+            }
+        }
+        return leftToParse;
+    }
+
+    private static int getTotalSize(String regex, String json)
+    {
+        Matcher matcher = Pattern.compile(regex).matcher(json);
         int totalSize = 0;
         if (matcher.find())
         {
             totalSize = Integer.valueOf(matcher.group(1));
         }
-
-        SObjectMetadata objectMetadata = SObjectRegister.getSObjectMetadata(sObjectClass);
-        matcher = Pattern.compile(buildRegex(sObjectClass, objectMetadata.getNonRelationalFields())).matcher(sObjectJsonBuilder);
-
-        StringBuilder javaStyleJsonBuilder = new StringBuilder("[");
-
-        int objectParsed = 0;
-        for (int i = 0; i < totalSize; i++)
-        {
-            objectParsed = 0;
-            javaStyleJsonBuilder.append("{");
-            matcher = Pattern.compile(buildRegex(sObjectClass, objectMetadata.getNonRelationalFields())).matcher(sObjectJson);
-
-            while (matcher.find())
-            {
-                String record = matcher.group();
-                if (isNameRecord(record) && ++objectParsed > OBJECTS_PER_LOOP)
-                {
-                    break;
-                }
-
-                javaStyleJsonBuilder.append(toJavaStyleField(record));
-
-                System.out.println(sObjectJsonBuilder);
-
-                sObjectJsonBuilder.delete(matcher.start(), matcher.end());
-            }
-
-            for (String relationalField : objectMetadata.getRelationalFields())
-            {
-                matcher = Pattern.compile(RELATIONS_TOTAL_SIZE_REGEX).matcher(sObjectJsonBuilder);
-                int relationTotalSize = 0;
-                if (matcher.find())
-                {
-                    relationTotalSize = Integer.valueOf(matcher.group(1));
-                }
-
-                Class<?> relationalFieldClass = ParsingUtil.toJavaClass(relationalField);
-
-                boolean isOneLoopNeeded = sObjectJsonBuilder.toString().contains(relationalField);
-                if (relationTotalSize > 0 || isOneLoopNeeded)
-                {
-                    javaStyleJsonBuilder
-                            .append("\"")
-                            .append(relationalField)
-                            .append("\"")
-                            .append(" : [");
-
-                    for (int j = 0; j < relationTotalSize || isOneLoopNeeded; j++)
-                    {
-                        objectParsed = 0;
-                        SObjectMetadata relationalFieldMetadata = SObjectRegister.getSObjectMetadata(relationalFieldClass);
-
-                        matcher = Pattern.compile(buildRegex(sObjectClass, relationalFieldMetadata.getNonRelationalFields())).matcher(sObjectJsonBuilder);
-
-                        javaStyleJsonBuilder.append("{");
-                        while (matcher.find())
-                        {
-                            String record = matcher.group();
-                            if (isNameRecord(record) && ++objectParsed > OBJECTS_PER_LOOP)
-                            {
-                                break;
-                            }
-                            javaStyleJsonBuilder.append(toJavaStyleField(record));
-                        }
-                        javaStyleJsonBuilder.append("},");
-                        isOneLoopNeeded = false;
-                    }
-                    ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
-                    javaStyleJsonBuilder.append("]");
-                }
-            }
-            javaStyleJsonBuilder.append("},");
-        }
-        ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
-        javaStyleJsonBuilder.append("]");
-        System.out.println(javaStyleJsonBuilder);
-        return javaStyleJsonBuilder.toString();
+        return totalSize;
     }
 
     private static String buildRegex(Class<?> sObjectClass, List<String> fieldsToSearch)
@@ -137,12 +192,12 @@ public class SObjectJsonParser
         return regexBuilder.toString();
     }
 
-    private static boolean isNameRecord(String record)
+    private static boolean isName(String record)
     {
         return fetchFieldName(record).equals("Name");
     }
 
-    private static String toJavaStyleField(String recordToChange)
+    private static String toJavaStyleRecord(String recordToChange)
     {
         String salesforceFieldName = fetchFieldName(recordToChange);
         return recordToChange.replaceAll(salesforceFieldName, ParsingUtil.toJavaStyleField(salesforceFieldName));
@@ -155,7 +210,7 @@ public class SObjectJsonParser
         {
             return matcher.group(1);
         }
-        throw new AssertionError("Could not change fetch field name in record: " + record);
+        return "";
     }
 
     /**
