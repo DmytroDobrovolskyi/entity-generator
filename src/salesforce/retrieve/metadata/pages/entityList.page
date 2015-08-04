@@ -59,7 +59,7 @@
                         <apex:commandButton action="{!discardChanges}" rendered="{!wereChanges}" value="Discard changes" styleClass="btn btn-warning pull-right"
                                             onclick="fillForReset()"/>
 
-                        <apex:commandButton action="{!applyChanges}" reRender="table-panel" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
+                        <apex:commandButton action="{!applyChanges}" reRender="table-panel,generate-table-block" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
                                             styleClass="btn btn-info pull-right apply-button" oncomplete="initAndDeleteErrors()"/>
                     </apex:outputPanel>
 
@@ -69,6 +69,13 @@
                     </apex:commandLink>
                 </apex:outputPanel>
             </apex:form>
+
+             <apex:form id="generate-table-block" styleClass="generate-table">
+                 <apex:commandButton id="generate-table" rendered="{!isVisible}" value="Generate tables" styleClass="btn btn-large" action="{!startRequest}" style="margin-left:430px;"
+                 reRender="result,generate-table-block" onclick="openModuleWindow()"/>
+             </apex:form>
+
+             <apex:outputText id="result" value="{!result}" />
         </div>
     </div>
 
