@@ -16,6 +16,23 @@ Inc.//DTD Web Application 2.3//EN"
         </servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <servlet>
+        <servlet-name>generateTable</servlet-name>
+        <servlet-class>
+            com.sun.jersey.spi.container.servlet.ServletContainer
+        </servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>com.softserve.entity.generator.webservice</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>generateTable</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>notification</servlet-name>
         <url-pattern>/notification/sync-data</url-pattern>

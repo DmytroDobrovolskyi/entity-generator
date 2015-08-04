@@ -64,6 +64,27 @@
     border-color: #eea236 !important;
 }
 
+.btn-large {
+    height:70px;
+    width:140px;
+    color: #fff !important;
+    background-color: lightskyblue !important;
+    border-color: lightskyblue !important;
+}
+
+.noSidebarCell {
+    padding-bottom: 390px;
+}
+
+.ui-dialog-titlebar-close {
+    visibility: hidden;
+}
+
+.ui-widget-header {
+    background: green;
+    border-color:green;
+}
+
 .noSidebarCell {
     padding-bottom: 390px;
 }
