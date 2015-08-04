@@ -19,14 +19,11 @@ public class TablesGenerator
 
     @POST
     @Path("generate-tables")
-    public Response generateTables() {
-
-        String output = "success : ";
-        System.out.println("hello");
+    public Response generateTables()
+    {
         generateEntities();
         System.out.println("ok");
-
-        return Response.status(200).entity(output).build();
+        return Response.status(200).entity("successfully added").build();
     }
 
     private void generateEntities()
