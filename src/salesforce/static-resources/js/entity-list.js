@@ -70,6 +70,37 @@ function initAndDeleteErrors()
     $('.errorMsg').remove();
 }
 
+function openModuleWindow()
+{
+    $(function() {
+        $('<div></div>').dialog(
+            {
+                modal: true,
+                title: "Confirmation",
+                open: function() {
+                    var markup = 'Tables have been successfully generated';
+                    $(this).html(markup);
+                },
+                buttons:
+                {
+                    Ok: function()
+                    {
+                        $( this ).dialog( "close" );
+                        hideModuleWindow()
+                    }
+                }
+            });
+    });
+}
+
+function hideModuleWindow()
+{
+    $(".generate-table").each(function (index, element){
+            $(this).prop('hidden', 'hidden');
+        }
+    );
+}
+
 function deleteEntity(tableName)
 {
     $("#dialog-confirm").dialog(
