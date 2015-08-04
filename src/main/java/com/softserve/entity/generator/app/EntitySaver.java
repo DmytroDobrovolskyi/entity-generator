@@ -20,14 +20,15 @@ public class EntitySaver
     public static void main(String[] args)
     {
         WebServiceUtil webServiceUtil = WebServiceUtil.getInstance(LoginUtil.parseCredentials(args));
-        SObjectProcessor<Field> sObjectProcessor = SObjectProcessor.getInstance(webServiceUtil.getSessionId(), Field.class);
+        SObjectProcessor<Entity> sObjectProcessor = SObjectProcessor.getInstance(webServiceUtil.getSessionId(), Entity.class);
 
         @SuppressWarnings("unchecked")
-        BatchService<Field> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
+        BatchService<Entity> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
-        List<Field> entitiesToSync = sObjectProcessor.getAll(FetchType.LAZY);
+        List<Entity> entitiesToSync = sObjectProcessor.getAll(FetchType.EAGER);
 
-        System.out.println(entitiesToSync);
+        doParentToChildAssignment(entitiesToSync);
+        batchService.batchMerge(entitiesToSync);
     }
 
     private static void doParentToChildAssignment(List<Entity> entitiesToSync)

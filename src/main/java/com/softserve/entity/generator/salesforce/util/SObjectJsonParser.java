@@ -31,7 +31,9 @@ public class SObjectJsonParser
     private static String doParse(String jsonToParse, Class<?> javaClassAnalogue)
     {
         StringBuilder javaStyleJsonBuilder = new StringBuilder("[");
-        int totalSize = getTotalSize(TOTAL_SIZE_REGEX, jsonToParse);
+        StringBuilder leftToParse = new StringBuilder(jsonToParse);
+
+        int totalSize = getTotalSize(TOTAL_SIZE_REGEX, leftToParse);
         if (totalSize > 0)
         {
             Matcher matcher = Pattern.compile(
@@ -40,13 +42,11 @@ public class SObjectJsonParser
                             SObjectRegister.getSObjectMetadata(javaClassAnalogue).getNonRelationalFields()))
                     .matcher(jsonToParse);
 
-            String leftToParse = jsonToParse;
             boolean isAlreadyParsed = false;
 
             for (int i = 0; i < totalSize; i++)
             {
-                javaStyleJsonBuilder
-                        .append("{");
+                javaStyleJsonBuilder.append("{");
 
                 while (matcher.find())
                 {
@@ -55,7 +55,6 @@ public class SObjectJsonParser
 
                     if (isNameField && isAlreadyParsed)
                     {
-                        System.out.println(leftToParse);
                         isAlreadyParsed = false;
                         break;
                     }
@@ -64,11 +63,10 @@ public class SObjectJsonParser
                         isAlreadyParsed = true;
                     }
                     javaStyleJsonBuilder.append(toJavaStyleRecord(record));
-                    leftToParse = leftToParse.replaceFirst(record.trim(), "");
+                    deleteParsed(leftToParse, record);
                 }
-                leftToParse = parseRelationalFields(javaStyleJsonBuilder, leftToParse, javaClassAnalogue);
-                matcher.reset(leftToParse);
-
+                matcher.reset(parseRelationalFields(javaStyleJsonBuilder, leftToParse, javaClassAnalogue));
+                ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
                 javaStyleJsonBuilder.append("},");
             }
             ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
@@ -80,60 +78,59 @@ public class SObjectJsonParser
                 .toString();
     }
 
-    private static String parseRelationalFields(StringBuilder javaStyleJsonBuilder, String leftToParse, Class<?> javaClassAnalogue)
+    private static String parseRelationalFields(StringBuilder javaStyleJsonBuilder, StringBuilder leftToParse, Class<?> javaClassAnalogue)
     {
         for (String relationalField : SObjectRegister.getSObjectMetadata(javaClassAnalogue).getRelationalFields())
         {
             Class<?> relationClass = ParsingUtil.toJavaClass(relationalField);
+            String stringifiedLefToParse = leftToParse.toString();
             Matcher matcher = Pattern.compile(
                     buildRegex(
                             relationClass,
                             SObjectRegister.getSObjectMetadata(relationClass).getNonRelationalFields()))
-                    .matcher(leftToParse);
+                    .matcher(stringifiedLefToParse);
 
             int totalSize = getTotalSize(RELATIONS_TOTAL_SIZE_REGEX, leftToParse);
-            if (ParsingUtil.isChild(javaClassAnalogue, relationClass) && totalSize > 0)
+            if (ParsingUtil.isChild(javaClassAnalogue, relationClass))
             {
-                javaStyleJsonBuilder
-                        .append("\"")
-                        .append(ParsingUtil.toJavaStyleField(relationalField))
-                        .append("\"")
-                        .append(" : [");
-
-                String nextObjectNameRecord = "";
-                boolean isAlreadyParsed = false;
-
-                for (int i = 0; i < totalSize; i++)
+                if (totalSize > 0)
                 {
                     javaStyleJsonBuilder
-                            .append("{")
-                            .append(toJavaStyleRecord(nextObjectNameRecord));
-                    leftToParse = leftToParse.replaceFirst(nextObjectNameRecord.trim(), "");
+                            .append("\"")
+                            .append(ParsingUtil.toJavaStyleField(relationalField))
+                            .append("\"")
+                            .append(" : [");
 
-                    while (matcher.find())
+                    boolean isAlreadyParsed = false;
+
+                    for (int i = 0; i < totalSize; i++)
                     {
-                        String record = matcher.group();
-                        boolean isNameField = isName(record) || isName(nextObjectNameRecord);
-                        if (isNameField && isAlreadyParsed)
+                        javaStyleJsonBuilder.append("{");
+
+                        while (matcher.find())
                         {
-                            nextObjectNameRecord = record;
-                            isAlreadyParsed = false;
-                            break;
+                            String record = matcher.group();
+                            boolean isNameField = isName(record);
+                            if (isNameField && isAlreadyParsed)
+                            {
+                                isAlreadyParsed = false;
+                                break;
+                            }
+                            else if (isNameField)
+                            {
+                                isAlreadyParsed = true;
+                            }
+                            javaStyleJsonBuilder.append(toJavaStyleRecord(record));
+                            deleteParsed(leftToParse, record);
                         }
-                        else if (isNameField)
-                        {
-                            nextObjectNameRecord = "";
-                            isAlreadyParsed = true;
-                        }
-                        javaStyleJsonBuilder.append(toJavaStyleRecord(record));
-                        leftToParse = leftToParse.replaceFirst(record.trim(), "");
+                        javaStyleJsonBuilder.append("},");
+                        matcher.reset(leftToParse.toString());
                     }
-                    javaStyleJsonBuilder.append("},");
+                    ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
+                    javaStyleJsonBuilder.append("]");
                 }
-                ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
-                javaStyleJsonBuilder.append("]");
             }
-            else if (leftToParse.contains(relationalField))
+            else if (stringifiedLefToParse.contains(relationalField))
             {
                 javaStyleJsonBuilder
                         .append("\"")
@@ -156,21 +153,22 @@ public class SObjectJsonParser
                         isAlreadyParsed = true;
                     }
                     javaStyleJsonBuilder.append(toJavaStyleRecord(record));
-                    leftToParse = leftToParse.replaceFirst(record.trim(), "");
+                    deleteParsed(leftToParse, record);
                 }
                 javaStyleJsonBuilder.append("}");
             }
         }
-        return leftToParse;
+        return leftToParse.toString();
     }
 
-    private static int getTotalSize(String regex, String json)
+    private static int getTotalSize(String regex, StringBuilder json)
     {
         Matcher matcher = Pattern.compile(regex).matcher(json);
         int totalSize = 0;
         if (matcher.find())
         {
             totalSize = Integer.valueOf(matcher.group(1));
+            deleteParsed(json, matcher.group());
         }
         return totalSize;
     }
@@ -195,6 +193,12 @@ public class SObjectJsonParser
     private static boolean isName(String record)
     {
         return fetchFieldName(record).equals("Name");
+    }
+
+    private static void deleteParsed(StringBuilder leftToParse, String recordToDelete)
+    {
+        int index = leftToParse.indexOf(recordToDelete);
+        leftToParse.delete(index, index + recordToDelete.length());
     }
 
     private static String toJavaStyleRecord(String recordToChange)

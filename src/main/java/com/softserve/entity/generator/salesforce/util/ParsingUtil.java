@@ -23,7 +23,7 @@ public class ParsingUtil
      * Checks if SObject is child in salesforce database relationships.
      *
      * @param objectClassToCheck object class where to check
-     * @param relationClass field class to check
+     * @param relationClass      field class to check
      * @return true if sObjectClassName is child in salesforce database relationships, false otherwise
      */
     public static boolean isChild(Class<?> objectClassToCheck, Class<?> relationClass)
@@ -99,10 +99,6 @@ public class ParsingUtil
 
     public static String toJavaStyleField(String salesforceStyleName)
     {
-        if (salesforceStyleName.isEmpty())
-        {
-            return "";
-        }
         char firstLetter = salesforceStyleName.charAt(0);
         return salesforceStyleName
                 .replace(firstLetter, Character.toLowerCase(firstLetter))
@@ -132,10 +128,12 @@ public class ParsingUtil
 
     public static void deleteLastComma(StringBuilder stringBuilder)
     {
-        int lastCommaIndex = stringBuilder.length() - 1;
-        stringBuilder.delete(lastCommaIndex, lastCommaIndex + 1);
+        int lastCommaIndex = stringBuilder.lastIndexOf(",");
+        if (lastCommaIndex == stringBuilder.length() - 1)
+        {
+            stringBuilder.delete(lastCommaIndex, lastCommaIndex + 1);
+        }
     }
-
 
     private static String stringifyList(List<String> listToStringify, String prefix, String postfix)
     {
