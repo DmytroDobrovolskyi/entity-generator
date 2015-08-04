@@ -9,7 +9,9 @@ import com.softserve.entity.generator.salesforce.FetchType;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.BatchService;
+import com.softserve.entity.generator.service.EntityService;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
@@ -22,8 +24,11 @@ public class EntitySaver
         WebServiceUtil webServiceUtil = WebServiceUtil.getInstance(LoginUtil.parseCredentials(args));
         SObjectProcessor<Entity> sObjectProcessor = SObjectProcessor.getInstance(webServiceUtil.getSessionId(), Entity.class);
 
+        ApplicationContext context = AppContextCache.getContext(AppConfig.class);
+
         @SuppressWarnings("unchecked")
-        BatchService<Entity> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
+        BatchService<Entity> batchService = context.getBean(BatchService.class);
+        EntityService entityService = context.getBean(EntityService.class);
 
         List<Entity> entitiesToSync = sObjectProcessor.getAll(FetchType.EAGER);
 
