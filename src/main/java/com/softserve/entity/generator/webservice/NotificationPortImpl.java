@@ -116,7 +116,7 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
             case SUBORDER_OBJECT:
                 newStateObjects.addAll(objectProcessor.getAll(condition, ids, FetchType.EAGER));
         }
-        List<DatabaseObject> resolvedObjects =  ObjectStateResolver.resolveOnUpdate(getIdToObject(ids, newStateObjects), objectClass);
+        List<DatabaseObject> resolvedObjects =  SObjectStateResolver.resolveOnUpdate(getIdToObject(ids, newStateObjects), objectClass);
 
         @SuppressWarnings("unchecked")
         BatchService<DatabaseObject> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);

@@ -9,7 +9,7 @@ import com.softserve.entity.generator.service.BaseService;
 
 import java.util.*;
 
-public class ObjectStateResolver
+public class SObjectStateResolver
 {
     public static <T extends DatabaseObject> List<DatabaseObject> resolveOnUpdate(Map<String, T> idToObject, Class<T> objectClass)
     {
@@ -44,8 +44,11 @@ public class ObjectStateResolver
                     for (String parentName : objectMetadata.getRelationalFields())
                     {
                         DatabaseObject parent = newStateObject.getParent(ParsingUtil.<T>toJavaClass(parentName));
+                        parent = baseService.findById(parent.getId());
 
                         Set<DatabaseObject> childrenSet = parent.getChildren(objectClass);
+
+
 
                         if (childrenSet.remove(newStateObject))
                         {
