@@ -11,4 +11,20 @@ public class EntityRepositoryImpl extends CrudRepositoryImpl<Entity> implements 
     {
         super.setObjectClassToken(Entity.class);
     }
+
+    @Override
+    public Entity getByFieldId(String fieldId)
+    {
+        return entityManager.createQuery(
+                "FROM Entity AS e " +
+                "WHERE e.entityId " +
+                "IN " +
+                "(" +
+                    "SELECT entity " +
+                    "FROM Field AS f " +
+                    "WHERE f.fieldId = '"+ fieldId +"'" +
+                ")",
+                Entity.class)
+                    .getSingleResult();
+    }
 }

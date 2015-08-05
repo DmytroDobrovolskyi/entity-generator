@@ -11,16 +11,18 @@ import com.softserve.entity.generator.webservice.OperationType;
 
 import java.util.*;
 
-public class SObjectSynchronizer {
-    public static <T extends DatabaseObject> void sync(List<String> idList, OperationType operationType, Class<T> objectClass, String sessionId) {
+public class SObjectSynchronizer
+{
+    public static <T extends DatabaseObject> void sync(List<String> idList, OperationType operationType, Class<T> objectClass, String sessionId)
+    {
         @SuppressWarnings("unchecked")
-        BatchService<T> batchDeleteService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
+        BatchService<T> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
 
         SObjectMetadata objectMetadata = SObjectRegister.getSObjectMetadata(objectClass);
         ObjectType objectType = objectMetadata.getObjectType();
-        if (objectType.equals(ObjectType.HIGH_ORDER_OBJECT) && operationType.equals(OperationType.DELETE_OPERATION)) {
-            batchDeleteService.batchDelete(idList, objectClass);
-            return;
+        if (operationType.equals(OperationType.DELETE_OPERATION))
+        {
+           batchService.batchDelete(idList, objectClass);
         }
         @SuppressWarnings("unchecked")
         BaseService<T> baseService = AppContextCache.getContext(AppConfig.class).getBean(BaseService.class);
@@ -35,12 +37,16 @@ public class SObjectSynchronizer {
 
         List<DatabaseObject> mergeList = new ArrayList<DatabaseObject>(); //objects to perform merge operations
 
-        for (Map.Entry<String, T> idToObjectEntry : idToObject.entrySet()) {
+        for (Map.Entry<String, T> idToObjectEntry : idToObject.entrySet())
+        {
             T objectToMerge = idToObjectEntry.getValue();
-            switch (objectType) {
+            switch (objectType)
+            {
                 case HIGH_ORDER_OBJECT:
-                    if (operationType.equals(OperationType.UPDATE_OPERATION)) {
-                        for (String childrenName : objectMetadata.getRelationalFields()) {
+                    if (operationType.equals(OperationType.UPDATE_OPERATION))
+                    {
+                        for (String childrenName : objectMetadata.getRelationalFields())
+                        {
                             Class<T> childrenClass = ParsingUtil.toJavaClass(childrenName);
                             Set<DatabaseObject> children = baseService
                                     .findById(idToObjectEntry.getKey())
@@ -49,36 +55,40 @@ public class SObjectSynchronizer {
                         }
                     }
                     mergeList.add(objectToMerge);
-                    break;
                 case SUBORDER_OBJECT:
-                    for (String parentName : objectMetadata.getRelationalFields()) {
+                    for (String parentName : objectMetadata.getRelationalFields())
+                    {
                         String parentId = objectToMerge.getParent(ParsingUtil.<T>toJavaClass(parentName)).getId();
                         DatabaseObject parent = idToParentObject.get(parentId);
-                        if (parent == null) {
+                        if (parent == null)
+                        {
                             parent = baseService.findById(parentId);
                             idToParentObject.put(parentId, parent);
                         }
                         Set<DatabaseObject> childrenSet = parent.getChildren(objectClass);
                         childrenSet.remove(objectToMerge);
-                        childrenSet.add(objectToMerge);
+                        if (operationType.equals(OperationType.DELETE_OPERATION))
+                        {
+                            childrenSet.add(objectToMerge);
+                        }
                     }
                     mergeList.addAll(idToParentObject.values());
             }
         }
-        @SuppressWarnings("unchecked")
-        BatchService<DatabaseObject> batchMergeService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
-        batchMergeService.batchMerge(mergeList);
     }
 
-    private static <T extends DatabaseObject> Map<String, T> getIdToObject(List<String> ids, List<T> objects) {
+    private static <T extends DatabaseObject> Map<String, T> getIdToObject(List<String> ids, List<T> objects)
+    {
         int objectsQuantity = objects.size();
         int idsQuantity = ids.size();
-        if (objectsQuantity != idsQuantity) {
+        if (objectsQuantity != idsQuantity)
+        {
             throw new AssertionError("Could not convert to map: ids size=" + idsQuantity + " objects size=" + objectsQuantity);
         }
 
         Map<String, T> resultMap = new HashMap<String, T>();
-        for (int i = 0; i < objectsQuantity; i++) {
+        for (int i = 0; i < objectsQuantity; i++)
+        {
             resultMap.put(ids.get(i), objects.get(i));
         }
         return resultMap;
