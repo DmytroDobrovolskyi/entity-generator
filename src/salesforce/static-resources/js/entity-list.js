@@ -73,20 +73,20 @@ function initAndDeleteErrors()
 function openModuleWindow()
 {
     $(function() {
-        $('<div></div>').dialog(
+        $('div').dialog(
             {
                 modal: true,
                 title: "Confirmation",
-                open: function() {
-                    var markup = 'Tables have been successfully generated';
-                    $(this).html(markup);
+                open: function()
+                {
+                    $(this).html('Tables have been successfully generated');
                 },
                 buttons:
                 {
                     Ok: function()
                     {
                         $( this ).dialog( "close" );
-                        hideModuleWindow()
+                        hideModuleWindow();
                     }
                 }
             });
