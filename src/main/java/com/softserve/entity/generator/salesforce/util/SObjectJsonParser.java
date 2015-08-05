@@ -31,7 +31,6 @@ public class SObjectJsonParser
 
     private static String doParse(String jsonToParse, Class<?> javaClassAnalogue)
     {
-        System.out.println(jsonToParse);
         StringBuilder javaStyleJsonBuilder = new StringBuilder("[");
         StringBuilder leftToParse = new StringBuilder(jsonToParse);
 
@@ -72,8 +71,6 @@ public class SObjectJsonParser
                 javaStyleJsonBuilder.append("},");
             }
             ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
-
-            System.out.println(javaStyleJsonBuilder);
         }
         return javaStyleJsonBuilder
                 .append("]")

@@ -71,6 +71,7 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
             operationToIds.get(operationType).add(objectId);
         }
 
+        System.out.println(classToOperationMap);
         for (Class<T> objectClass : classList)
         {
             syncData(classToOperationMap.get(objectClass), objectClass, sessionId);
