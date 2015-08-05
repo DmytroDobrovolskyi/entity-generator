@@ -4,4 +4,7 @@ import com.softserve.entity.generator.entity.Entity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EntityRepository extends CrudRepository<Entity> { }
+public interface EntityRepository extends CrudRepository<Entity>
+{
+    Entity getByFieldId(String fieldId);
+}

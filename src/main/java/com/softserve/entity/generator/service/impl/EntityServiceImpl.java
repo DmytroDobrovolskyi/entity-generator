@@ -55,4 +55,11 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
             entityRepository.merge(entity);
         }
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Entity getByFieldId(String fieldId)
+    {
+        return entityRepository.getByFieldId(fieldId);
+    }
 }

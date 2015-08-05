@@ -19,4 +19,6 @@ public interface EntityService extends BaseService<Entity>
     void resolveDeleted(List<Entity> entities);
 
     void applyData();
+
+    Entity getByFieldId(String fieldId);
 }
