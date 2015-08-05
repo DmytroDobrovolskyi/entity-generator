@@ -2,13 +2,9 @@ package com.softserve.entity.generator.webservice;
 
 import com.sforce.soap._2005._09.outbound.NotificationMessageCNotification;
 import com.sforce.soap._2005._09.outbound.NotificationPort;
-import com.softserve.entity.generator.config.AppConfig;
-import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.DatabaseObject;
-import com.softserve.entity.generator.salesforce.*;
-import com.softserve.entity.generator.salesforce.util.ObjectType;
+import com.softserve.entity.generator.salesforce.SObjectSynchronizer;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
-import com.softserve.entity.generator.service.BatchService;
 import org.apache.log4j.Logger;
 
 import javax.jws.WebMethod;
@@ -71,76 +67,23 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
             operationToIds.get(operationType).add(objectId);
         }
 
-        System.out.println(classToOperationMap);
         for (Class<T> objectClass : classList)
         {
-            syncData(classToOperationMap.get(objectClass), objectClass, sessionId);
+            syncObjects(classToOperationMap.get(objectClass), objectClass, sessionId);
         }
 
         return true;
     }
 
-    private void syncData(Map<OperationType, List<String>> operationToIds, Class<T> objectClass, String sessionId)
+    private void syncObjects(Map<OperationType, List<String>> operationToIds, Class<T> objectClass, String sessionId)
     {
-        for (Map.Entry<OperationType, List<String>> operationEntry : operationToIds.entrySet())
+        for (Map.Entry<OperationType, List<String>> operationToIdEntry : operationToIds.entrySet())
         {
-            OperationType operation = operationEntry.getKey();
-            List<String> idList = operationEntry.getValue();
-
+            List<String> idList = operationToIdEntry.getValue();
             if (!idList.isEmpty())
             {
-                switch (operation)
-                {
-                    case INSERT_OPERATION:
-                        break;
-                    case UPDATE_OPERATION:
-                        syncOnUpdate(idList, objectClass, sessionId);
-                        break;
-                    case DELETE_OPERATION:
-                        break;
-                }
+                SObjectSynchronizer.sync(idList, operationToIdEntry.getKey(), objectClass, sessionId);
             }
         }
-    }
-
-    private void syncOnUpdate(List<String> ids, Class<T> objectClass, String sessionId)
-    {
-        ObjectType objectType = SObjectRegister.getSObjectMetadata(objectClass).getObjectType();
-        SObjectProcessor<T> objectProcessor = SObjectProcessor.getInstance(sessionId, objectClass);
-        String condition = objectClass.getSimpleName() + "Id__c";
-        List<T> newStateObjects = new ArrayList<T>();
-        switch (objectType)
-        {
-            case HIGH_ORDER_OBJECT:
-                newStateObjects.addAll(objectProcessor.getAll(condition, ids, FetchType.LAZY));
-                break;
-            case SUBORDER_OBJECT:
-                newStateObjects.addAll(objectProcessor.getAll(condition, ids, FetchType.EAGER));
-        }
-        List<DatabaseObject> resolvedObjects =  SObjectStateResolver.resolveOnUpdate(getIdToObject(ids, newStateObjects), objectClass);
-
-        @SuppressWarnings("unchecked")
-        BatchService<DatabaseObject> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
-
-        batchService.batchMerge(resolvedObjects);
-    }
-
-    private Map<String, T> getIdToObject(List<String> ids, List<T> objects)
-    {
-        int objectsQuantity = objects.size();
-        int idsQuantity = ids.size();
-
-        if (objectsQuantity != idsQuantity)
-        {
-            throw new AssertionError("Could not convert to map: ids size=" + idsQuantity + " objects size=" + objectsQuantity);
-        }
-
-        Map<String, T> resultMap = new HashMap<String, T>();
-        for (int i = 0; i < objectsQuantity; i++)
-        {
-            resultMap.put(ids.get(i), objects.get(i));
-        }
-
-        return resultMap;
     }
 }
