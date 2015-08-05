@@ -18,7 +18,7 @@ public class SObjectSynchronizer {
 
         SObjectMetadata objectMetadata = SObjectRegister.getSObjectMetadata(objectClass);
         ObjectType objectType = objectMetadata.getObjectType();
-        if (objectType.equals(ObjectType.HIGH_ORDER_OBJECT) && operationType.equals(OperationType.DELETE_OPERATION)) {
+        if (operationType.equals(OperationType.DELETE_OPERATION)) {
             batchDeleteService.batchDelete(idList, objectClass);
             return;
         }
@@ -40,6 +40,7 @@ public class SObjectSynchronizer {
             switch (objectType) {
                 case HIGH_ORDER_OBJECT:
                     if (operationType.equals(OperationType.UPDATE_OPERATION)) {
+                        baseService.setObjectClassToken(objectClass);
                         for (String childrenName : objectMetadata.getRelationalFields()) {
                             Class<T> childrenClass = ParsingUtil.toJavaClass(childrenName);
                             Set<DatabaseObject> children = baseService
@@ -52,9 +53,11 @@ public class SObjectSynchronizer {
                     break;
                 case SUBORDER_OBJECT:
                     for (String parentName : objectMetadata.getRelationalFields()) {
-                        String parentId = objectToMerge.getParent(ParsingUtil.<T>toJavaClass(parentName)).getId();
+                        Class<T> parentClass = ParsingUtil.<T>toJavaClass(parentName);
+                        String parentId = objectToMerge.getParent(parentClass).getId();
                         DatabaseObject parent = idToParentObject.get(parentId);
                         if (parent == null) {
+                            baseService.setObjectClassToken(parentClass);
                             parent = baseService.findById(parentId);
                             idToParentObject.put(parentId, parent);
                         }

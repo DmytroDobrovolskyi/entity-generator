@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -19,9 +20,12 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
     @Autowired
     private EntityApplier entityApplier;
 
-    private EntityServiceImpl()
+    private EntityServiceImpl() { }
+
+    @PostConstruct
+    private void init()
     {
-        super(Entity.class);
+        super.setObjectClassToken(Entity.class);
     }
 
     @Override

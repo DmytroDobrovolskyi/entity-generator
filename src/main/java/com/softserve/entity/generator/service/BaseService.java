@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface BaseService<T>
 {
+    void setObjectClassToken(Class<T> objectClassToken);
+
     void save(T object);
 
     void delete(T object);
