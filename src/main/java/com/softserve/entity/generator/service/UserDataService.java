@@ -4,7 +4,7 @@ import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface OperationsService
+public interface UserDataService
 {
     SalesforceCredentials findByOrganizationId(String id);
 

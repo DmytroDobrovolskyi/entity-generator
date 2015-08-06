@@ -26,11 +26,12 @@ public class SalesforceCredentials extends DatabaseObject
 
     protected SalesforceCredentials() { }
 
-    public SalesforceCredentials(String username, String password, String securityToken)
+    public SalesforceCredentials(String username, String password, String securityToken, String organizationId)
     {
         this.username = username;
         this.password = password;
         this.securityToken = securityToken;
+        this.organizationId = organizationId;
     }
 
     public String getUsername()
@@ -61,5 +62,15 @@ public class SalesforceCredentials extends DatabaseObject
     public void setSecurityToken(String token)
     {
         this.securityToken = token;
+    }
+
+    public String getOrganizationId()
+    {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId)
+    {
+        this.organizationId = organizationId;
     }
 }

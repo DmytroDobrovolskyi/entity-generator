@@ -32,4 +32,16 @@
         </java>
     </target>
 
+    <target name="add-user">
+        <java classname="com.softserve.entity.generator.app.operations.AddUser">
+
+            <arg line="${command.line.args}"/>
+
+            <classpath>
+                <pathelement location="${main.jar}"/>
+            </classpath>
+            <classpath refid="lib.classpath"/>
+        </java>
+    </target>
+
 </project>

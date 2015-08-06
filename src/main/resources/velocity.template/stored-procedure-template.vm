@@ -9,6 +9,17 @@
     DECLARE @procedureQuery nvarchar(MAX) = 'CREATE PROCEDURE $procedureName AS '
     DECLARE @initialProcedureQueryLength int = LEN(@procedureQuery)
 
+    DECLARE @existingTables nvarchar(MAX);
+
+    SELECT @existingTables = COALESCE(@existingTables + ''',''' ,'') + name
+    FROM sys.tables
+
+    SET @procedureQuery =  @procedureQuery  +
+        'UPDATE core_schema.ENTITY
+         SET Is_Processing_Needed = 0
+         WHERE Table_Name
+         NOT IN (''' +  @existingTables + ''') '
+
     #set($tableNames = "'" + $entityClass.getSimpleName().toUpperCase() + "', '" + $fieldClass.getSimpleName().toUpperCase() + "'")
 
     #set($changedTables = "")

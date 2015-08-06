@@ -3,7 +3,7 @@ package com.softserve.entity.generator.repository.impl;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
-import com.softserve.entity.generator.repository.OperationsRepository;
+import com.softserve.entity.generator.repository.UserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
 @Repository
-public class OperationsRepositoryImpl extends CrudRepositoryImpl<SalesforceCredentials> implements OperationsRepository
+public class UserDataRepositoryImpl extends CrudRepositoryImpl<SalesforceCredentials> implements UserDataRepository
 {
     @Autowired
     @Qualifier(value = "operationsEntityManager")
@@ -22,6 +22,7 @@ public class OperationsRepositoryImpl extends CrudRepositoryImpl<SalesforceCrede
     private void init()
     {
         super.resetEntityManager(entityManager);
+        super.setObjectClassToken(SalesforceCredentials.class);
     }
 
     @Override
@@ -36,6 +37,6 @@ public class OperationsRepositoryImpl extends CrudRepositoryImpl<SalesforceCrede
 
     public static void main(String[] args)
     {
-        AppContextCache.getContext(AppConfig.class).getBean(OperationsRepository.class).findByOrganizationId("");
+        AppContextCache.getContext(AppConfig.class).getBean(UserDataRepository.class).findByOrganizationId("");
     }
 }

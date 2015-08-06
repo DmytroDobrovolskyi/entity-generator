@@ -9,7 +9,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.SharedEntityManagerBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 @Import(value = OperationsDatabaseConfig.class)
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.softserve.entity.generator", excludeFilters = {@ComponentScan.Filter(
-        type = FilterType.ANNOTATION, value = {Configuration.class, ContextConfiguration.class, Exclude.class})})
+        type = FilterType.ANNOTATION, value = {Configuration.class, Exclude.class})})
 @PropertySource(value = {"/META-INF/production-db.properties", "/META-INF/jpa.properties"})
 public class AppConfig
 {

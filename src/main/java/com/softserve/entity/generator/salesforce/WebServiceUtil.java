@@ -109,7 +109,7 @@ public class WebServiceUtil
         }
         catch (ConnectionException ex)
         {
-            logger.error("Failed to log in. Check your credentials and internet connection");
+            logger.error("Failed to log in. Check your internet connection and ensure that this user credentials was properly inserted in operations database");
             System.exit(1);
         }
         return loginResult;
