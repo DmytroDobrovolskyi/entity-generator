@@ -1,7 +1,7 @@
 package com.softserve.entity.generator.service;
 
 import com.softserve.entity.generator.config.MockServiceConfig;
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
 import com.softserve.entity.generator.repository.EntityRepository;
 import org.junit.Before;
 import org.junit.Test;

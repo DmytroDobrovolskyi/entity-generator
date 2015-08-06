@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.app.util;
 
-import com.softserve.entity.generator.salesforce.SalesforceCredentials;
+import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import javassist.NotFoundException;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;

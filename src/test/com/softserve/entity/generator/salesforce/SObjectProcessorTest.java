@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.salesforce;
 
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
 import org.junit.Ignore;
 import org.junit.Test;
 

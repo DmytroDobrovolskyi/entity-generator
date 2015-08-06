@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.app.util;
 
-import com.softserve.entity.generator.salesforce.SalesforceCredentials;
+import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import javassist.NotFoundException;
 import org.apache.log4j.Logger;
 
@@ -18,7 +18,7 @@ public class CredentialsUtil
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILE_NAME));
             out.writeObject(salesforceCredentials.getUsername());
             out.writeObject(salesforceCredentials.getPassword());
-            out.writeObject(salesforceCredentials.getToken());
+            out.writeObject(salesforceCredentials.getSecurityToken());
 
             out.close();
     }

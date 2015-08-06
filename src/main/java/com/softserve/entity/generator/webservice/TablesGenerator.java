@@ -2,7 +2,7 @@ package com.softserve.entity.generator.webservice;
 
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.config.util.AppContextCache;
-import com.softserve.entity.generator.salesforce.SalesforceCredentials;
+import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.EntityService;
 

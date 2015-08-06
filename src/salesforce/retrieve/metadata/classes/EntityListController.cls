@@ -160,7 +160,7 @@ public class EntityListController
         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
         this.requestLabel = con.addHttpRequest(req);
         return con;
-        }
+    }
 
     public Object processResponse()
     {

@@ -2,10 +2,10 @@ package com.softserve.entity.generator.repository.impl;
 
 import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.repository.CrudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -19,12 +19,17 @@ import java.util.List;
 @Repository
 public class CrudRepositoryImpl<T extends DatabaseObject> implements CrudRepository<T>
 {
-    @PersistenceContext
+    @Autowired
     protected EntityManager entityManager;
 
     private Class<T> objectClassToken;
 
     protected CrudRepositoryImpl() { }
+
+    protected void resetEntityManager(EntityManager entityManager)
+    {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public void setObjectClassToken(Class<T> objectClassToken)

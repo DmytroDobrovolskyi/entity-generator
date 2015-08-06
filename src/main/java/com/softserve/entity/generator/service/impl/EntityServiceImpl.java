@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service.impl;
 
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
 import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;

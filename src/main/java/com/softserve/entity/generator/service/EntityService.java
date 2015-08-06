@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service;
 
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

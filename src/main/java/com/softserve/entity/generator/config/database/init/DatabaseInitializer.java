@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.config.database.init;
 
-import com.softserve.entity.generator.config.DatabaseInitializationConfig;
+import com.softserve.entity.generator.config.ProductionDatabaseInitConfig;
+import com.softserve.entity.generator.config.util.Exclude;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -11,11 +12,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-import static com.softserve.entity.generator.config.DatabaseInitializationConfig.DATABASE_NAME;
-import static com.softserve.entity.generator.config.DatabaseInitializationConfig.DEFAULT_SCHEMA;
-import static com.softserve.entity.generator.config.DatabaseInitializationConfig.GENERATED_TABLES_SCHEMA;
+import static com.softserve.entity.generator.config.ProductionDatabaseInitConfig.*;
 
 @Component
+@Exclude
 public class DatabaseInitializer
 {
     private static final Logger logger = Logger.getLogger(DatabaseInitializer.class);
@@ -33,7 +33,7 @@ public class DatabaseInitializer
 
     public static void main(String[] args)
     {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseInitializationConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(ProductionDatabaseInitConfig.class);
         DatabaseInitializer dbInitializer = context.getBean(DatabaseInitializer.class);
         dbInitializer.initDatabase();
         dbInitializer.initSchemas();
