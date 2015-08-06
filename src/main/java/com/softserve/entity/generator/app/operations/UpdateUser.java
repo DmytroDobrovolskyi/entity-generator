@@ -6,11 +6,11 @@ import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import com.softserve.entity.generator.service.UserDataService;
 
-public class AddUser
+public class UpdateUser
 {
     public static void main(String[] args)
     {
         SalesforceCredentials credentials = UserDataUtil.parseCredentials(args);
-        AppContextCache.getContext(AppConfig.class).getBean(UserDataService.class).saveUser(credentials);
+        AppContextCache.getContext(AppConfig.class).getBean(UserDataService.class).updateUserData(credentials);
     }
 }

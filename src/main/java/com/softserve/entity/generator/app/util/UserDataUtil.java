@@ -8,7 +8,7 @@ public class UserDataUtil
 {
     private static final Logger logger = Logger.getLogger(UserDataUtil.class);
 
-    public static SalesforceCredentials parseOnInsert(String[] credentials)
+    public static SalesforceCredentials parseCredentials(String[] credentials)
     {
         Options options = new Options();
 
@@ -49,6 +49,38 @@ public class UserDataUtil
         }
     }
 
+    public static String parseUsername(String[] credentials)
+    {
+        Options options = new Options();
+        options.addOption("u", "username", true, "Salesforce username");
+        try
+        {
+            CommandLineParser parser = new BasicParser();
+            CommandLine commandLine = parser.parse(options, credentials);
+
+            if (commandLine.hasOption('h'))
+            {
+                help(options);
+            }
+
+            String username = commandLine.getOptionValue('u');
+
+            if (username == null)
+            {
+                help(options);
+                System.exit(1);
+            }
+
+            return username;
+        }
+        catch (ParseException ex)
+        {
+            logger.error("Failed to parse command line parameters");
+            help(options);
+            throw new AssertionError(ex);
+        }
+    }
+
     public static void checkUsername(String[] args)
     {
         if (args.length == 0)
@@ -56,6 +88,12 @@ public class UserDataUtil
             logger.info("Enter username please");
             System.exit(1);
         }
+    }
+
+    public static void checkCredentials(SalesforceCredentials credentials)
+    {
+        logger.error("Failed to log in. Ensure that this user credentials was properly inserted in operations database");
+        System.exit(1);
     }
 
     private static void help(Options options)
