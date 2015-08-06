@@ -80,7 +80,7 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
         SalesforceCredentials credentials = AppContextCache.getContext(AppConfig.class).getBean(UserDataService.class)
                 .findByOrganizationId(organizationId);
 
-        WebServiceUtil.getInstance(credentials).executeApex("System.debug('Test');");
+        WebServiceUtil.getInstance(credentials).executeApex("Database.delete([SELECT Id FROM NotificationMessage__c]);");
 
         return true;
     }

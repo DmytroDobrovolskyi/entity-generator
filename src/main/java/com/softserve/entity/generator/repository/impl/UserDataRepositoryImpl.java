@@ -1,7 +1,5 @@
 package com.softserve.entity.generator.repository.impl;
 
-import com.softserve.entity.generator.config.AppConfig;
-import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import com.softserve.entity.generator.repository.UserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +27,9 @@ public class UserDataRepositoryImpl extends CrudRepositoryImpl<SalesforceCredent
     public SalesforceCredentials findByOrganizationId(String organizationId)
     {
         return entityManager.createQuery(
-                "FROM SalesforceCredentials AS credentials" +
-                "WHERE credentials.organizationId = '" + organizationId +"'",
+                "FROM SalesforceCredentials AS credentials " +
+                        "WHERE credentials.organizationId = '" + organizationId + "'",
                 SalesforceCredentials.class
         ).getSingleResult();
-    }
-
-    public static void main(String[] args)
-    {
-        AppContextCache.getContext(AppConfig.class).getBean(UserDataRepository.class).findByOrganizationId("");
     }
 }

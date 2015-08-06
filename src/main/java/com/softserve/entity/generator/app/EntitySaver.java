@@ -23,7 +23,7 @@ public class EntitySaver
 
     public static void main(String[] args)
     {
-        UserDataUtil.checkUsername(args[0]);
+        UserDataUtil.checkUsername(args);
 
         ApplicationContext context = AppContextCache.getContext(AppConfig.class);
 

@@ -49,9 +49,9 @@ public class UserDataUtil
         }
     }
 
-    public static void checkUsername(String username)
+    public static void checkUsername(String[] args)
     {
-        if (username == null || username.isEmpty())
+        if (args.length == 0)
         {
             logger.info("Enter username please");
             System.exit(1);
