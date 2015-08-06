@@ -2,9 +2,14 @@ package com.softserve.entity.generator.webservice;
 
 import com.sforce.soap._2005._09.outbound.NotificationMessageCNotification;
 import com.sforce.soap._2005._09.outbound.NotificationPort;
+import com.softserve.entity.generator.config.AppConfig;
+import com.softserve.entity.generator.config.util.AppContextCache;
 import com.softserve.entity.generator.entity.DatabaseObject;
+import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import com.softserve.entity.generator.salesforce.SObjectSynchronizer;
+import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
+import com.softserve.entity.generator.service.UserDataService;
 import org.apache.log4j.Logger;
 
 import javax.jws.WebMethod;
@@ -71,6 +76,11 @@ public class NotificationPortImpl<T extends DatabaseObject> implements Notificat
         {
             syncObjects(classToOperationMap.get(objectClass), objectClass, sessionId);
         }
+
+        SalesforceCredentials credentials = AppContextCache.getContext(AppConfig.class).getBean(UserDataService.class)
+                .findByOrganizationId(organizationId);
+
+        WebServiceUtil.getInstance(credentials).executeApex("System.debug('Test');");
 
         return true;
     }
