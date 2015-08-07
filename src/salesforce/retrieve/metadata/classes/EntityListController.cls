@@ -24,9 +24,9 @@ public class EntityListController
 
     public boolean isVisible {get; set;}
 
-    public boolean displaySuccessfulModalWindow {get; set;}
+    public boolean displayModalWindow {get; set;}
 
-    public boolean displayFailedModalWindow {get; set;}
+    public String message {get; set;}
 
     public EntityListController()
     {
@@ -194,35 +194,32 @@ public class EntityListController
 
         if(result == EXPECTED_RESPONSE)
         {
-            showSuccessfulModalWindow();
+            message = response.getBody();
+            showModalWindow();
             isVisible = false;
+        }
+        else if(result == EXPECTED_RESPONSE)
+        {
+            message = response.getBody();
+            showModalWindow();
+            isVisible = true;
         }
         else
         {
-            showFailedModalWindow();
-            isVisible = true;
+           message = 'Failed to connect to remote server. Please try again later';
+           showModalWindow();
+           isVisible = true;
         }
-
         return null;
     }
 
-      public void closeSuccessfulModalWindow()
+      public void closeModalWindow()
       {
-        displaySuccessfulModalWindow = false;
+        displayModalWindow = false;
       }
 
-      public void showSuccessfulModalWindow()
+      public void showModalWindow()
       {
-         displaySuccessfulModalWindow = true;
-      }
-
-      public void closeFailedModalWindow()
-      {
-         displayFailedModalWindow = false;
-      }
-
-      public void showFailedModalWindow()
-      {
-         displayFailedModalWindow = true;
+         displayModalWindow = true;
       }
 }
