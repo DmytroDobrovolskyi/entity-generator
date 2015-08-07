@@ -20,8 +20,8 @@ import javax.ws.rs.core.Response;
 public class TablesGenerator
 {
     private static final Logger logger = Logger.getLogger(TablesGenerator.class);
-    private static final String SUCCESSFUL_MESSAGE = "successful request";
-    private static final String FAILED_MESSAGE = "request was not successful";
+    private static final Integer SUCCESSFUL_STATUS = 200;
+    private static final Integer  FAILED_STATUS = 500;
 
     @POST
     @Path("generate-tables")
@@ -30,13 +30,13 @@ public class TablesGenerator
         try
         {
             generateEntities(requestBody);
-            return Response.status(200).entity(SUCCESSFUL_MESSAGE).build();
+            return Response.status(SUCCESSFUL_STATUS).build();
         }
         catch (ConnectionException ex)
         {
             logger.error("Failed to log in. Check your credentials and internet connection");
         }
-        return Response.status(500).entity(FAILED_MESSAGE).build();
+        return Response.status(FAILED_STATUS).build();
     }
 
     private void generateEntities(String organizationId) throws ConnectionException
