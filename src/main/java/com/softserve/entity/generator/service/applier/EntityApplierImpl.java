@@ -37,7 +37,7 @@ public class EntityApplierImpl implements EntityApplier
                 "DECLARE @resolveNonExistingQuery nvarchar(MAX) = " +
                 "( " +
                     "'UPDATE core_schema.ENTITY " +
-                    "SET Is_Processing_Needed = " +
+                    "SET Is_Processing_Needed = 0" +
                     "WHERE Table_Name " +
                     "NOT IN (''' +  @existingTables + ''') '" +
                 ") " +
