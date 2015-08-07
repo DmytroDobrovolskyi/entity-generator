@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.webservice;
 
+
 import com.sforce.ws.ConnectionException;
 import com.softserve.entity.generator.app.EntityGenerator;
 import com.softserve.entity.generator.config.AppConfig;

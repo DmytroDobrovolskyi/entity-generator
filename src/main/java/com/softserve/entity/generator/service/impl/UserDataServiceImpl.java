@@ -35,9 +35,9 @@ public class UserDataServiceImpl implements UserDataService
     @Transactional(value = "operationsTransactionManager")
     public void deleteUser(String username)
     {
-        SalesforceCredentials userToDelete  = userDataRepository.findById(username);
-        UserDataUtil.checkCredentials(userToDelete);
-        userDataRepository.delete(userToDelete);
+        SalesforceCredentials credentials  = userDataRepository.findById(username);
+        UserDataUtil.checkCredentials(credentials);
+        userDataRepository.delete(credentials);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class UserDataServiceImpl implements UserDataService
     @Transactional(value = "operationsTransactionManager", readOnly = true)
     public SalesforceCredentials findUser(String username)
     {
-        return userDataRepository.findById(username);
+        SalesforceCredentials credentials  = userDataRepository.findById(username);
+        UserDataUtil.checkCredentials(credentials);
+        return credentials;
     }
-
-
 }

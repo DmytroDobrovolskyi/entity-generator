@@ -28,7 +28,7 @@ public class UserDataRepositoryImpl extends CrudRepositoryImpl<SalesforceCredent
     {
         return entityManager.createQuery(
                 "FROM SalesforceCredentials AS credentials " +
-                        "WHERE credentials.organizationId = '" + organizationId + "'",
+                "WHERE credentials.organizationId = '" + organizationId + "'",
                 SalesforceCredentials.class
         ).getSingleResult();
     }

@@ -2,7 +2,7 @@ public class EntityListController
 {
     private static final String LONG_RUNNING_SERVICE_URL =getRemoteSettingURL() + 'entity-generator/generate-tables';
 
-    private static final String EXPECTED_RESPONSE = 'success';
+    private static final String EXPECTED_RESPONSE = 'successful request';
 
     public String entityId { get; set; }
 
@@ -205,12 +205,6 @@ public class EntityListController
 
         return null;
     }
-
-     public void spin()
-     {
-        long now = datetime.now().gettime();
-        while(datetime.now().gettime()-now<3000);
-     }
 
       public void closeSuccessfulModalWindow()
       {
