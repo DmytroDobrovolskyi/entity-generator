@@ -45,6 +45,8 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
     @Transactional
     public void applyData()
     {
+        entityApplier.resolveNonExisting();
+
         List<Entity> entitiesToProcess = entityRepository.findAll();
 
         entityApplier.applyAll(entitiesToProcess);
