@@ -1,8 +1,8 @@
 package com.softserve.entity.generator.service.applier.util;
 
-import com.softserve.entity.generator.config.DatabaseInitializationConfig;
-import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.entity.Field;
+import com.softserve.entity.generator.config.ProductionDatabaseInitConfig;
+import com.softserve.entity.generator.entity.production.Entity;
+import com.softserve.entity.generator.entity.production.Field;
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -25,7 +25,7 @@ public class ProcedureGenerator
         Template templateCreate = velocityEngine.getTemplate("velocity.template/stored-procedure-template.vm");
         VelocityContext context = new VelocityContext();
 
-        context.put("schema", DatabaseInitializationConfig.GENERATED_TABLES_SCHEMA);
+        context.put("schema", ProductionDatabaseInitConfig.GENERATED_TABLES_SCHEMA);
         context.put("procedureName", PROCEDURE_NAME);
         context.put("entities", entities);
         context.put("entityClass", Entity.class);

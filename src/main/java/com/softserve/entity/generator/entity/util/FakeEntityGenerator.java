@@ -1,7 +1,7 @@
 package com.softserve.entity.generator.entity.util;
 
-import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.entity.Field;
+import com.softserve.entity.generator.entity.production.Entity;
+import com.softserve.entity.generator.entity.production.Field;
 
 import java.util.*;
 

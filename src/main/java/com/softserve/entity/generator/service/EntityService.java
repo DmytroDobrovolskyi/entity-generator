@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service;
 
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,4 +19,6 @@ public interface EntityService extends BaseService<Entity>
     void resolveDeleted(List<Entity> entities);
 
     void applyData();
+
+    Entity getByFieldId(String fieldId);
 }

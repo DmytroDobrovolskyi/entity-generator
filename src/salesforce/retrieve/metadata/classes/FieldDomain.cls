@@ -13,21 +13,6 @@ public with sharing class FieldDomain extends SObjectDomain
         }
     }
 
-    public override void onAfterInsert()
-    {
-        NotificationMessageUtil.insertMessage(records, OperationType.INSERT_OPERATION);
-    }
-
-    public override void onAfterUpdate(Map<Id, SObject> existingRecords)
-    {
-        NotificationMessageUtil.insertMessage(records, OperationType.UPDATE_OPERATION);
-    }
-
-    public override void onAfterDelete()
-    {
-        NotificationMessageUtil.insertMessage(records, OperationType.DELETE_OPERATION);
-    }
-
     public override void onBeforeInsert()
     {
         FieldUtil.generateColumnNameAndExternalId((List<Field__c>) records);

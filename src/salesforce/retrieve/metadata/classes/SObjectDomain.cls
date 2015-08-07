@@ -13,11 +13,20 @@ public virtual with sharing class SObjectDomain
 
     public virtual void onBeforeDelete() { }
 
-    public virtual void onAfterInsert() { }
+    public virtual void onAfterInsert()
+    {
+        NotificationMessageUtil.insertMessage(records, OperationType.INSERT_OPERATION);
+    }
 
-    public virtual void onAfterUpdate(Map<Id, SObject> existingRecords) { }
+    public virtual void onAfterUpdate(Map<Id, SObject> existingRecords)
+    {
+        NotificationMessageUtil.insertMessage(records, OperationType.UPDATE_OPERATION);
+    }
 
-    public virtual void onAfterDelete() { }
+    public virtual void onAfterDelete()
+    {
+        NotificationMessageUtil.insertMessage(records, OperationType.DELETE_OPERATION);
+    }
 
     public static void handleTrigger(Type domainClass)
     {

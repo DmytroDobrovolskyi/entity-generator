@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.salesforce.util;
 
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
 import org.junit.Test;
 
 import java.io.File;

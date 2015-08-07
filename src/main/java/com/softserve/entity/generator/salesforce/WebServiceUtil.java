@@ -7,6 +7,8 @@ import com.sforce.soap.partner.LoginResult;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
+import com.softserve.entity.generator.app.util.UserDataUtil;
+import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -30,6 +32,7 @@ public class WebServiceUtil
 
     public static WebServiceUtil getInstance(SalesforceCredentials salesforceCredentials)
     {
+        UserDataUtil.checkCredentials(salesforceCredentials);
         WebServiceUtil instance = instanceCache.get(salesforceCredentials);
         if (instance == null)
         {
@@ -93,7 +96,7 @@ public class WebServiceUtil
     {
         String username = salesforceCredentials.getUsername();
         String password = salesforceCredentials.getPassword();
-        String secToken = salesforceCredentials.getToken();
+        String secToken = salesforceCredentials.getSecurityToken();
         try
         {
             if (partnerConnection == null)
@@ -108,7 +111,7 @@ public class WebServiceUtil
         }
         catch (ConnectionException ex)
         {
-            logger.error("Failed to log in. Check your credentials and internet connection");
+            logger.error("Failed to log in. Check your internet connection");
             System.exit(1);
         }
         return loginResult;

@@ -1,6 +1,6 @@
 public class NotificationMessageUtil
 {
-	public static void insertMessage(List<SObject> sObjects, OperationType operationType)
+    public static void insertMessage(List<SObject> sObjects, OperationType operationType)
     {
         for (SObject sObjectToProcess : sObjects)
         {
@@ -11,8 +11,6 @@ public class NotificationMessageUtil
             message.SObjectType__c = sObjectType;
             message.ExternalId__c = String.valueOf(sObjectToProcess.get(toExternalIdFieldName(sObjectType)));
             message.OperationType__c = String.valueOf(operationType);
-
-            Database.insert(message);
         }
     }
 

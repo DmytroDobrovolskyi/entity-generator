@@ -1,15 +1,19 @@
 package com.softserve.entity.generator.app;
 
-import com.softserve.entity.generator.app.util.LoginUtil;
+import com.softserve.entity.generator.app.util.UserDataUtil;
 import com.softserve.entity.generator.config.AppConfig;
 import com.softserve.entity.generator.config.util.AppContextCache;
-import com.softserve.entity.generator.entity.Entity;
-import com.softserve.entity.generator.entity.Field;
+import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
+import com.softserve.entity.generator.entity.production.Entity;
+import com.softserve.entity.generator.entity.production.Field;
 import com.softserve.entity.generator.salesforce.FetchType;
 import com.softserve.entity.generator.salesforce.SObjectProcessor;
 import com.softserve.entity.generator.salesforce.WebServiceUtil;
 import com.softserve.entity.generator.service.BatchService;
+import com.softserve.entity.generator.service.EntityService;
+import com.softserve.entity.generator.service.UserDataService;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
@@ -19,11 +23,18 @@ public class EntitySaver
 
     public static void main(String[] args)
     {
-        WebServiceUtil webServiceUtil = WebServiceUtil.getInstance(LoginUtil.parseCredentials(args));
+        UserDataUtil.checkUsername(args);
+
+        ApplicationContext context = AppContextCache.getContext(AppConfig.class);
+
+        SalesforceCredentials  credentials= context.getBean(UserDataService.class).findUser(args[0]);
+        WebServiceUtil webServiceUtil = WebServiceUtil.getInstance(credentials);
+
         SObjectProcessor<Entity> sObjectProcessor = SObjectProcessor.getInstance(webServiceUtil.getSessionId(), Entity.class);
 
         @SuppressWarnings("unchecked")
-        BatchService<Entity> batchService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
+        BatchService<Entity> batchService = context.getBean(BatchService.class);
+        EntityService entityService = context.getBean(EntityService.class);
 
         List<Entity> entitiesToSync = sObjectProcessor.getAll(FetchType.EAGER);
 

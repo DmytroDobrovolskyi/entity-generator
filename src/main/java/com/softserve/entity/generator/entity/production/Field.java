@@ -1,5 +1,6 @@
-package com.softserve.entity.generator.entity;
+package com.softserve.entity.generator.entity.production;
 
+import com.softserve.entity.generator.entity.DatabaseObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

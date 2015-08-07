@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.salesforce;
 
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
+import com.softserve.entity.generator.entity.production.Field;
 import com.softserve.entity.generator.salesforce.util.SObjectRegisterProcessor;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import java.util.Map;
 public class SObjectRegister
 {
     private static final List<Class<?>> ENTITIES = Collections.unmodifiableList(
-            Arrays.<Class<?>>asList(Entity.class, com.softserve.entity.generator.entity.Field.class)
+            Arrays.<Class<?>>asList(Entity.class, Field.class)
     );
 
     private static final List<String> EXCLUSIONS = Collections.unmodifiableList(

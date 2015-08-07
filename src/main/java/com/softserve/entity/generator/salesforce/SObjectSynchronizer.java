@@ -6,72 +6,96 @@ import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.salesforce.util.ObjectType;
 import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.service.BaseService;
+import com.softserve.entity.generator.service.BatchService;
 import com.softserve.entity.generator.webservice.OperationType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class SObjectSynchronizer
 {
-    public static List<DatabaseObject> syncObjects(Map<String, ? extends DatabaseObject> objectsToSync, OperationType operationType)
+    public static <T extends DatabaseObject> void sync(List<String> idList, OperationType operationType, Class<T> objectClass, String sessionId)
     {
-        switch (operationType)
+        @SuppressWarnings("unchecked")
+        BatchService<T> batchDeleteService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
+
+        SObjectMetadata objectMetadata = SObjectRegister.getSObjectMetadata(objectClass);
+        ObjectType objectType = objectMetadata.getObjectType();
+        if (operationType.equals(OperationType.DELETE_OPERATION))
         {
-            case INSERT_OPERATION:
-            case UPDATE_OPERATION:
-                return syncOnInsertUpdate(objectsToSync);
+            batchDeleteService.batchDelete(idList, objectClass);
+            return;
         }
-        return null;
+        @SuppressWarnings("unchecked")
+        BaseService<T> baseService = AppContextCache.getContext(AppConfig.class).getBean(BaseService.class);
+
+        String sObjectName = objectClass.getSimpleName() + "Id__c";
+        FetchType fetchType = objectType.equals(ObjectType.HIGH_ORDER_OBJECT) ? FetchType.LAZY : FetchType.EAGER;
+
+        List<T> sObjects = SObjectProcessor.getInstance(sessionId, objectClass).getAll(sObjectName, idList, fetchType);
+
+        Map<String, T> idToObject = getIdToObject(idList, sObjects);
+        Map<String, DatabaseObject> idToParentObject = new HashMap<String, DatabaseObject>(); //in SUBORDER_OBJECT case
+
+        List<DatabaseObject> mergeList = new ArrayList<DatabaseObject>(); //objects to perform merge operations
+
+        for (Map.Entry<String, T> idToObjectEntry : idToObject.entrySet())
+        {
+            T objectToMerge = idToObjectEntry.getValue();
+            switch (objectType)
+            {
+                case HIGH_ORDER_OBJECT:
+                    if (operationType.equals(OperationType.UPDATE_OPERATION))
+                    {
+                        baseService.setObjectClassToken(objectClass);
+                        for (String childrenName : objectMetadata.getRelationalFields())
+                        {
+                            Class<T> childrenClass = ParsingUtil.toJavaClass(childrenName);
+                            Set<DatabaseObject> children = baseService
+                                    .findById(idToObjectEntry.getKey())
+                                    .getChildren(childrenClass);
+                            objectToMerge.setChildren(childrenClass, children);
+                        }
+                    }
+                    mergeList.add(objectToMerge);
+                    break;
+                case SUBORDER_OBJECT:
+                    for (String parentName : objectMetadata.getRelationalFields())
+                    {
+                        Class<T> parentClass = ParsingUtil.<T>toJavaClass(parentName);
+                        String parentId = objectToMerge.getParent(parentClass).getId();
+                        DatabaseObject parent = idToParentObject.get(parentId);
+                        if (parent == null)
+                        {
+                            baseService.setObjectClassToken(parentClass);
+                            parent = baseService.findById(parentId);
+                            idToParentObject.put(parentId, parent);
+                        }
+                        Set<DatabaseObject> childrenSet = parent.getChildren(objectClass);
+                        childrenSet.remove(objectToMerge);
+                        childrenSet.add(objectToMerge);
+                    }
+                    mergeList.addAll(idToParentObject.values());
+            }
+        }
+        @SuppressWarnings("unchecked")
+        BatchService<DatabaseObject> batchMergeService = AppContextCache.getContext(AppConfig.class).getBean(BatchService.class);
+        batchMergeService.batchMerge(mergeList);
     }
 
-    private static <T extends DatabaseObject> List<DatabaseObject> syncOnInsertUpdate(Map<String, T> objectsToSyncMap)
+    private static <T extends DatabaseObject> Map<String, T> getIdToObject(List<String> ids, List<T> objects)
     {
-        List<DatabaseObject> synchronizedObjects = new ArrayList<DatabaseObject>();
-
-        for (Map.Entry<String, T> objectEntry : objectsToSyncMap.entrySet())
+        int objectsQuantity = objects.size();
+        int idsQuantity = ids.size();
+        if (objectsQuantity != idsQuantity)
         {
-            T objectToSync = objectEntry.getValue();
-            Class<? extends DatabaseObject> objectClass = objectToSync.getClass();
-
-            @SuppressWarnings("unchecked")
-            BaseService<T> baseService = AppContextCache.getContext(AppConfig.class).getBean(BaseService.class);
-
-            SObjectMetadata objectMetadata = SObjectRegister.getSObjectMetadata(objectClass);
-            ObjectType objectType = objectMetadata.getObjectType();
-
-            if (objectType.equals(ObjectType.SUBORDER_OBJECT))
-            {
-                for (String parentName : objectMetadata.getRelationalFields())
-                {
-                    DatabaseObject parent = baseService.findById(objectEntry.getKey());
-
-                    Set<DatabaseObject> childrenSet = parent.getChildren(objectClass);
-
-                    if (childrenSet.remove(objectToSync))
-                    {
-                        childrenSet.add(objectToSync);
-                    }
-
-                    synchronizedObjects.add(parent);
-                }
-            }
-            else if (objectType.equals(ObjectType.HIGH_ORDER_OBJECT))
-            {
-                for (String childrenName : objectMetadata.getRelationalFields())
-                {
-                    Class<T> childrenClass = ParsingUtil.toJavaClass(childrenName);
-
-                    Set<DatabaseObject> children = baseService
-                            .findById(objectEntry.getKey())
-                            .getChildren(childrenClass);
-
-                    objectToSync.setChildren(childrenClass, children);
-                }
-                synchronizedObjects.add(objectToSync);
-            }
+            throw new AssertionError("Could not convert to map: ids size=" + idsQuantity + " objects size=" + objectsQuantity);
         }
-        return synchronizedObjects;
+
+        Map<String, T> resultMap = new HashMap<String, T>();
+        for (int i = 0; i < objectsQuantity; i++)
+        {
+            resultMap.put(ids.get(i), objects.get(i));
+        }
+        return resultMap;
     }
 }

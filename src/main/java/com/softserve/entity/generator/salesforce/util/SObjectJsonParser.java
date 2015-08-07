@@ -15,6 +15,7 @@ public class SObjectJsonParser
     private static final String FIELD_NAME_REGEX = "\"(.*?)\"";
     private static final String TOTAL_SIZE_REGEX = "\"totalSize\" : (\\d+)";
     private static final String RELATIONS_TOTAL_SIZE_REGEX = "__r\" : \\{\\s+\"totalSize\" : (\\d+)";
+    private static final String NULL_REGEX = "\"(.*?)__r\" : null";
 
     public static String toJavaStyleJsonArray(String sObjectJson, Class<?> javaClassAnalogue)
     {
@@ -70,8 +71,6 @@ public class SObjectJsonParser
                 javaStyleJsonBuilder.append("},");
             }
             ParsingUtil.deleteLastComma(javaStyleJsonBuilder);
-
-            System.out.println(javaStyleJsonBuilder);
         }
         return javaStyleJsonBuilder
                 .append("]")
@@ -82,6 +81,10 @@ public class SObjectJsonParser
     {
         for (String relationalField : SObjectRegister.getSObjectMetadata(javaClassAnalogue).getRelationalFields())
         {
+            if (isNull(leftToParse))
+            {
+                continue;
+            }
             Class<?> relationClass = ParsingUtil.toJavaClass(relationalField);
             String stringifiedLefToParse = leftToParse.toString();
             Matcher matcher = Pattern.compile(
@@ -193,6 +196,27 @@ public class SObjectJsonParser
     private static boolean isName(String record)
     {
         return fetchFieldName(record).equals("Name");
+    }
+
+    private static boolean isNull(StringBuilder json)
+    {
+        int nextObjectStarts = -1;
+        Matcher matcher = Pattern.compile(NAME_REGEX).matcher(json.toString());
+        if (matcher.find())
+        {
+            nextObjectStarts = matcher.start();
+        }
+        if (nextObjectStarts != -1)
+        {
+            matcher = Pattern.compile(NULL_REGEX).matcher(json.substring(0, nextObjectStarts));
+
+            if (matcher.find())
+            {
+                deleteParsed(json, matcher.group());
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void deleteParsed(StringBuilder leftToParse, String recordToDelete)

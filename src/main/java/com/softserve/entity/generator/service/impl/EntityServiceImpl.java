@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service.impl;
 
-import com.softserve.entity.generator.entity.Entity;
+import com.softserve.entity.generator.entity.production.Entity;
 import com.softserve.entity.generator.repository.EntityRepository;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -19,9 +20,12 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
     @Autowired
     private EntityApplier entityApplier;
 
-    private EntityServiceImpl()
+    private EntityServiceImpl() { }
+
+    @PostConstruct
+    private void init()
     {
-        super(Entity.class);
+        super.setObjectClassToken(Entity.class);
     }
 
     @Override
@@ -50,5 +54,12 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
             entity.setIsProcessingNeeded(false);
             entityRepository.merge(entity);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Entity getByFieldId(String fieldId)
+    {
+        return entityRepository.getByFieldId(fieldId);
     }
 }
