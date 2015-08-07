@@ -45,8 +45,9 @@ public class UserDataUtil
         {
             logger.error("Failed to parse command line parameters");
             help(options);
-            throw new AssertionError(ex);
+            System.exit(1);
         }
+        return null; //won't be executed
     }
 
     public static String parseUsername(String[] credentials)

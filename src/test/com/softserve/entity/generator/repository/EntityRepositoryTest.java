@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.repository;
 
-import com.softserve.entity.generator.config.MockRepositoryConfig;
+import com.softserve.entity.generator.config.RepositoryMockConfig;
 import com.softserve.entity.generator.entity.production.Entity;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +19,9 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.any;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = MockRepositoryConfig.class)
+@ContextConfiguration(classes = RepositoryMockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityRepositoryTest
 {
