@@ -25,4 +25,23 @@ public class EntityApplierImpl implements EntityApplier
 
         entityManager.createNativeQuery(createProcedureQueryString).executeUpdate();
     }
+
+    @Override
+    @Transactional
+    public void resolveNonExisting()
+    {
+        entityManager.createNativeQuery(
+                "DECLARE @existingTables nvarchar(MAX) " +
+                "SELECT @existingTables = COALESCE(@existingTables + ''',''' ,'') + name " +
+                "FROM sys.tables " +
+                "DECLARE @resolveNonExistingQuery nvarchar(MAX) = " +
+                "( " +
+                    "'UPDATE core_schema.ENTITY " +
+                    "SET Is_Processing_Needed = " +
+                    "WHERE Table_Name " +
+                    "NOT IN (''' +  @existingTables + ''') '" +
+                ") " +
+                "EXEC sp_executesql @resolveNonExistingQuery"
+        ).executeUpdate();
+    }
 }
