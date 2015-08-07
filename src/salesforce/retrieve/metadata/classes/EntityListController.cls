@@ -2,7 +2,7 @@ public class EntityListController
 {
     private static final String LONG_RUNNING_SERVICE_URL =getRemoteSettingURL() + 'entity-generator/generate-tables';
 
-    private static final String EXPECTED_RESPONSE = 'successful request';
+    private static final Integer EXPECTED_RESPONSE = 200;
 
     public String entityId { get; set; }
 
@@ -20,7 +20,7 @@ public class EntityListController
 
     private static String newEntityId = 'newEntityId';
 
-    public static String result {get;set;}
+    public static Integer result {get;set;}
 
     public boolean isVisible {get; set;}
 
@@ -172,7 +172,7 @@ public class EntityListController
         attempt = 'hello';
         return attempt;
      }
-
+     
     public Object startRequest()
     {
         Continuation con = new Continuation(60);
@@ -190,9 +190,9 @@ public class EntityListController
     public Object processResponse()
     {
         HttpResponse response = Continuation.getResponse(this.requestLabel);
-        result = response.getBody();
+        result = response.getStatusCode();
 
-        if(result.equals(EXPECTED_RESPONSE))
+        if(result == EXPECTED_RESPONSE)
         {
             showSuccessfulModalWindow();
             isVisible = false;

@@ -80,7 +80,7 @@
                  </apex:form>
 
             <apex:form id="generate-table-block">
-                 <apex:commandButton id="generate-table" value="Generate tables" action="{!startRequest}" rendered="{!isVisible}"  status="status" styleClass="btn btn-large" style="margin-left:430px;"
+                 <apex:commandButton id="generate-table" value="Generate tables" action="{!startRequest}"   status="status" styleClass="btn btn-large" style="margin-left:430px;"
                         reRender="generate-table-block,successfulModalWindow,result,failedModalWindow"/>
 
                         <apex:outputPanel id="successfulModalWindow">
@@ -103,7 +103,7 @@
                               </apex:outputPanel>
                         </apex:outputPanel>
             </apex:form>
-
+                    
             <apex:form >
                  <apex:actionStatus id="status">
                         <apex:facet name="start">
