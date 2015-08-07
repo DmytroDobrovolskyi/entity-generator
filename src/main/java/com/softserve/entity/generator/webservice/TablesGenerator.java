@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.webservice;
 
+
 import com.sforce.ws.ConnectionException;
 import com.softserve.entity.generator.app.EntityGenerator;
 import com.softserve.entity.generator.config.AppConfig;
@@ -19,7 +20,7 @@ import javax.ws.rs.core.Response;
 public class TablesGenerator
 {
     private static final Logger logger = Logger.getLogger(TablesGenerator.class);
-    private static final String SUCCESSFUL_MESSAGE = "success";
+    private static final String SUCCESSFUL_MESSAGE = "successful request";
     private static final String FAILED_MESSAGE = "request was not successful";
 
     @POST

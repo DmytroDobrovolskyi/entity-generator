@@ -2,7 +2,7 @@ public class EntityListController
 {
     private static final String LONG_RUNNING_SERVICE_URL =getRemoteSettingURL() + 'entity-generator/generate-tables';
 
-    private static final String EXPECTED_RESPONSE = 'success';
+    private static final String EXPECTED_RESPONSE = 'successful request';
 
     public String entityId { get; set; }
 
@@ -181,7 +181,7 @@ public class EntityListController
         HttpRequest req = new HttpRequest();
         req.setMethod('POST');
         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
-        req.setBody('name='+EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
+        req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
         this.requestLabel = con.addHttpRequest(req);
 
         return con;
@@ -205,12 +205,6 @@ public class EntityListController
 
         return null;
     }
-
-     public void spin()
-     {
-        long now = datetime.now().gettime();
-        while(datetime.now().gettime()-now<3000);
-     }
 
       public void closeSuccessfulModalWindow()
       {
