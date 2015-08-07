@@ -16,7 +16,7 @@ public class EntityGenerator {
 
     public static void main(String[] args)
     {
-        UserDataUtil.checkUsername(args);
+        UserDataUtil.checkArgs(args);
 
         ApplicationContext context = AppContextCache.getContext(AppConfig.class);
         SalesforceCredentials credentials = context.getBean(UserDataService.class).findUser(args[0]);
