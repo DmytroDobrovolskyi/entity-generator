@@ -81,7 +81,7 @@ public class UserDataUtil
         }
     }
 
-    public static void checkUsername(String[] args)
+    public static void checkArgs(String[] args)
     {
         if (args.length == 0)
         {
