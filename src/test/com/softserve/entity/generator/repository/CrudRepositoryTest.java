@@ -1,6 +1,7 @@
 package com.softserve.entity.generator.repository;
 
-import com.softserve.entity.generator.config.MockRepositoryConfig;
+import com.softserve.entity.generator.config.RepositoryMockConfig;
+import com.softserve.entity.generator.entity.DatabaseObject;
 import com.softserve.entity.generator.entity.production.Entity;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,18 +22,20 @@ import static org.hamcrest.core.IsInstanceOf.any;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = MockRepositoryConfig.class)
+@ContextConfiguration(classes = RepositoryMockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CrudRepositoryTest
 {
     @Autowired
     @InjectMocks
     @Qualifier("entityRepositoryImpl")
-    private CrudRepository<Entity> repository;
+    private CrudRepository<DatabaseObject> repository;
 
     @Autowired
     @Qualifier("entityManagerMock")
     private EntityManager entityManager;
+
+    private static final DatabaseObject object = mock(DatabaseObject.class);
 
     @Before
     public void setUp()
@@ -43,37 +46,34 @@ public class CrudRepositoryTest
     @Test
     public void testSave()
     {
-        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
-        repository.save(entity);
+        repository.save(object);
 
-        verify(entityManager).persist(entity);
+        verify(entityManager).persist(object);
     }
 
     @Test
     public void testMerge()
     {
-        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
-        repository.merge(entity);
+        repository.merge(object);
 
-        verify(entityManager).merge(entity);
+        verify(entityManager).merge(object);
     }
 
     @Test
     public void testDelete()
     {
-        Entity entity = new Entity("EntityId", "New table", "NEW_TABLE");
-        repository.delete(entity);
+        repository.delete(object);
 
-        verify(entityManager).remove(entity);
+        verify(entityManager).remove(object);
     }
 
     @Test
     public void testFindById()
     {
-        String id = "testId";
+        String id = mock(String.class);
         repository.findById(id);
 
-        verify(entityManager).find(Entity.class, id);
+        verify(entityManager).find(object.getClass(), id);
     }
 
     @Test

@@ -121,7 +121,6 @@ function fillForReset()
     $('.input')
         .filter(function (index, element)
         {
-            console.log(element);
             return !element.value;
         })
         .each(function (index, element)

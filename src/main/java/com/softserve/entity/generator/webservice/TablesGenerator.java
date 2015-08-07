@@ -21,7 +21,7 @@ public class TablesGenerator
 {
     private static final Logger logger = Logger.getLogger(TablesGenerator.class);
     private static final Integer SUCCESSFUL_STATUS = 200;
-    private static final Integer  FAILED_STATUS = 500;
+    private static final Integer FAILED_STATUS = 500;
 
     @POST
     @Path("generate-tables")

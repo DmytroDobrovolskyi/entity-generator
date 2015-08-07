@@ -13,6 +13,14 @@ $(function ()
             input.off('focus');
         }
     });
+
+    EntityListController.isGenerateButtonVisible
+    (
+        function (result, event)
+        {
+            setGenerateButtonVisibility(result);
+        }
+    );
 });
 
 function init()
@@ -25,9 +33,24 @@ function resolveChanges(entityId)
     callResolveChanges(entityId);
 }
 
+function setGenerateButtonVisibility(isVisible)
+{
+    var buttonBlock  =  $('.generate-block');
+
+    console.log(buttonBlock);
+    console.log(isVisible);
+    if (isVisible)
+    {
+        buttonBlock.show();
+    }
+    else
+    {
+        buttonBlock.hide();
+    }
+}
+
 function generateTableName(context)
 {
-
     var name = null;
 
     $(context)
@@ -70,36 +93,6 @@ function initAndDeleteErrors()
     $('.errorMsg').remove();
 }
 
-function callSpinner()
-{
-    callSpinnerMethod();
-}
-
-function openModuleWindow()
-{
-     callStartRequest();
-
-     setTimeout(function()
-     {
-         EntityListController.getResult
-     (
-         function(results, event)
-         {
-             console.log(event);
-             console.log(results);
-         }
-     );
-     }, 5000);
-}
-
-function hideModuleWindow()
-{
-    $(".generate-table").each(function (index, element){
-            $(this).prop('hidden', 'hidden');
-        }
-    );
-}
-
 function deleteEntity(tableName)
 {
     $("#dialog-confirm").dialog(
@@ -121,4 +114,15 @@ function deleteEntity(tableName)
                 }
             }
         });
+}
+
+function generateTables()
+{
+    EntityListController.generateTables
+    (
+        function (result, event)
+        {
+            console.log(result);
+}
+    );
 }

@@ -1,16 +1,10 @@
 public class EntityListController
 {
-    private static final String LONG_RUNNING_SERVICE_URL =getRemoteSettingURL() + 'entity-generator/generate-tables';
-
-    private static final Integer EXPECTED_RESPONSE = 200;
+    private static final String LONG_RUNNING_SERVICE_URL = getRemoteSettingURL() + 'entity-generator/generate-tables';
 
     public String entityId { get; set; }
 
     public Boolean wereChanges { get; set; }
-
-    public String requestLabel;
-
-    public static String attempt { get; set; }
 
     @TestVisible
     private Map<String, Entity__c> entityMap { get; set; }
@@ -20,14 +14,6 @@ public class EntityListController
 
     private static String newEntityId = 'newEntityId';
 
-    public static Integer result {get;set;}
-
-    public boolean isVisible {get; set;}
-
-    public boolean displaySuccessfulModalWindow {get; set;}
-
-    public boolean displayFailedModalWindow {get; set;}
-
     public EntityListController()
     {
         this.entityMap = new Map<String, Entity__c>
@@ -36,22 +22,30 @@ public class EntityListController
             FROM Entity__c
         ]);
         Set<Entity__c> entitySet = new Set<Entity__c>(entityMap.values());
-
-        for (Entity__c entity : entitySet)
-        {
-           if (entity.IsProcessingNeeded__c)
-           {
-               isVisible = true;
-           }
-        }
     }
         
     public static String getRemoteSettingURL()
     {
         CustomSettingObject__c customSettingObject = CustomSettingObject__c.getInstance('RemoteSiteURL');
-        System.debug(customSettingObject.RemoteSiteURLField__c);
     
         return customSettingObject.RemoteSiteURLField__c;
+    }
+
+    @RemoteAction
+    public static Boolean isGenerateButtonVisible()
+    {
+        for (Entity__c entity :
+        [
+            SELECT IsProcessingNeeded__c
+            FROM Entity__c
+        ])
+        {
+            if (entity.IsProcessingNeeded__c)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Entity__c> getEntities()
@@ -68,14 +62,13 @@ public class EntityListController
     public void addRow()
     {
         newEntity = new Entity__c();
+        newEntity.IsProcessingNeeded__c = true;
         entityMap.put(newEntityId, newEntity);
         wereChanges = true;
     }
 
     public void applyChanges()
     {
-        isVisible = true;
-
         Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
 
@@ -155,9 +148,9 @@ public class EntityListController
         if (entityToUpdate != null && String.valueOf(entityToUpdate.Id) != newEntityId)
         {
             entityToUpdate.IsUpdateNeeded__c = true;
+            entityToUpdate.IsProcessingNeeded__c = true;
         }
         wereChanges = true;
-
     }
 
     private void showError()
@@ -167,62 +160,14 @@ public class EntityListController
     }
 
      @RemoteAction
-     public static String getResult()
+     public static Integer generateTables()
      {
-        attempt = 'hello';
-        return attempt;
+         HttpRequest req = new HttpRequest();
+         req.setMethod('POST');
+         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
+         req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
+
+         Http http = new Http();
+         return http.send(req).getStatusCode();
      }
-     
-    public Object startRequest()
-    {
-        Continuation con = new Continuation(60);
-        con.continuationMethod='processResponse';
-
-        HttpRequest req = new HttpRequest();
-        req.setMethod('POST');
-        req.setEndpoint(LONG_RUNNING_SERVICE_URL);
-        req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
-        this.requestLabel = con.addHttpRequest(req);
-
-        return con;
-    }
-
-    public Object processResponse()
-    {
-        HttpResponse response = Continuation.getResponse(this.requestLabel);
-        result = response.getStatusCode();
-
-        if(result == EXPECTED_RESPONSE)
-        {
-            showSuccessfulModalWindow();
-            isVisible = false;
-        }
-        else
-        {
-            showFailedModalWindow();
-            isVisible = true;
-        }
-
-        return null;
-    }
-
-      public void closeSuccessfulModalWindow()
-      {
-        displaySuccessfulModalWindow = false;
-      }
-
-      public void showSuccessfulModalWindow()
-      {
-         displaySuccessfulModalWindow = true;
-      }
-
-      public void closeFailedModalWindow()
-      {
-         displayFailedModalWindow = false;
-      }
-
-      public void showFailedModalWindow()
-      {
-         displayFailedModalWindow = true;
-      }
 }

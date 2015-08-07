@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.salesforce;
 
-import com.softserve.entity.generator.config.MockSalesforceConfig;
+import com.softserve.entity.generator.config.SalesforceMockConfig;
 import com.softserve.entity.generator.entity.production.Entity;
 import com.softserve.entity.generator.service.EntityService;
 import com.softserve.entity.generator.service.applier.EntityApplier;
@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = MockSalesforceConfig.class)
+@ContextConfiguration(classes = SalesforceMockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProcedureExecutorTest
 {

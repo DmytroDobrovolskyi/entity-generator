@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service;
 
-import com.softserve.entity.generator.config.MockServiceConfig;
+import com.softserve.entity.generator.config.ServiceMockConfig;
 import com.softserve.entity.generator.entity.production.Entity;
 import com.softserve.entity.generator.repository.CrudRepository;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import static org.hamcrest.core.IsInstanceOf.any;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 
-@ContextConfiguration(classes = {MockServiceConfig.class})
+@ContextConfiguration(classes = {ServiceMockConfig.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseServiceTest
 {

@@ -63,7 +63,7 @@
                                             onclick="fillForReset()"/>
 
                         <apex:commandButton action="{!applyChanges}" reRender="table-panel,generate-table-block" rendered="{!wereChanges}" value="Apply changes" style="margin-right:10px;"
-                                            styleClass="btn btn-info pull-right apply-button" oncomplete="initAndDeleteErrors()"/>
+                                            styleClass="btn btn-info pull-right apply-button" oncomplete="initAndDeleteErrors(), setGenerateButtonVisibility(true)"/>
                     </apex:outputPanel>
 
                     <apex:commandLink action="{!addRow}" reRender="table-panel" oncomplete="initAndDeleteErrors()">
@@ -71,55 +71,11 @@
                            data-content="Add new entity"></i>
                     </apex:commandLink>
                 </apex:outputPanel>
-
-                    <apex:actionFunction name="callStartRequest" action="{!startRequest}" reRender="result"/>
-                 </apex:form>
-
-                 <apex:form >
-                     <apex:actionFunction name="callGetResult" action="{!getResult}" immediate="true" reRender=""/>
-                 </apex:form>
-
-
-            <div class = "row text-center" >
-                    <apex:form id="generate-table-block">
-                         <apex:commandButton id="generate-table" value="Generate tables" action="{!startRequest}" rendered="{!isVisible}" status="status" styleClass="btn btn-large"
-                                reRender="generate-table-block,successfulModalWindow,result,failedModalWindow"/>
-
-                                <apex:outputPanel id="successfulModalWindow">
-                                     <apex:outputPanel styleClass="modalWindowBackground" layout="block" rendered="{!displaySuccessfulModalWindow}"/>
-                                     <apex:outputPanel styleClass="modalWindow" layout="block" rendered="{!displaySuccessfulModalWindow}">
-
-                                     Tables have been successfully generated. <br/><br/>
-
-                                     <apex:commandButton value="close" action="{!closeSuccessfulModalWindow}" rerender="successfulModalWindow" style="margin-left:300px;"/>
-                                     </apex:outputPanel>
-                                </apex:outputPanel>
-
-                                <apex:outputPanel id="failedModalWindow">
-                                      <apex:outputPanel styleClass="modalWindowBackground" layout="block" rendered="{!displayFailedModalWindow}"/>
-                                      <apex:outputPanel styleClass="modalWindow" layout="block" rendered="{!displayFailedModalWindow}">
-
-                                      Tables have not been generated. Please try again later.<br/><br/>
-
-                                      <apex:commandButton value="close" action="{!closeFailedModalWindow}" rerender="failedModalWindow" style="margin-left:300px;"/>
-                                      </apex:outputPanel>
-                                </apex:outputPanel>
-                    </apex:form>
-            </div>
-
-                    
-            <apex:form >
-                 <apex:actionStatus id="status">
-                        <apex:facet name="start">
-                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.75; z-index: 1000; background-color: white;">
-                        </div>
-                        <div style="position: fixed; left: 0; top: 10; bottom: 0; right: 0; z-index: 1001; margin: 15% 47%">
-                            <img src="http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif" />
-                        </div>
-                        </apex:facet>
-                 </apex:actionStatus>
             </apex:form>
 
+            <div class = "row text-center generate-block" style="display: none">
+                <button type="button" class="btn generate-btn" onclick="generateTables()">Generate tables</button>
+            </div>
         </div>
     </div>
 
