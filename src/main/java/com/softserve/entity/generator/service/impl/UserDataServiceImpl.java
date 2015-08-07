@@ -1,5 +1,6 @@
 package com.softserve.entity.generator.service.impl;
 
+import com.softserve.entity.generator.app.util.UserDataUtil;
 import com.softserve.entity.generator.entity.operations.SalesforceCredentials;
 import com.softserve.entity.generator.repository.UserDataRepository;
 import com.softserve.entity.generator.service.UserDataService;
@@ -35,11 +36,7 @@ public class UserDataServiceImpl implements UserDataService
     public void deleteUser(String username)
     {
         SalesforceCredentials userToDelete  = userDataRepository.findById(username);
-        if (userToDelete == null)
-        {
-            logger.error("User does not exist");
-            System.exit(1);
-        }
+        UserDataUtil.checkCredentials(userToDelete);
         userDataRepository.delete(userToDelete);
     }
 
@@ -56,4 +53,6 @@ public class UserDataServiceImpl implements UserDataService
     {
         return userDataRepository.findById(username);
     }
+
+
 }

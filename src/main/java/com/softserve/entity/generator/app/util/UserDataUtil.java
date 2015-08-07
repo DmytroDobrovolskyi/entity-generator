@@ -90,10 +90,13 @@ public class UserDataUtil
         }
     }
 
-    public static void checkCredentials(SalesforceCredentials credentials)
+    public static void checkCredentials(SalesforceCredentials userCredentials)
     {
-        logger.error("Failed to log in. Ensure that this user credentials was properly inserted in operations database");
-        System.exit(1);
+        if (userCredentials == null)
+        {
+            logger.error("User not found");
+            System.exit(1);
+        }
     }
 
     private static void help(Options options)

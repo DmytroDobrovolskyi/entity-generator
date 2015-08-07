@@ -10,8 +10,7 @@ import com.softserve.entity.generator.service.UserDataService;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
-public class EntityGenerator
-{
+public class EntityGenerator {
     private static final Logger logger = Logger.getLogger(EntityGenerator.class);
     private static final String RESET_IS_PROCESSING_NEEDED = "EntityUtil.resetIsProcessingNeeded();";
 
@@ -20,11 +19,17 @@ public class EntityGenerator
         UserDataUtil.checkUsername(args);
 
         ApplicationContext context = AppContextCache.getContext(AppConfig.class);
+        SalesforceCredentials credentials = context.getBean(UserDataService.class).findUser(args[0]);
+        generate(credentials);
+    }
+
+    public static void generate(SalesforceCredentials credentials)
+    {
+        ApplicationContext context = AppContextCache.getContext(AppConfig.class);
 
         EntityService entityService = context.getBean(EntityService.class);
         entityService.applyData();
 
-        SalesforceCredentials credentials = context.getBean(UserDataService.class).findUser(args[0]);
         WebServiceUtil.getInstance(credentials).executeApex(RESET_IS_PROCESSING_NEEDED);
     }
 }
