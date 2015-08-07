@@ -7,5 +7,5 @@ import java.util.List;
 @Service
 public interface Applier<T>
 {
-    void applyAll(List<T> entities);
+    void applyAll(List<T> objects);
 }
