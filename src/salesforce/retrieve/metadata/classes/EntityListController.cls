@@ -206,12 +206,6 @@ public class EntityListController
         return null;
     }
 
-     public void spin()
-     {
-        long now = datetime.now().gettime();
-        while(datetime.now().gettime()-now<3000);
-     }
-
       public void closeSuccessfulModalWindow()
       {
         displaySuccessfulModalWindow = false;
