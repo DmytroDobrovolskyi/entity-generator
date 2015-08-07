@@ -65,11 +65,11 @@
 }
 
 .btn-large {
-    height:70px;
-    width:140px;
+    height:70px !important;
+    width:140px !important;
     color: #fff !important;
-    background-color: lightskyblue !important;
-    border-color: lightskyblue !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
 }
 
 .noSidebarCell {
@@ -105,7 +105,7 @@
     margin-left: auto !important;
 }
 
-.custPopup {
+.modalWindow {
     background-color: white;
     border-width: 1px;
     border-color: lightskyblue;
@@ -118,12 +118,12 @@
     displays in the center of the screen. First set the width. Then set
     margin-left to negative half of what the width is. You can add
     the height property for a fixed size pop up if you want.*/
-    width: 500px;
+    width: 400px;
     margin-left: -250px;
-    top:100px;
+    top:150px;
 }
 
-.popupBackground {
+.modalWindowBackground {
     background-color:white;
     opacity: 0.20;
     filter: alpha(opacity = 20);
