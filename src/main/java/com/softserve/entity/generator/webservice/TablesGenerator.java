@@ -21,7 +21,9 @@ public class TablesGenerator
 {
     private static final Logger logger = Logger.getLogger(TablesGenerator.class);
     private static final Integer SUCCESSFUL_STATUS = 200;
-    private static final Integer FAILED_STATUS = 500;
+    private static final Integer  FAILED_STATUS = 500;
+    private static final String SUCCESSFUL_MESSAGE = "Tables have been successfuly generated";
+    private static final String  FAILED_MESSAGE = "Tables have not been generated";
 
     @POST
     @Path("generate-tables")
@@ -30,13 +32,13 @@ public class TablesGenerator
         try
         {
             generateEntities(requestBody);
-            return Response.status(SUCCESSFUL_STATUS).build();
+            return Response.status(SUCCESSFUL_STATUS).entity(SUCCESSFUL_MESSAGE).build();
         }
         catch (ConnectionException ex)
         {
             logger.error("Failed to log in. Check your credentials and internet connection");
         }
-        return Response.status(FAILED_STATUS).build();
+        return Response.status(FAILED_STATUS).entity(FAILED_MESSAGE).build();
     }
 
     private void generateEntities(String organizationId) throws ConnectionException
