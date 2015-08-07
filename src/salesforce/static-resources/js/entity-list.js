@@ -70,27 +70,63 @@ function initAndDeleteErrors()
     $('.errorMsg').remove();
 }
 
+function callSpinner()
+{
+    callSpinnerMethod();
+}
+
 function openModuleWindow()
 {
-    $(function() {
-        $('<div></div>').dialog(
-            {
-                modal: true,
-                title: "Confirmation",
-                open: function() {
-                    var markup = 'Tables have been successfully generated';
-                    $(this).html(markup);
-                },
-                buttons:
+     callStartRequest();
+
+     setTimeout(function()
+     {
+         EntityListController.getResult
+     (
+         function(results, event)
+         {
+             console.log(event);
+             console.log(results);
+         }
+     );
+     }, 5000);
+
+
+
+   /* setTimeout(function()
+    {
+        var a = EntityListController.startRequest(handleResult
+        );
+        alert(a);
+        *//*var mess = EntityListController.getResult();
+
+        $(".result").each(function (index, element)
+        {
+            alert(element.value)
+        });*//*
+       *//* var message = sforce.apex.execute("EntityListController", "startRequest", {});*//*
+        *//*alert(message);*//*
+        $(function() {
+            $('<div></div>').dialog(
                 {
-                    Ok: function()
+                    modal: true,
+                    title: "Confirmation",
+                    open: function() {
+                        var markup = 'Tables have been successfully generated';
+                        $(this).html(markup);
+                    },
+
+                    buttons:
                     {
-                        $( this ).dialog( "close" );
-                        hideModuleWindow()
+                        Ok: function()
+                        {
+                            $( this ).dialog( "close" );
+                        }
                     }
-                }
-            });
-    });
+                });
+        });
+    },4000)*/
+
 }
 
 function hideModuleWindow()

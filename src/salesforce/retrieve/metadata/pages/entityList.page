@@ -11,6 +11,9 @@
     <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/js/bootstrap.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'js/entity-list.js')}"/>
 
+    <script src="/soap/ajax/15.0/connection.js" type="text/javascript"></script>
+    <script src="/soap/ajax/15.0/apex.js" type="text/javascript"></script>
+
     <div class="container">
         <div class="col-md-12">
             <apex:form id="table-form" styleClass="form-group">
@@ -68,14 +71,51 @@
                            data-content="Add new entity"></i>
                     </apex:commandLink>
                 </apex:outputPanel>
+
+                    <apex:actionFunction name="callStartRequest" action="{!startRequest}" reRender="result"/>
+                 </apex:form>
+
+                 <apex:form >
+                     <apex:actionFunction name="callGetResult" action="{!getResult}" immediate="true" reRender=""/>
+                 </apex:form>
+
+            <apex:form id="generate-table-block">
+                 <apex:commandButton id="generate-table" value="Generate tables" action="{!startRequest}" rendered="{!isVisible}"  status="status" styleClass="btn btn-large" style="margin-left:430px;"
+                        reRender="generate-table-block,successfulModalWindow,result,failedModalWindow"/>
+
+                        <apex:outputPanel id="successfulModalWindow">
+                             <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displaySuccessfulModalWindow}"/>
+                             <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displaySuccessfulModalWindow}">
+
+                                   Tables have been successfully generated.<br/><br/><br/>
+
+                             <apex:commandButton value="close" action="{!closeSuccessfulModalWindow}" rerender="successfulModalWindow" style="margin-left:400px;"/>
+                             </apex:outputPanel>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel id="failedModalWindow">
+                              <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayFailedModalWindow}"/>
+                              <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayFailedModalWindow}">
+
+                                    Tables have not been generated .<br/><br/><br/>
+
+                              <apex:commandButton value="close" action="{!closeFailedModalWindow}" rerender="failedModalWindow" style="margin-left:400px;"/>
+                              </apex:outputPanel>
+                        </apex:outputPanel>
             </apex:form>
 
-             <apex:form id="generate-table-block" styleClass="generate-table">
-                 <apex:commandButton id="generate-table" rendered="{!isVisible}" value="Generate tables" styleClass="btn btn-large" action="{!startRequest}" style="margin-left:430px;"
-                 reRender="result,generate-table-block" onclick="openModuleWindow()"/>
-             </apex:form>
+            <apex:form >
+                 <apex:actionStatus id="status">
+                        <apex:facet name="start">
+                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.75; z-index: 1000; background-color: white;">
+                        </div>
+                        <div style="position: fixed; left: 0; top: 10; bottom: 0; right: 0; z-index: 1001; margin: 15% 47%">
+                            <img src="http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif" />
+                        </div>
+                        </apex:facet>
+                 </apex:actionStatus>
+            </apex:form>
 
-             <apex:outputText id="result" value="{!result}" />
         </div>
     </div>
 
