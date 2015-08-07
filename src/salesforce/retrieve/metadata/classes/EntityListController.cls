@@ -181,7 +181,7 @@ public class EntityListController
         HttpRequest req = new HttpRequest();
         req.setMethod('POST');
         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
-        req.setBody('name='+EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
+        req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
         this.requestLabel = con.addHttpRequest(req);
 
         return con;
