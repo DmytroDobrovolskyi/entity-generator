@@ -1,10 +1,16 @@
 public class EntityListController
 {
+    private static final String LONG_RUNNING_SERVICE_URL =getRemoteSettingURL() + 'entity-generator/generate-tables';
+
+    private static final String EXPECTED_RESPONSE = 'success';
+
     public String entityId { get; set; }
 
     public Boolean wereChanges { get; set; }
 
     public String requestLabel;
+
+    public static String attempt { get; set; }
 
     @TestVisible
     private Map<String, Entity__c> entityMap { get; set; }
@@ -14,11 +20,13 @@ public class EntityListController
 
     private static String newEntityId = 'newEntityId';
 
-    public String result {get;set;}
-
-    private static final String LONG_RUNNING_SERVICE_URL = 'http://23.251.129.95:8080/entity-generator/generate-tables';
+    public static String result {get;set;}
 
     public boolean isVisible {get; set;}
+
+    public boolean displaySuccessfulModalWindow {get; set;}
+
+    public boolean displayFailedModalWindow {get; set;}
 
     public EntityListController()
     {
@@ -36,6 +44,14 @@ public class EntityListController
                isVisible = true;
            }
         }
+    }
+        
+    public static String getRemoteSettingURL()
+    {
+        CustomSettingObject__c customSettingObject = CustomSettingObject__c.getInstance('RemoteSiteURL');
+        System.debug(customSettingObject.RemoteSiteURLField__c);
+    
+        return customSettingObject.RemoteSiteURLField__c;
     }
 
     public List<Entity__c> getEntities()
@@ -150,22 +166,69 @@ public class EntityListController
         ApexPages.addMessage(error);
     }
 
+     @RemoteAction
+     public static String getResult()
+     {
+        attempt = 'hello';
+        return attempt;
+     }
+
     public Object startRequest()
     {
-        isVisible = false;
         Continuation con = new Continuation(60);
         con.continuationMethod='processResponse';
+
         HttpRequest req = new HttpRequest();
         req.setMethod('POST');
         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
+        req.setBody('name='+EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
         this.requestLabel = con.addHttpRequest(req);
+
         return con;
     }
 
     public Object processResponse()
     {
         HttpResponse response = Continuation.getResponse(this.requestLabel);
-        this.result = response.getBody();
+        result = response.getBody();
+
+        if(result.equals(EXPECTED_RESPONSE))
+        {
+            showSuccessfulModalWindow();
+            isVisible = false;
+        }
+        else
+        {
+            showFailedModalWindow();
+            isVisible = true;
+        }
+
         return null;
     }
+
+     public void spin()
+     {
+        long now = datetime.now().gettime();
+        while(datetime.now().gettime()-now<3000);
+     }
+
+      public void closeSuccessfulModalWindow()
+      {
+        displaySuccessfulModalWindow = false;
+      }
+
+      public void showSuccessfulModalWindow()
+      {
+         displaySuccessfulModalWindow = true;
+      }
+
+      public void closeFailedModalWindow()
+      {
+         displayFailedModalWindow = false;
+      }
+
+      public void showFailedModalWindow()
+      {
+         displayFailedModalWindow = true;
+      }
 }
