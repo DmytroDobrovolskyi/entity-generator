@@ -80,11 +80,6 @@
     visibility: hidden;
 }
 
-.ui-widget-header {
-    background: green;
-    border-color:green;
-}
-
 .noSidebarCell {
     padding-bottom: 390px;
 }
