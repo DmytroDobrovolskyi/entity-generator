@@ -9,6 +9,7 @@
 
 .fa-plus-square-o {
     font-size: 5em;
+    color: #337ab7 !important;
 }
 
 .header {
@@ -23,10 +24,6 @@
 .fa-times {
     font-size: 1.5em;
     color: red;
-}
-
-.fa-plus-square-o {
-    font-size: 5em;
 }
 
 .btn {
@@ -52,25 +49,6 @@
     border-radius: 4px !important;
 }
 
-.btn-info {
-    color: #fff !important;
-    background-color: #5bc0de !important;
-    border-color: #46b8da !important;
-}
-
-.btn-warning {
-    color: #fff !important;
-    background-color: #f0ad4e !important;
-    border-color: #eea236 !important;
-}
-
-.btn-large {
-    height:70px !important;
-    width:140px !important;
-    color: #fff !important;
-    background-color: #5cb85c !important;
-    border-color: #4cae4c !important;
-}
 
 .noSidebarCell {
     padding-bottom: 390px;
@@ -88,13 +66,13 @@
     visibility: hidden;
 }
 
-.confirmation-dialog.ui-dialog .fa-exclamation-circle {
+.ui-dialog.confirmation-dialog .fa-exclamation-circle {
     font-size: 3em;
     float: left;
     color: #f6a828;
 }
 
-.confirmation-dialog.ui-dialog {
+.ui-dialog {
     text-align: center;
 }
 
@@ -106,8 +84,36 @@
 }
 
 .generate-btn {
-    color: #fff !important;
-    background-color: #5cb85c !important;
-    border-color: #4cae4c !important;
-   font-size: 5em;
+    width: 170px;
+    height: 50px;
+}
+
+.ui-dialog .fa-check-circle{
+    font-size: 2em;
+    float: left;
+    color: #4cae4c;
+}
+
+.ui-dialog.msg-dialog .ui-dialog-buttonpane {
+    padding: 0;
+}
+
+.ui-dialog.msg-dialog .ui-dialog-titlebar
+{
+    display: none;
+}
+
+.fa-spinner {
+    font-size: 3em;
+}
+
+.ui-widget-overlay.success-overlay
+{
+    background: #294b13 50% 50% repeat-x;
+    opacity: .3;
+    filter: Alpha(Opacity=30);
+}
+
+.dialog-info {
+    font-size: 1.5em;
 }

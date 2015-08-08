@@ -6,6 +6,12 @@ public class EntityListController
 
     public Boolean wereChanges { get; set; }
 
+    private static List<Entity__c> entities =
+    [
+        SELECT Id, Name, TableName__c, IsUpdateNeeded__c, IsProcessingNeeded__c
+        FROM Entity__c
+    ];
+
     @TestVisible
     private Map<String, Entity__c> entityMap { get; set; }
 
@@ -16,11 +22,7 @@ public class EntityListController
 
     public EntityListController()
     {
-        this.entityMap = new Map<String, Entity__c>
-        ([
-            SELECT Id, Name, TableName__c, IsUpdateNeeded__c, IsProcessingNeeded__c
-            FROM Entity__c
-        ]);
+        this.entityMap = new Map<String, Entity__c>(entities);
         Set<Entity__c> entitySet = new Set<Entity__c>(entityMap.values());
     }
         
@@ -34,11 +36,7 @@ public class EntityListController
     @RemoteAction
     public static Boolean isGenerateButtonVisible()
     {
-        for (Entity__c entity :
-        [
-            SELECT IsProcessingNeeded__c
-            FROM Entity__c
-        ])
+        for (Entity__c entity : entities)
         {
             if (entity.IsProcessingNeeded__c)
             {
@@ -160,7 +158,7 @@ public class EntityListController
     }
 
      @RemoteAction
-     public static Integer generateTables()
+     public static Integer generateEntities()
      {
          HttpRequest req = new HttpRequest();
          req.setMethod('POST');

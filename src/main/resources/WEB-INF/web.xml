@@ -10,7 +10,7 @@ Inc.//DTD Web Application 2.3//EN"
         </listener-class>
     </listener>
     <servlet>
-        <servlet-name>notification</servlet-name>
+        <servlet-name>NotificationHandler</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
@@ -18,7 +18,7 @@ Inc.//DTD Web Application 2.3//EN"
     </servlet>
 
     <servlet>
-        <servlet-name>generateTable</servlet-name>
+        <servlet-name>EntityGenerator</servlet-name>
         <servlet-class>
             com.sun.jersey.spi.container.servlet.ServletContainer
         </servlet-class>
@@ -30,11 +30,11 @@ Inc.//DTD Web Application 2.3//EN"
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>generateTable</servlet-name>
+        <servlet-name>EntityGenerator</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>notification</servlet-name>
+        <servlet-name>NotificationHandler</servlet-name>
         <url-pattern>/notification/sync-data</url-pattern>
     </servlet-mapping>
     <session-config>
