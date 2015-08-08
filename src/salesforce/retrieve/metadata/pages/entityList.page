@@ -88,6 +88,10 @@
     </div>
 
     <div id="success-dialog" title="Success" style="display: none">
-        <p class="dialog-info"><i class="fa fa-check-circle text-center"></i>Entities was successfully generated!</p>
+        <p class="dialog-info"><i class="fa fa-check-circle text-center"></i>Entities were successfully generated!</p>
+    </div>
+
+    <div id="fail-dialog" title="Fail" style="display: none">
+        <p class="dialog-info"><i class="fa fa-times-circle-o"></i>Oops! Something bad happened while trying generate entities. Please try again later</p>
     </div>
 </apex:page>
