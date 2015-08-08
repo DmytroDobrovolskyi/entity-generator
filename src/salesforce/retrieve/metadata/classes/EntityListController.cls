@@ -1,6 +1,6 @@
 public class EntityListController
 {
-    private static final String LONG_RUNNING_SERVICE_URL = getRemoteSettingURL() + 'entity-generator/generate-tables';
+    private static final String LONG_RUNNING_SERVICE_URL = getRemoteSettingURL() + 'entity-generator/generate-entities';
 
     public String entityId { get; set; }
 

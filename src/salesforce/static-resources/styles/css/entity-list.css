@@ -94,6 +94,12 @@
     color: #4cae4c;
 }
 
+.ui-dialog .fa-times-circle-o{
+    font-size: 2em;
+    float: left;
+    color: red;
+}
+
 .ui-dialog.msg-dialog .ui-dialog-buttonpane {
     padding: 0;
 }
@@ -110,6 +116,12 @@
 .ui-widget-overlay.success-overlay
 {
     background: #294b13 50% 50% repeat-x;
+    opacity: .3;
+    filter: Alpha(Opacity=30);
+}
+
+.ui-widget-overlay.fail-overlay {
+    background: #731e1e 50% 50% repeat-x;
     opacity: .3;
     filter: Alpha(Opacity=30);
 }

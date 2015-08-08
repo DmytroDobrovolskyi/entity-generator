@@ -132,7 +132,7 @@ function generateEntities()
             }
             else
             {
-
+                showFailModal();
             }
             btnBlock.parent().append(spinner);
             spinner.hide();
@@ -155,6 +155,31 @@ function showSuccessModal()
             resizable: false,
             width: 350,
             height: 150,
+            modal: true,
+            dialogClass: 'msg-dialog',
+            buttons: {
+                "Ok": function ()
+                {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    resolveGenerateButtonVisibility(false);
+}
+
+function showFailModal()
+{
+    $("#fail-dialog").dialog(
+        {
+            open: function() {
+                $('.ui-widget-overlay').addClass('fail-overlay');
+            },
+            close: function() {
+                $('.ui-widget-overlay').removeClass('fail-overlay');
+            },
+            resizable: false,
+            width: 520,
+            height: 180,
             modal: true,
             dialogClass: 'msg-dialog',
             buttons: {
