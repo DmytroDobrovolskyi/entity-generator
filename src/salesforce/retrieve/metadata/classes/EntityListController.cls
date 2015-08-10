@@ -36,6 +36,19 @@ public class EntityListController
     @RemoteAction
     public static Boolean isGenerateButtonVisible()
     {
+        List<Entity__c> deleted =
+        [
+                SELECT Id, TableName__c
+                FROM Entity__c
+                WHERE IsDeleted = true
+                ALL ROWS
+        ];
+        System.debug(deleted);
+        if (deleted.size() > 0)
+        {
+            Database.emptyRecycleBin(deleted);
+            return true;
+        }
         for (Entity__c entity : entities)
         {
             if (entity.IsProcessingNeeded__c)
@@ -60,7 +73,6 @@ public class EntityListController
     public void addRow()
     {
         newEntity = new Entity__c();
-        newEntity.IsProcessingNeeded__c = true;
         entityMap.put(newEntityId, newEntity);
         wereChanges = true;
     }

@@ -153,7 +153,7 @@ function showSuccessModal()
                 $('.ui-widget-overlay').removeClass('success-overlay');
             },
             resizable: false,
-            width: 350,
+            width: 360,
             height: 150,
             modal: true,
             dialogClass: 'msg-dialog',
