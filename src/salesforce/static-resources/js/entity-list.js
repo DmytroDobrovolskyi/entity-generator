@@ -1,5 +1,6 @@
 $(function ()
 {
+    $.material.init();
     init();
 
     var input = $('.input').first();
@@ -13,14 +14,7 @@ $(function ()
             input.off('focus');
         }
     });
-
-    EntityListController.isGenerateButtonVisible
-    (
-        function (result, event)
-        {
-            setGenerateButtonVisibility(result);
-        }
-    );
+    resolveGenerateButtonVisibility();
 });
 
 function init()
@@ -33,20 +27,23 @@ function resolveChanges(entityId)
     callResolveChanges(entityId);
 }
 
-function setGenerateButtonVisibility(isVisible)
+function resolveGenerateButtonVisibility()
 {
-    var buttonBlock  =  $('.generate-block');
-
-    console.log(buttonBlock);
-    console.log(isVisible);
-    if (isVisible)
-    {
-        buttonBlock.show();
-    }
-    else
-    {
-        buttonBlock.hide();
-    }
+    EntityListController.isGenerateButtonVisible
+    (
+        function (result, event)
+        {
+            var buttonBlock  =  $('.generate-block');
+            if (result)
+            {
+                buttonBlock.show();
+            }
+            else
+            {
+                buttonBlock.hide();
+            }
+        }
+    );
 }
 
 function generateTableName(context)
@@ -116,13 +113,81 @@ function deleteEntity(tableName)
         });
 }
 
-function generateTables()
+function generateEntities()
 {
-    EntityListController.generateTables
+    var btnBlock = $('.generate-btn');
+    var spinner = $('.fa-spinner');
+
+    btnBlock.html('');
+    btnBlock.append(spinner);
+    spinner.show();
+
+    EntityListController.generateEntities
     (
         function (result, event)
         {
-            console.log(result);
-}
+            if (result === 200)
+            {
+              showSuccessModal();
+            }
+            else
+            {
+                showFailModal();
+            }
+            btnBlock.parent().append(spinner);
+            spinner.hide();
+            btnBlock.html('Generate entities');
+        }
     );
+}
+
+
+function showSuccessModal()
+{
+    $("#success-dialog").dialog(
+        {
+            open: function() {
+                $('.ui-widget-overlay').addClass('success-overlay');
+            },
+            close: function() {
+                $('.ui-widget-overlay').removeClass('success-overlay');
+            },
+            resizable: false,
+            width: 360,
+            height: 150,
+            modal: true,
+            dialogClass: 'msg-dialog',
+            buttons: {
+                "Ok": function ()
+                {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    resolveGenerateButtonVisibility(false);
+}
+
+function showFailModal()
+{
+    $("#fail-dialog").dialog(
+        {
+            open: function() {
+                $('.ui-widget-overlay').addClass('fail-overlay');
+            },
+            close: function() {
+                $('.ui-widget-overlay').removeClass('fail-overlay');
+            },
+            resizable: false,
+            width: 520,
+            height: 180,
+            modal: true,
+            dialogClass: 'msg-dialog',
+            buttons: {
+                "Ok": function ()
+                {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    resolveGenerateButtonVisibility(false);
 }

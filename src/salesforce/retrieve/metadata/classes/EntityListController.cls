@@ -1,10 +1,16 @@
 public class EntityListController
 {
-    private static final String LONG_RUNNING_SERVICE_URL = getRemoteSettingURL() + 'entity-generator/generate-tables';
+    private static final String LONG_RUNNING_SERVICE_URL = getRemoteSettingURL() + 'entity-generator/generate-entities';
 
     public String entityId { get; set; }
 
     public Boolean wereChanges { get; set; }
+
+    private static List<Entity__c> entities =
+    [
+        SELECT Id, Name, TableName__c, IsUpdateNeeded__c, IsProcessingNeeded__c
+        FROM Entity__c
+    ];
 
     @TestVisible
     private Map<String, Entity__c> entityMap { get; set; }
@@ -16,11 +22,7 @@ public class EntityListController
 
     public EntityListController()
     {
-        this.entityMap = new Map<String, Entity__c>
-        ([
-            SELECT Id, Name, TableName__c, IsUpdateNeeded__c, IsProcessingNeeded__c
-            FROM Entity__c
-        ]);
+        this.entityMap = new Map<String, Entity__c>(entities);
         Set<Entity__c> entitySet = new Set<Entity__c>(entityMap.values());
     }
         
@@ -34,11 +36,20 @@ public class EntityListController
     @RemoteAction
     public static Boolean isGenerateButtonVisible()
     {
-        for (Entity__c entity :
+        List<Entity__c> deleted =
         [
-            SELECT IsProcessingNeeded__c
-            FROM Entity__c
-        ])
+                SELECT Id, TableName__c
+                FROM Entity__c
+                WHERE IsDeleted = true
+                ALL ROWS
+        ];
+        System.debug(deleted);
+        if (deleted.size() > 0)
+        {
+            Database.emptyRecycleBin(deleted);
+            return true;
+        }
+        for (Entity__c entity : entities)
         {
             if (entity.IsProcessingNeeded__c)
             {
@@ -62,7 +73,6 @@ public class EntityListController
     public void addRow()
     {
         newEntity = new Entity__c();
-        newEntity.IsProcessingNeeded__c = true;
         entityMap.put(newEntityId, newEntity);
         wereChanges = true;
     }
@@ -160,7 +170,7 @@ public class EntityListController
     }
 
      @RemoteAction
-     public static Integer generateTables()
+     public static Integer generateEntities()
      {
          HttpRequest req = new HttpRequest();
          req.setMethod('POST');

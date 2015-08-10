@@ -4,10 +4,14 @@
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'font-awesome/css/font-awesome.min.css')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'jquery/ui/jquery-ui.min.css')}"/>
     <apex:stylesheet value="{!URLFOR($Resource.resources, 'styles/css/edit-entity.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'bootstrap/material/css/material.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.resources, 'bootstrap/material/css/ripples.min.css')}"/>
 
     <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/jquery-1.11.3.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'jquery/ui/jquery-ui.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/js/bootstrap.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/material/js/material.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/material/js/ripples.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'js/edit-entity.js')}"/>
 
     <div class="container">

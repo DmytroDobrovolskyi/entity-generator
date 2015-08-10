@@ -1,6 +1,6 @@
 package com.softserve.entity.generator.service.applier;
 
-import com.softserve.entity.generator.config.MockServiceConfig;
+import com.softserve.entity.generator.config.ServiceMockConfig;
 import com.softserve.entity.generator.entity.production.Entity;
 import com.softserve.entity.generator.entity.util.FakeEntityGenerator;
 import com.softserve.entity.generator.service.applier.util.ProcedureGenerator;
@@ -20,7 +20,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = MockServiceConfig.class)
+@ContextConfiguration(classes = ServiceMockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityApplierTest
 {

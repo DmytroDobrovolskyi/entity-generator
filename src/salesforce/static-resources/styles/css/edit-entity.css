@@ -19,6 +19,7 @@
 
 .fa-plus-square-o {
     font-size: 5em;
+    color: #337ab7 !important;
 }
 
 .container {
@@ -46,18 +47,6 @@
     background-image: none !important;
     border: 1px solid transparent !important;
     border-radius: 4px !important;
-}
-
-.btn-info {
-    color: #fff !important;
-    background-color: #5bc0de !important;
-    border-color: #46b8da !important;
-}
-
-.btn-warning {
-    color: #fff !important;
-    background-color: #f0ad4e !important;
-    border-color: #eea236 !important;
 }
 
 .noSidebarCell {

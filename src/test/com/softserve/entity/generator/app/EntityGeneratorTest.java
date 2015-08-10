@@ -1,16 +1,14 @@
 package com.softserve.entity.generator.app;
 
-import com.softserve.entity.generator.config.MockAppConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = MockAppConfig.class)
+//@ContextConfiguration(classes = MockAppConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityGeneratorTest
 {

@@ -17,16 +17,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 @Path("/")
-public class TablesGenerator
+public class EntityGeneratorWebService
 {
-    private static final Logger logger = Logger.getLogger(TablesGenerator.class);
+    private static final Logger logger = Logger.getLogger(EntityGeneratorWebService.class);
     private static final Integer SUCCESSFUL_STATUS = 200;
     private static final Integer  FAILED_STATUS = 500;
     private static final String SUCCESSFUL_MESSAGE = "Tables have been successfuly generated";
     private static final String  FAILED_MESSAGE = "Tables have not been generated";
 
     @POST
-    @Path("generate-tables")
+    @Path("generate-entities")
     public Response generateTables(String requestBody)
     {
         try

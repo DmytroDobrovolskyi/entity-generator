@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProcedureExecutorTest
 {
-  /*  @Autowired
+   /* @Autowired
     @InjectMocks
     private ProcedureExecutor procedureExecutor;*/
 
