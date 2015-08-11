@@ -106,6 +106,28 @@ public class EntityListControllerTest
         
          test.stopTest();
     }
+    
+    static testMethod void resetIsProcessingNeededTest()
+    {
+         test.startTest();
+        
+         insertCustomSettingObject();
+        
+         Entity__c entityTest = new Entity__c();
+         entityTest.TableName__c = 'entityTableNameTest';
+         entityTest.Name = 'entityNameTest';
+         entityTest.IsProcessingNeeded__c = true;
+        
+         Database.insert(entityTest);
+         
+         EntityUtil.resetIsProcessingNeeded();
+        
+         Boolean expectedIsProcessingNeededStatus = false;
+              
+         System.assertEquals( EntityUtil.entityList.get(EntityUtil.entityList.size()-1).IsProcessingNeeded__c, expectedIsProcessingNeededStatus);
+        
+         test.stopTest();
+    }
        
     public static void insertCustomSettingObject()
     {
