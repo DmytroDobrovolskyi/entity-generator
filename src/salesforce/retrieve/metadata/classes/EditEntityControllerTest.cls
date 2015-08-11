@@ -105,6 +105,48 @@ public class EditEntityControllerTest
 
         test.stopTest();
     }
+    
+    static testMethod void resolveChanges()
+    {
+         test.startTest();
+        
+         ApexPages.StandardController controller = new ApexPages.StandardController(addEntitiesAndFieldsToTestDatabase());
+         EditEntityController editEntityController = new EditEntityController(controller);
+         editEntityController.resolveChanges();
+        
+         System.assert(editEntityController.wereChanges);
+        
+         test.stopTest();
+    }
+    
+    static testMethod void isAlreadyExistTest()
+    {
+         test.startTest();
+        
+        Entity__c entityTest = new Entity__c();
+        entityTest.TableName__c = 'entityTableNameTest';
+        entityTest.Name = 'entityNameTest';
+        
+        Database.insert(entityTest);
+        
+        Field__c fieldTest = new Field__c();
+        fieldTest.ColumnName__c = 'fieldColumnName';
+        fieldTest.Name = 'fieldTest';
+        fieldTest.Type__c = 'int';
+        fieldTest.IsPrimaryKey__c = false;
+        fieldTest.Entity__c = entityTest.Id;
+
+         ApexPages.StandardController controller = new ApexPages.StandardController(entityTest);
+         EditEntityController editEntityController = new EditEntityController(controller);
+        
+         Set<Field__c> fieldsToUpdate = new Set<Field__c>();
+        
+         fieldsToUpdate.add(fieldTest);
+             
+       	 System.assert(editEntityController.isAlreadyExist(fieldsToUpdate, fieldTest.ColumnName__c));
+        
+         test.stopTest();
+    }
     	
     public static Entity__c addEntitiesAndFieldsToTestDatabase()
     {

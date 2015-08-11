@@ -153,6 +153,7 @@ public class EditEntityController
         return new PageReference(ApexPages.currentPage().getHeaders().get('referer'));
     }
 
+    @TestVisible
     private boolean isAlreadyExist(Set<Field__c> fieldsToUpdate, String columnNameToCheck)
     {
         for (Field__c field : fieldsToUpdate)

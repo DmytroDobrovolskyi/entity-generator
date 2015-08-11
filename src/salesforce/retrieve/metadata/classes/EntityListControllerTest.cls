@@ -106,18 +106,7 @@ public class EntityListControllerTest
         
          test.stopTest();
     }
-    
-    static testMethod void generateEntitiesTest()
-    {
-        test.startTest();
-        
-        insertCustomSettingObject();
-        
-        EntityListController.generateEntities();
-        
-        test.stopTest();
-    }
-    
+       
     public static void insertCustomSettingObject()
     {
         CustomSettingObject__c customSettingObject = new CustomSettingObject__c();
