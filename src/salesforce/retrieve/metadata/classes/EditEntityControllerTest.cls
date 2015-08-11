@@ -147,6 +147,32 @@ public class EditEntityControllerTest
         
          test.stopTest();
     }
+    
+    static testMethod void deleteFieldTrigger()
+    {
+        test.startTest();
+        
+        Entity__c entityTest = new Entity__c();
+        entityTest.TableName__c = 'entityTableNameTest';
+        entityTest.Name = 'entityNameTest';
+
+        Database.insert(entityTest);
+
+        Field__c firstField = new Field__c();
+        firstField.ColumnName__c = 'firstfieldColumnName';
+        firstField.Name = 'firstField';
+        firstField.Type__c = 'int';
+        firstField.IsPrimaryKey__c = false;
+        firstField.Entity__c = entityTest.Id;
+
+        Database.insert(firstField);
+                        
+        Database.DeleteResult result = Database.delete(firstField);  
+        
+        System.assert(result.isSuccess());
+        
+        test.stopTest();
+    }
       	
     public static Entity__c addEntitiesAndFieldsToTestDatabase()
     {

@@ -18,6 +18,23 @@ public class EntityListControllerTest
         System.assert(entityController.containsNumbersOrNonAlphabeticCharacters(testString));
     }
     
+    static testMethod void addRowTest()
+    {
+        test.startTest();
+        insertTableToDatabase();
+        
+        EntityListController entityController = new EntityListController();
+        
+        Integer expectedEntityMapSize = 2;
+        
+        entityController.addRow(); 
+        
+        System.assertEquals(expectedEntityMapSize, entityController.entityMap.size());
+        
+        test.stopTest();
+        
+    }
+    
     static testMethod void getEntitiesTest()
     {
         test.startTest();
