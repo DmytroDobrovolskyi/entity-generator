@@ -8,6 +8,7 @@ import com.softserve.entity.generator.salesforce.util.ParsingUtil;
 import com.softserve.entity.generator.service.BaseService;
 import com.softserve.entity.generator.service.BatchService;
 import com.softserve.entity.generator.webservice.OperationType;
+import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -50,10 +51,9 @@ public class SObjectSynchronizer
                         for (String childrenName : objectMetadata.getRelationalFields())
                         {
                             Class<T> childrenClass = ParsingUtil.toJavaClass(childrenName);
-                            Set<DatabaseObject> children = baseService
-                                    .findById(idToObjectEntry.getKey())
-                                    .getChildren(childrenClass);
-                            objectToMerge.setChildren(childrenClass, children);
+                            DatabaseObject originalObject = baseService.findById(idToObjectEntry.getKey());
+                            Assert.notNull(originalObject, "Error: Could not perform UPDATE_OPERATION. You have unsynchronized data");
+                            objectToMerge.setChildren(childrenClass, originalObject.getChildren(childrenClass));
                         }
                     }
                     mergeList.add(objectToMerge);

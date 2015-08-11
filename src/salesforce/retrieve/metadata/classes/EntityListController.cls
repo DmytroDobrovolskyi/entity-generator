@@ -36,19 +36,6 @@ public class EntityListController
     @RemoteAction
     public static Boolean isGenerateButtonVisible()
     {
-        List<Entity__c> deleted =
-        [
-                SELECT Id, TableName__c
-                FROM Entity__c
-                WHERE IsDeleted = true
-                ALL ROWS
-        ];
-        System.debug(deleted);
-        if (deleted.size() > 0)
-        {
-            Database.emptyRecycleBin(deleted);
-            return true;
-        }
         for (Entity__c entity : entities)
         {
             if (entity.IsProcessingNeeded__c)
@@ -95,6 +82,7 @@ public class EntityListController
         {
             if (entity.IsUpdateNeeded__c)
             {
+                entity.IsProcessingNeeded__c = true;
                 if (Database.update(entity, false).isSuccess())
                 {
                     entity.IsUpdateNeeded__c = false;
@@ -158,7 +146,6 @@ public class EntityListController
         if (entityToUpdate != null && String.valueOf(entityToUpdate.Id) != newEntityId)
         {
             entityToUpdate.IsUpdateNeeded__c = true;
-            entityToUpdate.IsProcessingNeeded__c = true;
         }
         wereChanges = true;
     }
@@ -169,15 +156,17 @@ public class EntityListController
         ApexPages.addMessage(error);
     }
 
-     @RemoteAction
-     public static Integer generateEntities()
+     public static void generateEntities()
      {
+         RequestState__c requestState = new RequestState__c();
+         requestState.Status__c = String.valueOf(RequestStatus.IN_PROGRESS);
+         Database.insert(requestState);
+
          HttpRequest req = new HttpRequest();
          req.setMethod('POST');
          req.setEndpoint(LONG_RUNNING_SERVICE_URL);
          req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
 
-         Http http = new Http();
-         return http.send(req).getStatusCode();
+         Requester.sendRequest(req);
      }
 }

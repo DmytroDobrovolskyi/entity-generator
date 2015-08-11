@@ -1,5 +1,6 @@
 $(function ()
 {
+    resolveRequest();
     $.material.init();
     init();
 
@@ -113,9 +114,21 @@ function deleteEntity(tableName)
         });
 }
 
+function resolveRequest()
+{
+    sforce.apex.executeAnonymous('return [SELECT Status__c FROM RequestState__c LIMIT 1];', function(result)
+    {
+       console.log(result);
+    });
+}
+
 function generateEntities()
 {
-    var btnBlock = $('.generate-btn');
+    sforce.apex.executeAnonymous('EntityListController.generateEntities();', function(result)
+    {
+        console.log(result);
+    });
+    /*var btnBlock = $('.generate-btn');
     var spinner = $('.fa-spinner');
 
     btnBlock.html('');
@@ -138,7 +151,7 @@ function generateEntities()
             spinner.hide();
             btnBlock.html('Generate entities');
         }
-    );
+    );*/
 }
 
 
