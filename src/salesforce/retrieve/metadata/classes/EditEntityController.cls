@@ -165,6 +165,7 @@ public class EditEntityController
         return false;
     }
 
+
     private void resolveIsPrimaryKey(Field__c field)
     {
         if (field.Type__c != 'int' && field.Type__c != 'varchar(255)')
