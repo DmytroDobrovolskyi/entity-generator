@@ -1,12 +1,15 @@
 @isTest
 public class EntityListControllerTest
 {
+    static 
+    {
+        insertCustomSettingObject();
+    }
+    
  	static testMethod void containsNumbersOrNonAlphabeticCharactersTest()
     {
         test.startTest();
-        
-        insertCustomSettingObject();
-        
+               
         EntityListController entityController = new EntityListController();
         String testString = 'test1';
         
@@ -18,9 +21,7 @@ public class EntityListControllerTest
     static testMethod void getEntitiesTest()
     {
         test.startTest();
-        
-        insertCustomSettingObject();
-        
+              
         insertTableToDatabase();
                 
       	EntityListController entityController = new EntityListController();
@@ -36,8 +37,6 @@ public class EntityListControllerTest
     {
         test.startTest();
         
-        insertCustomSettingObject();
-
         EntityListController entityController = new EntityListController();
         Integer size = entityController.entityMap.size();
         entityController.addRow();
@@ -52,10 +51,6 @@ public class EntityListControllerTest
     {
          test.startTest();
         
-         insertCustomSettingObject();
-
-         insertTableToDatabase();
-
          EntityListController entityController = new EntityListController();
          entityController.applyChanges();
 		 
@@ -85,9 +80,7 @@ public class EntityListControllerTest
     static testMethod void isGenerateButtonVisibleTest()
     {
         test.startTest();
-        
-        insertCustomSettingObject();
-                      
+                             
         System.assert(!EntityListController.isGenerateButtonVisible());
           
        	test.stopTest();
@@ -96,9 +89,7 @@ public class EntityListControllerTest
     static testMethod void resolveChanges()
     {
          test.startTest();
-        
-         insertCustomSettingObject();
-       
+             
          EntityListController entityController = new EntityListController();
          entityController.resolveChanges();
         
@@ -110,9 +101,7 @@ public class EntityListControllerTest
     static testMethod void resetIsProcessingNeededTest()
     {
          test.startTest();
-        
-         insertCustomSettingObject();
-        
+              
          Entity__c entityTest = new Entity__c();
          entityTest.TableName__c = 'entityTableNameTest';
          entityTest.Name = 'entityNameTest';
@@ -124,16 +113,47 @@ public class EntityListControllerTest
         
          Boolean expectedIsProcessingNeededStatus = false;
               
-         System.assertEquals( EntityUtil.entityList.get(EntityUtil.entityList.size()-1).IsProcessingNeeded__c, expectedIsProcessingNeededStatus);
+         System.assertEquals(EntityUtil.entityList.get(EntityUtil.entityList.size()-1).IsProcessingNeeded__c, expectedIsProcessingNeededStatus);
         
          test.stopTest();
     }
+       
+    static testMethod void deleteEntityTriggerTest()
+    {
+      	test.startTest();
+        
+     	Entity__c entityDeleteTest = new Entity__c();
+      	entityDeleteTest.TableName__c = 'entityTableNameTest';
+      	entityDeleteTest.Name = 'entityNameTest';
+             
+     	Database.insert(entityDeleteTest);  
+            
+        Database.DeleteResult result = Database.delete(entityDeleteTest);  
+        
+        System.assert(result.isSuccess());
+        
+        test.stopTest();
+           
+    }
+    
+    static testMethod void getRemoteSettingURLTest()
+    {
+        test.startTest();
+                 
+        String expectedUrl = 'testUrl';
+        
+        System.assertEquals(expectedUrl, EntityListController.getRemoteSettingURL());
+             
+        test.stopTest();
+    }
+    
+    
        
     public static void insertCustomSettingObject()
     {
         CustomSettingObject__c customSettingObject = new CustomSettingObject__c();
         customSettingObject.Name = 'RemoteSiteURL';
-        customSettingObject.RemoteSiteURLField__c = '';
+         customSettingObject.RemoteSiteURLField__c = 'testUrl';
         Database.insert(customSettingObject);
     }
     

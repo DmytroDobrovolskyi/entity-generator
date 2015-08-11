@@ -70,8 +70,8 @@ public class EditEntityControllerTest
     static testMethod void getTypesTest()
     {
         test.startTest();
-                      
-        ApexPages.StandardController controller = new ApexPages.StandardController(addEntitiesAndFieldsToTestDatabase());
+        
+        ApexPages.StandardController controller = new ApexPages.StandardController(addEntitiesAndFieldsToTestDatabase());              
         EditEntityController editEntityController = new EditEntityController(controller);
         Integer expectedSelectedOptionListSize = 6;
         
@@ -121,7 +121,7 @@ public class EditEntityControllerTest
     
     static testMethod void isAlreadyExistTest()
     {
-         test.startTest();
+        test.startTest();
         
         Entity__c entityTest = new Entity__c();
         entityTest.TableName__c = 'entityTableNameTest';
@@ -147,7 +147,7 @@ public class EditEntityControllerTest
         
          test.stopTest();
     }
-    	
+      	
     public static Entity__c addEntitiesAndFieldsToTestDatabase()
     {
         Entity__c entityTest = new Entity__c();
