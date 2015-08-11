@@ -99,6 +99,17 @@ public class EntityListControllerTest
         test.startTest();
                              
         System.assert(!EntityListController.isGenerateButtonVisible());
+        
+        Entity__c entityTest = new Entity__c();
+        entityTest.TableName__c = 'entityTableNameTest';
+        entityTest.Name = 'entityNameTest';
+        entityTest.IsProcessingNeeded__c = true;
+        
+        EntityListController.entities.add(entityTest);
+        
+        Database.insert(entityTest);
+                    
+        System.assert(EntityListController.isGenerateButtonVisible());
           
        	test.stopTest();
     }
@@ -152,7 +163,7 @@ public class EntityListControllerTest
         test.stopTest();
            
     }
-    
+       
     static testMethod void getRemoteSettingURLTest()
     {
         test.startTest();
@@ -163,9 +174,7 @@ public class EntityListControllerTest
              
         test.stopTest();
     }
-    
-    
-       
+           
     public static void insertCustomSettingObject()
     {
         CustomSettingObject__c customSettingObject = new CustomSettingObject__c();

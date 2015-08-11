@@ -14,7 +14,8 @@ public class EditEntityController
 
     @TestVisible
     private Map<String, Field__c> fieldMap { get; set; }
-
+	
+    @TestVisible
     private Field__c newField;
 
     public EditEntityController(ApexPages.StandardController controller)
@@ -166,6 +167,7 @@ public class EditEntityController
         return false;
     }
 
+    @TestVisible
     private void resolveIsPrimaryKey(Field__c field)
     {
         if (field.Type__c != 'int' && field.Type__c != 'varchar(255)')
@@ -193,6 +195,7 @@ public class EditEntityController
         wereChanges = true;
     }
 
+    @TestVisible
     private void setIsProcessingNeeded()
     {
         if (!entity.IsProcessingNeeded__c)

@@ -173,6 +173,59 @@ public class EditEntityControllerTest
         
         test.stopTest();
     }
+    
+    static testMethod void isProcessingNeededTest()
+    {
+        test.startTest();
+        
+        Entity__c entityTest = new Entity__c();
+        entityTest.TableName__c = 'entityTableNameTest';
+        entityTest.Name = 'entityNameTest';
+        
+        Database.insert(entityTest);
+        
+        Field__c fieldTest = new Field__c();
+        fieldTest.ColumnName__c = 'fieldColumnName';
+        fieldTest.Name = 'fieldTest';
+        fieldTest.Type__c = 'int';
+        fieldTest.IsPrimaryKey__c = false;
+        fieldTest.Entity__c = entityTest.Id;
+
+        ApexPages.StandardController controller = new ApexPages.StandardController(entityTest);
+        EditEntityController editEntityController = new EditEntityController(controller);
+          
+        editEntityController.setIsProcessingNeeded();
+        
+        System.assert(editEntityController.entity.IsProcessingNeeded__c);
+        
+        test.stopTest();
+        
+    }
+    
+    static testMethod void resolveIsPrimaryKeyTest()
+    {
+        test.startTest();
+		Entity__c entityTest = new Entity__c();
+        entityTest.TableName__c = 'entityTableNameTest';
+        entityTest.Name = 'entityNameTest';
+        
+        Database.insert(entityTest);
+        
+        Field__c fieldTest = new Field__c();
+        fieldTest.ColumnName__c = 'fieldColumnName';
+        fieldTest.Name = 'fieldTest';
+        fieldTest.Type__c = 'date';
+        fieldTest.IsPrimaryKey__c = true;
+        
+        ApexPages.StandardController controller = new ApexPages.StandardController(entityTest);
+        EditEntityController editEntityController = new EditEntityController(controller);
+         
+        editEntityController.resolveIsPrimaryKey(fieldTest);
+      
+        System.assert(!editEntityController.newField.IsPrimaryKey__c);
+        
+        test.stopTest();
+    }
       	
     public static Entity__c addEntitiesAndFieldsToTestDatabase()
     {

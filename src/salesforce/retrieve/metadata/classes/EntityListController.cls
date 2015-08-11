@@ -5,7 +5,8 @@ public class EntityListController
     public String entityId { get; set; }
 
     public Boolean wereChanges { get; set; }
-
+	
+    @TestVisible
     private static List<Entity__c> entities =
     [
         SELECT Id, Name, TableName__c, IsUpdateNeeded__c, IsProcessingNeeded__c
