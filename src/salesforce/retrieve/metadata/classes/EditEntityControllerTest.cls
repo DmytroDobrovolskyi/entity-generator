@@ -1,7 +1,7 @@
 @isTest
 public class EditEntityControllerTest 
 {   
-     static testMethod void wereChangesTest()
+    static testMethod void wereChangesTest()
     {
         test.startTest();
                
@@ -29,7 +29,7 @@ public class EditEntityControllerTest
 
     }
     
-     static testMethod void getFieldsTest()
+    static testMethod void getFieldsTest()
     {
 		test.startTest();
         
