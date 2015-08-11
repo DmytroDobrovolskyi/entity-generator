@@ -158,10 +158,6 @@ public class EntityListController
 
      public static void generateEntities()
      {
-         RequestState__c requestState = new RequestState__c();
-         requestState.Status__c = String.valueOf(RequestStatus.IN_PROGRESS);
-         Database.insert(requestState);
-
          HttpRequest req = new HttpRequest();
          req.setMethod('POST');
          req.setEndpoint(LONG_RUNNING_SERVICE_URL);
