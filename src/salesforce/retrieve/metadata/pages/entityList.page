@@ -94,8 +94,4 @@
     <div id="fail-dialog" title="Fail" style="display: none">
         <p class="dialog-info"><i class="fa fa-times-circle-o"></i>Oops! Something went wrong while trying generate entities. Please try again later</p>
     </div>
-
-    <div id="fail-dialog" title="Fail" style="display: none">
-        <p class="dialog-info"><i class="fa fa-times-circle-o"></i>Oops! Something bad happened while trying generate entities. Please try again later</p>
-    </div>
 </apex:page>

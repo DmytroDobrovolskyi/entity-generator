@@ -19,13 +19,16 @@ public class EntityListController
     private Entity__c newEntity { get; set; }
 
     private static String newEntityId = 'newEntityId';
+    
+    @TestVisible
+    private Set<Entity__c> entitiesToUpdate { get; set; }
 
     public EntityListController()
     {
         this.entityMap = new Map<String, Entity__c>(entities);
         Set<Entity__c> entitySet = new Set<Entity__c>(entityMap.values());
     }
-        
+      
     public static String getRemoteSettingURL()
     {
         CustomSettingObject__c customSettingObject = CustomSettingObject__c.getInstance('RemoteSiteURL');
@@ -44,11 +47,6 @@ public class EntityListController
                 ALL ROWS
         ];
         System.debug(deleted);
-        if (deleted.size() > 0)
-        {
-            Database.emptyRecycleBin(deleted);
-            return true;
-        }
         for (Entity__c entity : entities)
         {
             if (entity.IsProcessingNeeded__c)
@@ -79,7 +77,7 @@ public class EntityListController
 
     public void applyChanges()
     {
-        Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
+        entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
 
         for (Entity__c entity : entitiesToUpdate)
@@ -125,9 +123,11 @@ public class EntityListController
                 newEntity = null;
             }
         }
+        
         wereChanges = false;
     }
-
+    
+    @TestVisible
     private boolean isAlreadyExist(Set<Entity__c> entitiesToUpdate, String tableNameToCheck)
     {
         for (Entity__c entity : entitiesToUpdate)
@@ -172,12 +172,21 @@ public class EntityListController
      @RemoteAction
      public static Integer generateEntities()
      {
-         HttpRequest req = new HttpRequest();
-         req.setMethod('POST');
-         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
-         req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
+         if(Test.isRunningTest())
+         {
+             HttpResponse res = new HttpResponse();
+             res.setStatusCode(200);
+             return res.getStatusCode();
+         }
+         else
+         { 
+             HttpRequest req = new HttpRequest();
+             req.setMethod('POST');
+             req.setEndpoint(LONG_RUNNING_SERVICE_URL);
+             req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
 
-         Http http = new Http();
-         return http.send(req).getStatusCode();
+             Http http = new Http();
+             return http.send(req).getStatusCode();
+         }
      }
 }
