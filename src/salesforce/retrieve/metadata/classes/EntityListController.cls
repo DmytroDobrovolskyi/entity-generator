@@ -19,16 +19,13 @@ public class EntityListController
     private Entity__c newEntity { get; set; }
 
     private static String newEntityId = 'newEntityId';
-    
-    @TestVisible
-    private Set<Entity__c> entitiesToUpdate { get; set; }
 
     public EntityListController()
     {
         this.entityMap = new Map<String, Entity__c>(entities);
         Set<Entity__c> entitySet = new Set<Entity__c>(entityMap.values());
     }
-      
+        
     public static String getRemoteSettingURL()
     {
         CustomSettingObject__c customSettingObject = CustomSettingObject__c.getInstance('RemoteSiteURL');
@@ -39,14 +36,6 @@ public class EntityListController
     @RemoteAction
     public static Boolean isGenerateButtonVisible()
     {
-        List<Entity__c> deleted =
-        [
-                SELECT Id, TableName__c
-                FROM Entity__c
-                WHERE IsDeleted = true
-                ALL ROWS
-        ];
-        System.debug(deleted);
         for (Entity__c entity : entities)
         {
             if (entity.IsProcessingNeeded__c)
@@ -77,7 +66,7 @@ public class EntityListController
 
     public void applyChanges()
     {
-        entitiesToUpdate = new Set<Entity__c>(entityMap.values());
+        Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
 
         for (Entity__c entity : entitiesToUpdate)
@@ -93,6 +82,7 @@ public class EntityListController
         {
             if (entity.IsUpdateNeeded__c)
             {
+                entity.IsProcessingNeeded__c = true;
                 if (Database.update(entity, false).isSuccess())
                 {
                     entity.IsUpdateNeeded__c = false;
@@ -123,11 +113,9 @@ public class EntityListController
                 newEntity = null;
             }
         }
-        
         wereChanges = false;
     }
-    
-    @TestVisible
+
     private boolean isAlreadyExist(Set<Entity__c> entitiesToUpdate, String tableNameToCheck)
     {
         for (Entity__c entity : entitiesToUpdate)
@@ -158,7 +146,6 @@ public class EntityListController
         if (entityToUpdate != null && String.valueOf(entityToUpdate.Id) != newEntityId)
         {
             entityToUpdate.IsUpdateNeeded__c = true;
-            entityToUpdate.IsProcessingNeeded__c = true;
         }
         wereChanges = true;
     }
@@ -169,24 +156,17 @@ public class EntityListController
         ApexPages.addMessage(error);
     }
 
-     @RemoteAction
-     public static Integer generateEntities()
+     public static void generateEntities()
      {
-         if(Test.isRunningTest())
-         {
-             HttpResponse res = new HttpResponse();
-             res.setStatusCode(200);
-             return res.getStatusCode();
-         }
-         else
-         { 
-             HttpRequest req = new HttpRequest();
-             req.setMethod('POST');
-             req.setEndpoint(LONG_RUNNING_SERVICE_URL);
-             req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
+         RequestState__c requestState = new RequestState__c();
+         requestState.Status__c = String.valueOf(RequestStatus.IN_PROGRESS);
+         Database.insert(requestState);
 
-             Http http = new Http();
-             return http.send(req).getStatusCode();
-         }
+         HttpRequest req = new HttpRequest();
+         req.setMethod('POST');
+         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
+         req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
+
+         Requester.sendRequest(req);
      }
 }

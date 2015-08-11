@@ -14,11 +14,11 @@ import javax.persistence.EntityManager;
 
 @ContextConfiguration(classes = RepositoryMockConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class EntityRepositoryTest
+public class UserDataRepositoryTest
 {
     @Autowired
     @InjectMocks
-    private EntityRepository repository;
+    private UserDataRepository repository;
 
     @Autowired
     private EntityManager entityManager;
@@ -34,5 +34,4 @@ public class EntityRepositoryTest
     {
         System.out.println("Hell");
     }
-
 }
