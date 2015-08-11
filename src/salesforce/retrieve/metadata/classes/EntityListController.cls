@@ -172,13 +172,6 @@ public class EntityListController
      @RemoteAction
      public static Integer generateEntities()
      {
-         if(Test.isRunningTest())
-         {
-          	HttpResponse res = new HttpResponse();
-          	res.setStatusCode(300);
-          	return res.getStatusCode();
-         }
-         
         HttpRequest req = new HttpRequest();
         req.setMethod('POST');
         req.setEndpoint(LONG_RUNNING_SERVICE_URL);
