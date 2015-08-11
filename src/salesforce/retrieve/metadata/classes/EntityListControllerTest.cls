@@ -63,7 +63,7 @@ public class EntityListControllerTest
          test.stopTest();
     }
     
-   	static testMethod void isAlreadyExist()
+   	static testMethod void isAlreadyExistTest()
     {
          test.startTest();
         
@@ -82,6 +82,17 @@ public class EntityListControllerTest
          test.stopTest();
     }
     
+    static testMethod void isGenerateButtonVisibleTest()
+    {
+        test.startTest();
+        
+        insertCustomSettingObject();
+                      
+        System.assert(!EntityListController.isGenerateButtonVisible());
+          
+       	test.stopTest();
+    }
+    
     static testMethod void resolveChanges()
     {
          test.startTest();
@@ -96,7 +107,18 @@ public class EntityListControllerTest
          test.stopTest();
     }
     
-    private static void insertCustomSettingObject()
+    static testMethod void generateEntitiesTest()
+    {
+        test.startTest();
+        
+        insertCustomSettingObject();
+        
+        EntityListController.generateEntities();
+        
+        test.stopTest();
+    }
+    
+    public static void insertCustomSettingObject()
     {
         CustomSettingObject__c customSettingObject = new CustomSettingObject__c();
         customSettingObject.Name = 'RemoteSiteURL';
