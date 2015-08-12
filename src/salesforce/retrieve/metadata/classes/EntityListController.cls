@@ -36,6 +36,11 @@ public class EntityListController
     @RemoteAction
     public static Boolean isGenerateButtonVisible()
     {
+        if (getRequestState() == 'IN_PROGRESS')
+        {
+            return true;
+        }
+
         for (Entity__c entity : entities)
         {
             if (entity.IsProcessingNeeded__c)
@@ -156,13 +161,37 @@ public class EntityListController
         ApexPages.addMessage(error);
     }
 
-     public static void generateEntities()
+     @RemoteAction
+     public static Integer generateEntities()
      {
          HttpRequest req = new HttpRequest();
          req.setMethod('POST');
          req.setEndpoint(LONG_RUNNING_SERVICE_URL);
+         req.setTimeout(60000);
          req.setBody(EncodingUtil.urlEncode(UserInfo.getOrganizationId(), 'UTF-8'));
 
-         Requester.sendRequest(req);
+         return Requester.sendRequest(req);
      }
+
+    @RemoteAction
+    public static String getRequestState()
+    {
+        List<RequestState__c> requestState =
+        [
+                SELECT Status__c
+                FROM RequestState__c
+        ];
+
+        return requestState.size() > 0 ? requestState[0].Status__c : null;
+    }
+
+    @RemoteAction
+    public static void deleteRequestState()
+    {
+        DELETE
+        [
+                SELECT Id
+                FROM RequestState__c
+        ];
+    }
 }

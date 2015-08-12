@@ -1,6 +1,17 @@
+var refreshIntervalId;
+
+var RequestStatus =
+{
+    IN_PROGRESS: 'IN_PROGRESS',
+    COMPLETED: 'COMPLETED',
+    FAILED: 'FAILED'
+};
+
 $(function ()
 {
-    resolveRequest();
+    trackRequestState();
+
+    resolveGenerateButtonVisibility();
     $.material.init();
     init();
 
@@ -15,7 +26,6 @@ $(function ()
             input.off('focus');
         }
     });
-    resolveGenerateButtonVisibility();
 });
 
 function init()
@@ -114,46 +124,68 @@ function deleteEntity(tableName)
         });
 }
 
-function resolveRequest()
+function trackRequestState()
 {
-    sforce.apex.executeAnonymous('return [SELECT Status__c FROM RequestState__c LIMIT 1];', function(result)
-    {
-       console.log(result);
-    });
+    EntityListController.getRequestState
+    (
+        function (result, event)
+        {
+            switch (result)
+            {
+                case RequestStatus.IN_PROGRESS :
+                    showSpinner();
+                    break;
+                case RequestStatus.COMPLETED :
+                    showSuccessModal();
+
+                    hideSpinner();
+                    setTimeout(function()
+                    {
+                        resolveGenerateButtonVisibility();
+                    }, 2000);
+                    EntityListController.deleteRequestState(function(){});
+                    clearInterval(refreshIntervalId);
+                    break;
+                case RequestStatus.FAILED:
+                    showFailModal();
+
+                    hideSpinner();
+                    EntityListController.deleteRequestState(function(){});
+                    clearInterval(refreshIntervalId);
+                    break;
+            }
+        }
+    );
 }
 
 function generateEntities()
 {
-    sforce.apex.executeAnonymous('EntityListController.generateEntities();', function(result)
-    {
-        console.log(result);
-    });
-    /*var btnBlock = $('.generate-btn');
+    showSpinner();
+    clearInterval(refreshIntervalId);
+    refreshIntervalId = setInterval(trackRequestState, 3000);
+
+    EntityListController.generateEntities(function(){});
+}
+
+function showSpinner()
+{
+    var btnBlock = $('.generate-btn');
     var spinner = $('.fa-spinner');
 
     btnBlock.html('');
     btnBlock.append(spinner);
     spinner.show();
-
-    EntityListController.generateEntities
-    (
-        function (result, event)
-        {
-            if (result === 200)
-            {
-              showSuccessModal();
-            }
-            else
-            {
-                showFailModal();
-            }
-            btnBlock.parent().append(spinner);
-            spinner.hide();
-            btnBlock.html('Generate entities');
-        }
-    );*/
 }
 
+function hideSpinner()
+{
+    var btnBlock = $('.generate-btn');
+    var spinner = $('.fa-spinner');
+
+    btnBlock.parent().append(spinner);
+    spinner.hide();
+    btnBlock.html('Generate entities');
+}
 
 function showSuccessModal()
 {

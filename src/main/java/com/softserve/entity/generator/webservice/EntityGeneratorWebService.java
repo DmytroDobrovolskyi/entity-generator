@@ -19,11 +19,6 @@ public class EntityGeneratorWebService
 {
     private static final Logger logger = Logger.getLogger(EntityGeneratorWebService.class);
 
-    private static final String INSERT_NEW_STATE =
-            "RequestState__c requestState = new RequestState__c(); "  +
-            "requestState.Status__c = String.valueOf(RequestStatus.IN_PROGRESS); " +
-            "Database.insert(requestState); ";
-
     private static final String SELECT_STATE =
             "RequestState__c requestState = "  +
             "[" +
@@ -40,7 +35,9 @@ public class EntityGeneratorWebService
         SalesforceCredentials credentials = context.getBean(UserDataService.class).findByOrganizationId(requestBody);
 
         WebServiceUtil webServiceUtil = WebServiceUtil.getInstance(credentials);
-        webServiceUtil.executeApex(INSERT_NEW_STATE);
+        webServiceUtil.executeApex(
+                SELECT_STATE + "requestState = '" + RequestStatus.IN_PROGRESS + "'; " + UPDATE_STATE
+        );
         try
         {
             EntityService entityService = context.getBean(EntityService.class);
