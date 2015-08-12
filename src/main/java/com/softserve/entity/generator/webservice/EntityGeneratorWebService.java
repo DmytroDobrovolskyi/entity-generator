@@ -21,7 +21,7 @@ public class EntityGeneratorWebService
 
     private static final String INSERT_NEW_STATE =
             "RequestState__c requestState = new RequestState__c(); "  +
-            "requestState.Status__c = String.valueOf(RequestStatus.IN_PROGRESS); " +
+            "requestState.Status__c = '" + RequestStatus.COMPLETED + "'; " +
             "Database.insert(requestState); ";
 
     private static final String SELECT_STATE =
@@ -48,14 +48,14 @@ public class EntityGeneratorWebService
 
             EntityGenerator.generate(credentials);
             WebServiceUtil.getInstance(credentials).executeApex(
-                    SELECT_STATE + "requestState = '" + RequestStatus.COMPLETED + "'; " + UPDATE_STATE
+                    SELECT_STATE + "requestState.Status__c = '" + RequestStatus.COMPLETED + "'; " + UPDATE_STATE
             );
         }
         catch (Throwable ex)
         {
             logger.error("Failed to generate entities: ", ex);
             WebServiceUtil.getInstance(credentials).executeApex(
-                    SELECT_STATE + "requestState = '" + RequestStatus.FAILED + "'; " + UPDATE_STATE
+                    SELECT_STATE + "requestState.Status__c = '" + RequestStatus.FAILED + "'; " + UPDATE_STATE
             );
         }
     }
