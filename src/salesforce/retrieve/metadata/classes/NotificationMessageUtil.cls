@@ -2,6 +2,8 @@ public class NotificationMessageUtil
 {
     public static void insertMessage(List<SObject> sObjects, OperationType operationType)
     {
+     if(!Test.isRunningTest())
+     {
         for (SObject sObjectToProcess : sObjects)
         {
             NotificationMessage__c message = new NotificationMessage__c();
@@ -15,6 +17,7 @@ public class NotificationMessageUtil
             Database.insert(message);
         }
     }
+}
 
     private static String toExternalIdFieldName(String sObjectType)
     {
