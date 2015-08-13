@@ -5,7 +5,10 @@ public class EntityListController
     public String entityId { get; set; }
 
     public Boolean wereChanges { get; set; }
+    
+    public Set<Entity__c> entitiesToUpdate { get; set; }
 
+    @TestVisible
     private static List<Entity__c> entities =
     [
         SELECT Id, Name, TableName__c, IsUpdateNeeded__c, IsProcessingNeeded__c
@@ -71,7 +74,7 @@ public class EntityListController
 
     public void applyChanges()
     {
-        Set<Entity__c> entitiesToUpdate = new Set<Entity__c>(entityMap.values());
+        entitiesToUpdate = new Set<Entity__c>(entityMap.values());
         entitiesToUpdate.remove(newEntity);
 
         for (Entity__c entity : entitiesToUpdate)
@@ -121,6 +124,7 @@ public class EntityListController
         wereChanges = false;
     }
 
+    @TestVisible
     private boolean isAlreadyExist(Set<Entity__c> entitiesToUpdate, String tableNameToCheck)
     {
         for (Entity__c entity : entitiesToUpdate)
