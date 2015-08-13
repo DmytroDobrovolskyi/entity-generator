@@ -15,6 +15,13 @@
     <apex:includeScript value="{!URLFOR($Resource.resources, 'bootstrap/material/js/ripples.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.resources, 'js/entity-list.js')}"/>
 
+    <apex:includeScript value="/soap/ajax/28.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/28.0/apex.js"/>
+
+    <script>
+        sforce.connection.sessionId = " {!$Api.Session_ID}";
+    </script>
+
     <div class="container">
         <div class="col-md-12">
             <apex:form id="table-form" styleClass="form-group">
